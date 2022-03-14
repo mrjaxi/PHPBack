@@ -30,9 +30,9 @@
           <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Name</th>
+                  <th>Имя</th>
                   <th>Email</th>
-                  <th>Votes</th>
+                  <th>Голосов</th>
                   <th></th>
                 </tr>
             </thead>
@@ -65,9 +65,9 @@
           <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Name</th>
+                  <th>Имя</th>
                   <th>Email</th>
-                  <th>Until (d/m/y)</th>
+                  <th>До (d/m/y)</th>
                   <th></th>
                 </tr>
             </thead>
@@ -97,7 +97,7 @@
               </td>
               <td>
                   <div class="pull-right">
-                    <a href="<?php echo base_url() . 'adminaction/unban/' . $user->id;?>"><button type="submit" class="btn btn-warning btn-sm" style="width:130px">Disable ban</button></a>
+                    <a href="<?php echo base_url() . 'adminaction/unban/' . $user->id;?>"><button type="submit" class="btn btn-warning btn-sm" style="width:130px">Разбанить</button></a>
                   </div>
               </td>
             </tr>
@@ -115,7 +115,7 @@
               <input type="text" class="form-control" name="days" style="width:100px" maxlength="4"> (0 for indefinitely ban)
             </div>
             <div class="form-group">
-              <button name="banuser"type="submit" class="btn btn-primary">Заблокировать пользователя</button>
+              <button name="banuser"type="submit" class="btn btn-primary">Заблокировать</button>
             </div>
           </form>
       </div>

@@ -24,8 +24,8 @@
       <table class="table table-condensed" style="font-size:15px;width:80%;margin-left:10%;">
             <thead>
             <tr>
-              <th>Log</th>
-              <th>Date</th>
+              <th>Журнал</th>
+              <th>Дата</th>
             </tr>
          </thead>
           <tbody>

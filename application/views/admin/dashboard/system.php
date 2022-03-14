@@ -19,7 +19,7 @@
   <div>
       <h5>Системные настройки</h5>
       <ul class="nav nav-tabs">
-        <li id="table1" class="active"><a onclick="showtable3('generaltable','table1');">General Settings</a></li>
+        <li id="table1" class="active"><a onclick="showtable3('generaltable','table1');">Общие настройки</a></li>
         <li id="table2"><a onclick="showtable3('admintable','table2');">Создать администратора</a></li>
         <li id="table3"><a onclick="showtable3('categorytable','table3');">Категории</a></li>
         <li id="table4"><a onclick="showtable3('upgradetable','table4');">Обновить версию</a></li>
@@ -42,9 +42,9 @@
           <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Name</th>
+                  <th>Имя</th>
                   <th>Email</th>
-                  <th>Admin Level</th>
+                  <th>Уровень администратора</th>
                 </tr>
             </thead>
               <tbody>
@@ -69,11 +69,11 @@
         </table>
         <form role="form" method="post" action="<?php echo base_url() . 'adminaction/editadmin'?>">
             <div class="form-group">
-              <label>User ID</label>
+              <label>ID пользователя</label>
               <input type="text" class="form-control" name="id" style="width:300px">
             </div>
             <div class="form-group">
-              <label>Admin Level</label>
+              <label>Уровень администратора</label>
               <select class="form-control" name="level" style="width:300px">
                 <option value="0">Нет прав администрирования</option>
                 <option value="1">Идеи и комментарии (уровень 1)</option>
@@ -100,7 +100,7 @@
          </div>
       </div>
       <div id="categorytable" style="display:none">
-        <h4>Добавитьь новую категорию</h4>
+        <h4>Добавить новую категорию</h4>
         <form role="form" method="post" action="<?php echo base_url() . 'adminaction/addcategory'?>">
             <div class="form-group">
               <label>Название категории</label>

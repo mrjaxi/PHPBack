@@ -24,7 +24,7 @@
 		<ul class="nav nav-tabs">
 	  		<li id="table4" class="active"><a onclick="showtable4('resetvotestable','table4');"><?php echo $lang['label_reset_votes']; ?></a></li>
 	  		<li id="table5"><a onclick="showtable4('changepasswordtable','table5');"><?php echo $lang['label_change_password']; ?></a></li>
-	  		<?php if($_SESSION['phpback_isadmin'] >= 1) : ?><li><a href="<?php echo base_url() . 'admin/'; ?>" target="_blank">ADMIN PANEL</a></li><?php endif; ?>
+	  		<?php if($_SESSION['phpback_isadmin'] >= 1) : ?><li><a href="<?php echo base_url() . 'admin/'; ?>" target="_blank">Панель администратора</a></li><?php endif; ?>
 		</ul>
 		<table id="resetvotestable" class="table table-striped">
 			<thead>

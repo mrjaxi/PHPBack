@@ -8,7 +8,7 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">
-          <li><a href="<?php echo base_url() . 'admin'; ?>">Dashboard</a></li>
+          <li><a href="<?php echo base_url() . 'admin'; ?>">Панель управления</a></li>
           <li class="active"><a href="<?php echo base_url() . 'admin/ideas'; ?>">Идеи и комментарии</a></li>
           <?php if($_SESSION['phpback_isadmin'] > 1){?>
           <li><a href="<?php echo base_url() . 'admin/users'; ?>">Управление пользователями</a></li>
@@ -31,11 +31,11 @@
         <table id="newideastable" class="table table-condensed" style="">
           <thead>
                 <tr>
-                  <th>Idea</th>
-                  <th>Category</th>
-                  <th>Comments</th>
-                  <th>Votes</th>
-                  <th>Date</th>
+                  <th>Идея</th>
+                  <th>Категории</th>
+                  <th>Комментарии</th>
+                  <th>Голоса</th>
+                  <th>Дата</th>
                 </tr>
             </thead>
               <tbody>
@@ -87,10 +87,10 @@
             <thead>
               <tr>
                 <td>
-                  <label>Status</label>
+                  <label>Статус</label>
                 </td>
                 <td>
-                  <label>Categories</label>
+                  <label>Категории</label>
                 </td>
               </tr>
             </thead>
@@ -159,10 +159,10 @@
           <table class="table table-condensed" style="font-size:15px;width:100%">
             <thead>
             <tr>
-              <th>Idea</th>
-              <th>Category</th>
-              <th>Votes</th>
-              <th>Date</th>
+              <th>Идея</th>
+              <th>Категория</th>
+              <th>Голосов</th>
+              <th>Дата</th>
             </tr>
          </thead>
           <tbody>
@@ -209,8 +209,8 @@
           <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Comment</th>
-                  <th>Flags</th>
+                  <th>Комментарий</th>
+                  <th>Выбран</th>
                 </tr>
           </thead>
           <tbody>
@@ -218,9 +218,9 @@
                   <tr>
                   <td>
                     Комментарий: #<?php echo $comment['id'];?>
-                    <br>User:
+                    <br>Пользователь:
                     <a href="<?php echo base_url() . 'admin/users/' . $comment['userid'];?>">#<?php echo $comment['userid'];?></a>
-                    <br>Idea:
+                    <br>Идея:
                     <a href="<?php echo base_url() . 'home/idea/' . $comment['ideaid'];?>" target="_blank">#<?php echo $comment['userid'];?></a>
                   </td>
                   <td>
@@ -229,10 +229,10 @@
                     </samp>
                   </td>
                   <td>
-                    <span style="font-size:17px;">Flagged <span class="badge"><?php echo $comment['votes']; ?></span><span style="font-size:17px;"> times</span>
+                    <span style="font-size:17px;">Выбран <span class="badge"><?php echo $comment['votes']; ?></span><span style="font-size:17px;"> раз</span>
                     <div class="pull-right">
                       <button name="Delete votes" type="submit" class="btn btn-warning btn-sm" style="width:130px" <?php $temp = base_url() . 'adminaction/deletecomment/' . $comment['id']; ?> onclick="popup_sure('Вы уверены, что хотите удалить этот комментарий?','<?php echo $temp; ?>');">Удалить комментарий</button>
-                      <?php if($_SESSION['phpback_isadmin'] > 1): ?><a href="<?php echo base_url() . 'admin/users/' . $comment['userid']; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать пользователя</button></a><?php endif;?>
+                      <?php if($_SESSION['phpback_isadmin'] > 1): ?><a href="<?php echo base_url() . 'admin/users/' . $comment['userid']; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать</button></a><?php endif;?>
                     </div>
                   </td>
                   </tr>
