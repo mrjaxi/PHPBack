@@ -1,0 +1,35 @@
+stages:
+  - deploy_dev
+  - deploy_prod
+
+Deploy to dev:
+  stage: deploy_dev
+  environment:
+    name: dev
+    url: https://phpback.atmadev.ru/
+  when: manual
+  tags:
+    - atmadev
+  only:
+    - master
+  script:
+    - rsync --exclude '.git' --exclude '.gitlab-ci.yml' -avzh . /www/phpback.atmadev.ru
+#    - cd /www/vrachrb.atmadev.ru
+#    - ./symfony doctrine:migrate
+#    - ./symfony cc
+
+#Deploy to prod:
+#  stage: deploy_prod
+#  environment:
+#    name: prod
+#    url: https://vrachrb.ru/
+#  when: manual
+#  tags:
+#    - all
+#  only:
+#    - master
+#  script:
+#    - rsync --exclude '.git' --exclude 'config/databases.yml' --exclude '.gitlab-ci.yml' --exclude 'web/index.php' --exclude 'web/arm.php' --exclude 'apps/arm/config/factories.yml' --exclude 'apps/www/config/factories.yml' -avzh . /www/pa.ufaucheba.ru
+#    - cd /www/pa.ufaucheba.ru
+#    - ./symfony doctrine:migrate
+#    - ./symfony cc
