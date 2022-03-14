@@ -14,7 +14,7 @@ Deploy to dev:
     - master
   script:
     - rsync --exclude '.git' --exclude '.gitlab-ci.yml' -avzh . /www/phpback.atmadev.ru
-#    - cd /www/vrachrb.atmadev.ru
+    - cd /www/vrachrb.atmadev.ru
 #    - ./symfony doctrine:migrate
 #    - ./symfony cc
 
