@@ -9,23 +9,23 @@
       <div class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">
           <li><a href="<?php echo base_url() . 'admin'; ?>">Dashboard</a></li>
-          <li class="active"><a href="<?php echo base_url() . 'admin/ideas'; ?>">Ideas and Comments</a></li>
+          <li class="active"><a href="<?php echo base_url() . 'admin/ideas'; ?>">Идеи и комментарии</a></li>
           <?php if($_SESSION['phpback_isadmin'] > 1){?>
-          <li><a href="<?php echo base_url() . 'admin/users'; ?>">Users Management</a></li>
+          <li><a href="<?php echo base_url() . 'admin/users'; ?>">Управление пользователями</a></li>
           <?php if($_SESSION['phpback_isadmin'] == 3){ ?>
-          <li><a href="<?php echo base_url() . 'admin/system'; ?>">System Settings</a></li>
+          <li><a href="<?php echo base_url() . 'admin/system'; ?>">Системные настройки</a></li>
           <?php } } ?>
         </ul>
-          <p class="navbar-text navbar-right">Signed in as <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Log out</button></a></p>
+          <p class="navbar-text navbar-right">Авторизован как <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Выйти</button></a></p>
 
       </div><!-- /.navbar-collapse -->
     </nav><!-- /navbar -->
     <div>
-      <h5>Ideas and comments</h5>
+      <h5>Идеи и комментарии</h5>
       <ul class="nav nav-tabs">
-        <li id="table1" class="active"><a onclick="showtable('newideastable','table1');">New Ideas <span class="badge"><?php echo $newideas_num;?></span></a></li>
-        <li id="table2"><a onclick="showtable('allideastable','table2');">All Ideas </a></li>
-        <li id="table3"><a onclick="showtable('commentstable','table3');">Flagged comments</a></li>
+        <li id="table1" class="active"><a onclick="showtable('newideastable','table1');">Новые идеи <span class="badge"><?php echo $newideas_num;?></span></a></li>
+        <li id="table2"><a onclick="showtable('allideastable','table2');">Все идеи </a></li>
+        <li id="table3"><a onclick="showtable('commentstable','table3');">Выбрать комментарий</a></li>
       </ul>
       <div id="listing">
         <table id="newideastable" class="table table-condensed" style="">
@@ -67,10 +67,10 @@
                 <?php echo $categories[$idea->categoryid]->name; ?>
               </td>
               <td>
-                <?php echo $idea->comments; ?> Comments
+                <?php echo $idea->comments; ?> Комментариев
               </td>
               <td>
-                <?php echo $idea->votes; ?> Votes
+                <?php echo $idea->votes; ?> Голосов
               </td>
               <td>
                 <?php echo $idea->date; ?>
@@ -100,23 +100,23 @@
               <div class="form-group">
                 <label class="checkbox">
                   <input type="checkbox" <?php if($form['status-completed']): ?>checked="checked" <?php endif; ?> name="status-completed" data-toggle="checkbox">
-                  Completed
+                  Завершено
                 </label>
                 <label class="checkbox">
                   <input type="checkbox" <?php if($form['status-started']): ?>checked="checked" <?php endif; ?> name="status-started"  data-toggle="checkbox">
-                  Started
+                  Начато
                 </label>
                 <label class="checkbox">
                   <input type="checkbox" <?php if($form['status-planned']): ?>checked="checked" <?php endif; ?> name="status-planned"  data-toggle="checkbox">
-                  Planned
+                  Планируется
                 </label>
                 <label class="checkbox">
                   <input type="checkbox" <?php if($form['status-considered']): ?>checked="checked" <?php endif; ?> name="status-considered" data-toggle="checkbox">
-                  Under Consideration
+                  На рассмотрении
                 </label>
                 <label class="checkbox">
                   <input type="checkbox" <?php if($form['status-declined']): ?>checked="checked" <?php endif; ?> name="status-declined" data-toggle="checkbox">
-                  Declined
+                  Отклонено
                 </label>
               </div>
               </td>
@@ -134,21 +134,21 @@
               <tr>
               <td>
                 <select class="form-control" name="orderby">
-                  <option value="votes">Order by Votes</option>
-                  <option value="id" <?php if($form['orderby'] == 'id') echo 'selected=""';?> >Order by Date</option>
-                  <option value="title" <?php if($form['orderby'] == 'title') echo 'selected=""';?>>Order by Title</option>
+                  <option value="votes">Порядок по голосам</option>
+                  <option value="id" <?php if($form['orderby'] == 'id') echo 'selected=""';?> >Порядок по дате</option>
+                  <option value="title" <?php if($form['orderby'] == 'title') echo 'selected=""';?>>Порядок по названию</option>
                 </select>
                </td>
                <td style="padding-left:10px;">
                  <label class="checkbox"t>
                     <input type="checkbox" <?php if($form['isdesc']) echo 'checked=""';?> name="isdesc" data-toggle="checkbox">
-                    Descresing order
+                    Упорядочение по убыванию
                   </label>
                </td>
               </tr>
               <tr>
               <td colspan="2" style="padding-top:5px;padding-bottom:10px">
-                <button type="submit" class="btn btn-primary" style="width:160px">Search</button>
+                <button type="submit" class="btn btn-primary" style="width:160px">Поиск</button>
               </td>
               </tr>
               </tbody>
@@ -194,7 +194,7 @@
             <?php echo $categories[$idea->categoryid]->name; ?>
           </td>
           <td>
-            <?php echo $idea->votes; ?> Votes
+            <?php echo $idea->votes; ?> Голосов
           </td>
           <td>
             <?php echo $idea->date; ?>
@@ -217,7 +217,7 @@
                 <?php foreach ($flags as $comment) : ?>
                   <tr>
                   <td>
-                    Comment: #<?php echo $comment['id'];?>
+                    Комментарий: #<?php echo $comment['id'];?>
                     <br>User:
                     <a href="<?php echo base_url() . 'admin/users/' . $comment['userid'];?>">#<?php echo $comment['userid'];?></a>
                     <br>Idea:
@@ -231,8 +231,8 @@
                   <td>
                     <span style="font-size:17px;">Flagged <span class="badge"><?php echo $comment['votes']; ?></span><span style="font-size:17px;"> times</span>
                     <div class="pull-right">
-                      <button name="Delete votes" type="submit" class="btn btn-warning btn-sm" style="width:130px" <?php $temp = base_url() . 'adminaction/deletecomment/' . $comment['id']; ?> onclick="popup_sure('Are you sure you want to delete this comment?','<?php echo $temp; ?>');">Delete Comment</button>
-                      <?php if($_SESSION['phpback_isadmin'] > 1): ?><a href="<?php echo base_url() . 'admin/users/' . $comment['userid']; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Ban User</button></a><?php endif;?>
+                      <button name="Delete votes" type="submit" class="btn btn-warning btn-sm" style="width:130px" <?php $temp = base_url() . 'adminaction/deletecomment/' . $comment['id']; ?> onclick="popup_sure('Вы уверены, что хотите удалить этот комментарий?','<?php echo $temp; ?>');">Удалить комментарий</button>
+                      <?php if($_SESSION['phpback_isadmin'] > 1): ?><a href="<?php echo base_url() . 'admin/users/' . $comment['userid']; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать пользователя</button></a><?php endif;?>
                     </div>
                   </td>
                   </tr>

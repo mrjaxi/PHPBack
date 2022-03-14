@@ -9,14 +9,14 @@
       <div class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">           
           <li class="active"><a href="#">Dashboard</a></li>
-          <li><a href="<?php echo base_url() . 'admin/ideas'; ?>">Ideas and Comments</a></li>
+          <li><a href="<?php echo base_url() . 'admin/ideas'; ?>">Идеи и комментарии</a></li>
           <?php if($_SESSION['phpback_isadmin'] > 1){?>
-          <li><a href="<?php echo base_url() . 'admin/users'; ?>">Users Management</a></li>
+          <li><a href="<?php echo base_url() . 'admin/users'; ?>">Управление пользователями</a></li>
           <?php if($_SESSION['phpback_isadmin'] == 3){ ?>
-          <li><a href="<?php echo base_url() . 'admin/system'; ?>">System Settings</a></li>
+          <li><a href="<?php echo base_url() . 'admin/system'; ?>">Системные настройки</a></li>
           <?php } } ?>
         </ul>
-          <p class="navbar-text navbar-right">Signed in as <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Log out</button></a></p>
+          <p class="navbar-text navbar-right">Авторизован как <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Выйти</button></a></p>
            
       </div><!-- /.navbar-collapse -->
     </nav><!-- /navbar -->

@@ -7,7 +7,7 @@ See LICENSE.TXT for details.  -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Panel - PHPBack</title>
+    <title>Панель администратора - PHPBack</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta charset="UTF-8">

@@ -2,7 +2,7 @@
 	
 		<small>
 		<ol class="breadcrumb">
-		  <li class="active">Feedback</li>
+		  <li class="active">Обратная связь</li>
 		</ol>
 		</small>
 		<div>

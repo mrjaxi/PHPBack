@@ -237,7 +237,7 @@ if ( ! function_exists('get_config'))
 		// Does the $config array exist in the file?
 		if ( ! isset($config) OR ! is_array($config))
 		{
-			exit('Your config file does not appear to be formatted correctly.');
+			exit('Похоже, что ваш файл конфигурации отформатирован неправильно.');
 		}
 
 		// Are any values being dynamically replaced?

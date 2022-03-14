@@ -26,8 +26,8 @@ if ($mysql->connect_error) {
 
 $mysql->multi_query("INSERT INTO `settings` (`name`, `value`) VALUES
 ('title', '". $_POST['title'] ."'),
-('welcometext-title', 'Welcome to our feedback'),
-('welcometext-description', 'Here you can suggest ideas to improve our services or vote on ideas from other people'),
+('welcometext-title', 'Добро пожаловать в систему обратной связи'),
+('welcometext-description', 'Здесь вы можете предложить идеи по улучшению наших услуг или проголосовать за идеи других людей'),
 ('recaptchapublic', '". $_POST['rpublic'] ."'),
 ('recaptchaprivate', '". $_POST['rprivate'] ."'),
 ('language', '".(isset($_POST['language'])? $_POST['language'] : 'english')."'),

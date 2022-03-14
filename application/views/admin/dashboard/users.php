@@ -8,23 +8,23 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">
-          <li><a href="<?php echo base_url() . 'admin'; ?>">Dashboard</a></li>
-          <li><a href="<?php echo base_url() . 'admin/ideas'; ?>">Ideas and Comments</a></li>
-          <li class="active"><a href="<?php echo base_url() . 'admin/users'; ?>">Users Management</a></li>
+          <li><a href="<?php echo base_url() . 'admin'; ?>">Панель управления</a></li>
+          <li><a href="<?php echo base_url() . 'admin/ideas'; ?>">Идеи и комментарии</a></li>
+          <li class="active"><a href="<?php echo base_url() . 'admin/users'; ?>">Управление пользователями</a></li>
           <?php if($_SESSION['phpback_isadmin'] == 3){ ?>
-          <li><a href="<?php echo base_url() . 'admin/system'; ?>">System Settings</a></li>
+          <li><a href="<?php echo base_url() . 'admin/system'; ?>">Системные настройки</a></li>
           <?php } ?>
         </ul>
-          <p class="navbar-text navbar-right">Signed in as <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Log out</button></a></p>
+          <p class="navbar-text navbar-right">Авторизован как <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Выйти</button></a></p>
 
       </div><!-- /.navbar-collapse -->
     </nav><!-- /navbar -->
     <div>
-      <h5>Users Management</h5>
+      <h5>Управление пользователями</h5>
       <ul class="nav nav-tabs">
-        <li id="table1" class="active"><a onclick="showtable2('newuserstable','table1');">New Users</a></li>
-        <li id="table2"><a onclick="showtable2('bannedtable','table2');">Banned List </a></li>
-        <li id="table3"><a onclick="showtable2('bantable','table3');">Ban User</a></li>
+        <li id="table1" class="active"><a onclick="showtable2('newuserstable','table1');">Новые пользователи</a></li>
+        <li id="table2"><a onclick="showtable2('bannedtable','table2');">Список заблокированных </a></li>
+        <li id="table3"><a onclick="showtable2('bantable','table3');">Заблокировать пользователя</a></li>
       </ul>
         <table id="newuserstable" class="table table-condensed" style="">
           <thead>
@@ -54,7 +54,7 @@
               </td>
               <td>
                   <div class="pull-right">
-                    <a href="<?php echo base_url() . 'admin/users/' . $user->id; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Ban User</button></a>
+                    <a href="<?php echo base_url() . 'admin/users/' . $user->id; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать пользователя</button></a>
                   </div>
               </td>
             </tr>
@@ -111,11 +111,11 @@
               <input type="text" class="form-control" name="id" value="<?php if(isset($idban)) echo $idban;?>" style="width:130px" maxlength="9">
             </div>
             <div class="form-group">
-              <label>Ban lenght in days</label>
+              <label>Срок запрета в днях</label>
               <input type="text" class="form-control" name="days" style="width:100px" maxlength="4"> (0 for indefinitely ban)
             </div>
             <div class="form-group">
-              <button name="banuser"type="submit" class="btn btn-primary">Ban User</button>
+              <button name="banuser"type="submit" class="btn btn-primary">Заблокировать пользователя</button>
             </div>
           </form>
       </div>

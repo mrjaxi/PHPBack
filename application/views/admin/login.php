@@ -6,30 +6,30 @@
 			</div>
 		<?php if(!isset($error)): ?>
             <div class="form-group">
-              <input type="text" class="form-control login-field" value="" placeholder="Enter your email" id="login-name" name="email" />
+              <input type="text" class="form-control login-field" value="" placeholder="Введите ваш email" id="login-name" name="email" />
               <label class="login-field-icon fui-user" for="login-name"></label>
             </div>
 
             <div class="form-group">
-              <input type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" name="password"/>
+              <input type="password" class="form-control login-field" value="" placeholder="Пароль" id="login-pass" name="password"/>
               <label class="login-field-icon fui-lock" for="login-pass"></label>
             </div>
-            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log In">
+            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Войти">
           </div>
       <?php elseif($error == 'noadmin'):?>
-      	<div style="color:#C0392B;font-size:20px">You are not an admin</div>
+      	<div style="color:#C0392B;font-size:20px">Вы не являетесь администратором</div>
       <?php else: ?>
-      	<div style="color:#C0392B;font-size:15px">Email or password are incorrect</div>
+      	<div style="color:#C0392B;font-size:15px">Электронная почта или пароль неверны</div>
       	<div class="form-group">
-              <input type="text" class="form-control login-field" value="" placeholder="Enter your email" id="login-name" name="email" />
+              <input type="text" class="form-control login-field" value="" placeholder="Введите ваш email" id="login-name" name="email" />
               <label class="login-field-icon fui-user" for="login-name"></label>
             </div>
 
             <div class="form-group">
-              <input type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" name="password"/>
+              <input type="password" class="form-control login-field" value="" placeholder="Пароль" id="login-pass" name="password"/>
               <label class="login-field-icon fui-lock" for="login-pass"></label>
             </div>
-            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log In">
+            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Войти">
           </div>
       <?php endif; ?>
         </form>
