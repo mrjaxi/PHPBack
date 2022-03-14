@@ -111,8 +111,8 @@
               <input type="text" class="form-control" name="id" value="<?php if(isset($idban)) echo $idban;?>" style="width:130px" maxlength="9">
             </div>
             <div class="form-group">
-              <label>Срок запрета в днях</label>
-              <input type="text" class="form-control" name="days" style="width:100px" maxlength="4"> (0 для бессрочного запрета)
+              <label>Срок блокировки в днях</label>
+              <input type="text" class="form-control" name="days" style="width:100px" maxlength="4"> (0 для блокировки навсегда)
             </div>
             <div class="form-group">
               <button name="banuser"type="submit" class="btn btn-primary">Заблокировать</button>
