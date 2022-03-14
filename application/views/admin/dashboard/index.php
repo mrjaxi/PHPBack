@@ -8,7 +8,7 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">           
-          <li class="active"><a href="#">Dashboard</a></li>
+          <li class="active"><a href="#">Панель управления</a></li>
           <li><a href="<?php echo base_url() . 'admin/ideas'; ?>">Идеи и комментарии</a></li>
           <?php if($_SESSION['phpback_isadmin'] > 1){?>
           <li><a href="<?php echo base_url() . 'admin/users'; ?>">Управление пользователями</a></li>

@@ -108,7 +108,7 @@
               <small>(поместить название существующей категории, чтобы изменить ее описание)</small>
             </div>
             <div class="form-group">
-              <label>Category description</label>
+              <label>Описание категории</label>
               <textarea class="form-control" name="description" style="width:300px"></textarea>
             </div>
             <div class="form-group">
