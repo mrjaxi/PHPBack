@@ -28,7 +28,7 @@
     $lang['label_search'] = 'Поиск';
     $lang['label_sign_in'] = 'Войти';
     $lang['label_submit'] = 'Отправить';
-    $lang['label_vote'] = 'Проголосовать';
+    $lang['label_vote'] = 'Голосовать';
     $lang['label_votes'] = 'Голоса';
 
     $lang['text_shared_this_idea'] = 'поделился этой идеей';

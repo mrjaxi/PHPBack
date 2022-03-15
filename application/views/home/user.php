@@ -28,8 +28,8 @@
 		</ul>
 		<table id="resetvotestable" class="table table-striped">
 			<thead>
-				<th>Idea</th>
-				<th>Votes</th>
+				<th>Идея</th>
+				<th>Голоса</th>
 				<th></th>
 			</thead>
 			<tbody>

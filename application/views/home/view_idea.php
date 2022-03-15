@@ -128,7 +128,7 @@
 				<div class="col-md-10 col-md-offset-2" style="margin-top:10px">
 					<form role="form" method="post" action="<?php echo base_url() . 'action/comment/' . $idea->id; ?>">
 						<div class="form-group">
-						  <label>Comment</label>
+						  <label>Комментарий</label>
 						    <textarea class="form-control" rows="4" name="content"></textarea>
 						  </div>
 						  <input type="hidden" name="ideaname" value="<?php echo str_replace(" ", "-", $idea->title); ?>">
