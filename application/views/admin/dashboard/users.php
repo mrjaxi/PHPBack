@@ -24,7 +24,7 @@
       <ul class="nav nav-tabs">
         <li id="table1" class="active"><a onclick="showtable2('newuserstable','table1');">Новые пользователи</a></li>
         <li id="table2"><a onclick="showtable2('bannedtable','table2');">Список заблокированных </a></li>
-        <li id="table3"><a onclick="showtable2('bantable','table3');">Заблокировать пользователя</a></li>
+        <li id="table3"><a onclick="showtable2('bantable','table3');">Заблокировать</a></li>
       </ul>
         <table id="newuserstable" class="table table-condensed" style="">
           <thead>
@@ -54,7 +54,7 @@
               </td>
               <td>
                   <div class="pull-right">
-                    <a href="<?php echo base_url() . 'admin/users/' . $user->id; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать пользователя</button></a>
+                    <a href="<?php echo base_url() . 'admin/users/' . $user->id; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать</button></a>
                   </div>
               </td>
             </tr>

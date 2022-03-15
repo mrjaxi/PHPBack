@@ -1,6 +1,6 @@
 <?php
     $lang['label_activity'] = 'Активность';
-    $lang['label_ban_user'] = 'Заблокировать пользователя';
+    $lang['label_ban_user'] = 'Заблокировать';
     $lang['label_categories'] = 'Категории';
     $lang['label_category'] = 'Категория';
     $lang['label_change_password'] = 'Изменить пароль';
