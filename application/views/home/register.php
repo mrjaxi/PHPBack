@@ -1,3 +1,7 @@
+<head>
+    <link href="<?php echo base_url(); ?>public/css/all.css" rel="stylesheet">
+</head>
+
 <div class="col-md-9">
 	<small><ol class="breadcrumb">
 			<li><a href="<?php echo base_url(); ?>">Feedback</a></li>
@@ -59,7 +63,7 @@
          value="manual_challenge">
   </noscript>
 <?php endif;?>
-    <div style="margin-top:10px"><button type="submit" class="btn btn-primary"><?php echo $lang['label_registration']; ?></button></div>
+    <div style="margin-top:10px"><button type="submit" class="sub_post_idea_button_style"><?php echo $lang['label_registration']; ?></button></div>
   </form>
 </div>
 

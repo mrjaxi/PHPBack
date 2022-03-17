@@ -38,7 +38,7 @@
 	  <label><?php echo $lang['label_description'];?></label>
 	    <textarea class="form-control" rows="4" name="description" minlength="20" max="1500" required><?php if(@isset($POST['desc'])) echo $POST['desc'];?></textarea>
 	  </div>
-	  <button type="submit" class="btn btn-primary"><?php echo $lang['label_submit'];?></button>
+	  <button type="submit" class="sub_post_idea_button_style"><?php echo $lang['label_submit'];?></button>
 	</form>
 	<?php endif; ?>
 </div>

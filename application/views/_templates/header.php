@@ -11,7 +11,7 @@ See LICENSE.TXT for details.  -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="<?php echo base_url();?>favicon.ico" sizes="16x16">
+    <link rel="icon" type="image/x-icon" href="<?php echo base_url();?>/favicon.ico">
 
     <!-- Loading Bootstrap -->
     <link href="<?= base_url(); ?>public/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -48,24 +48,36 @@ See LICENSE.TXT for details.  -->
            window.location = url;
         }
   }
+
+  function checkFilledTextArea() {
+      if (document.getElementById('checkField').value.trim() === ""){
+          document.getElementById('checkField').value = "";
+          alert("Вы не заполнили поле")
+          return false
+      }
+  }
   </script>
 </head>
 <body>
   <div class="row header">
     <div class="pull-left header--title-container">
-      <h4 id="header--title"><?= $title; ?></h4>
+<!--      <h4 id="header--title">--><?//= $title; ?><!--</h4>-->
+        <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>"/>
     </div>
     <?php if(@isset($_SESSION['phpback_userid'])): ?>
-    <div class="pull-right" style="padding-top:15px;padding-right:40px;">
-      <small><span class="logged-as-label"><?= $lang['label_logged_as']; ?></span>
-          <span style='color:#999;margin-left:5px;'>
-            <a href="<?php echo base_url() . 'home/profile/' . $_SESSION['phpback_userid'].'/'.Display::slugify($_SESSION['phpback_username']); ?>"><?php echo $_SESSION['phpback_username']; ?></a>
-          </span>
-      <a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;"><?php echo $lang['label_log_out']; ?></button></a></small>
+    <div class="pull-right" style="padding-right:40px;">
+        <a href="<?php echo base_url() . 'home/profile/' . $_SESSION['phpback_userid'].'/'.Display::slugify($_SESSION['phpback_username']); ?>">
+            <button type="button" class="sub_username_profile_button"><?php echo $_SESSION['phpback_username']; ?></button>
+        </a>
+          <a href="<?php echo base_url() . 'action/logout'; ?>">
+            <button type="button" class="sub_logout_button"><?php echo $lang['label_log_out']; ?></button>
+          </a>
     </div>
     <?php else : ?>
-    <div class="pull-right" style="padding-top:12px;padding-right:40px;">
-      <a href="<?php echo base_url() . 'home/login'; ?>"><button type="button" class="btn btn-success btn-sm btn-block" style="width:250px"><?php echo $lang['label_log_in']; ?></button></a>
+    <div class="pull-right" style="padding-right:40px;">
+      <a href="<?php echo base_url() . 'home/login'; ?>">
+          <button type="button" class="sub_login_button_style"><?php echo $lang['label_log_in']; ?></button>
+      </a>
     </div>
     <?php endif; ?>
 

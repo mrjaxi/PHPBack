@@ -20,7 +20,7 @@
     $lang['label_log_in'] = 'Войти';
     $lang['label_log_out'] = 'Выйти из системы';
     $lang['label_logged_as'] = 'Вошел как';
-    $lang['label_post_new_idea'] = 'Опубликовать новую идею';
+    $lang['label_post_new_idea'] = 'Новая идея';
     $lang['label_profiles'] = 'Профили';
     $lang['label_registration'] = 'Регистрация';
     $lang['label_registration_form'] = 'Форма регистрации';

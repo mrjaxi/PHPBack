@@ -1,19 +1,28 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1 dashboard-center">
-    <nav class="navbar navbar-inverse" role="navigation">
+    <nav style="background-color: #ffffff" class="navbar navbar-inverse" role="navigation">
       <div class="navbar-header">
         <div class="logosmall">
-          <img src="<?php echo base_url() . 'public/img/logo_small_free.png'?>">
+          <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>">
         </div>
       </div>
-      <div class="collapse navbar-collapse" id="navbar-collapse-01">
+      <div style="margin-top: 7px" class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">
           <li><a href="<?php echo base_url() . 'admin'; ?>">Панель управления</a></li>
           <li><a href="<?php echo base_url() . 'admin/ideas'; ?>">Идеи и комментарии</a></li>
           <li><a href="<?php echo base_url() . 'admin/users'; ?>">Управление пользователями</a></li>
           <li class="active"><a href="<?php echo base_url() . 'admin/system'; ?>">Системные настройки</a></li>
         </ul>
-          <p class="navbar-text navbar-right">Авторизован как <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Выйти</button></a></p>
+          <p class="navbar-text navbar-right">Авторизован как
+              <a href="<?php echo base_url() . 'home/profile/' . $_SESSION['phpback_userid'].'/'.Display::slugify($_SESSION['phpback_username']); ?>">
+                  <button class="sub_admin_name_button">
+                      <?php echo $_SESSION['phpback_username']; ?>
+                  </button>
+              </a>
+              <a href="<?php echo base_url() . 'action/logout'; ?>">
+                  <button type="button" class="sub_admin_logout_button">Выйти</button>
+              </a>
+          </p>
       </div><!-- /.navbar-collapse -->
     </nav><!-- /navbar -->
   <div>

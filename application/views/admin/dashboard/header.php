@@ -9,10 +9,10 @@ See LICENSE.TXT for details.  -->
 <html lang="ru">
   <head>
     <meta charset="utf-8">
-    <title>Панель администратора - PHPBack</title>
+    <title>Панель администратора - Atmaguru Feedback</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="icon" type="image/x-icon" href="<?php echo base_url();?>favicon.ico" sizes="16x16">
+    <link rel="icon" type="image/x-icon" href="<?php echo base_url();?> /favicon.ico" sizes="16x16">
 
     <!-- Loading Bootstrap -->
     <link href="<?php echo base_url(); ?>public/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -78,9 +78,9 @@ See LICENSE.TXT for details.  -->
     <style type="text/css">
     .logosmall{
       padding-top: 10px;
-      padding-left: 8px;
-      margin-right: 10px;
-      
+      padding-left: 10px;
+      margin-right: 40px;
+      padding-bottom: 10px;
     }
     .navbar{
     	background-color: #34495E;
@@ -90,7 +90,7 @@ See LICENSE.TXT for details.  -->
     	background-color: #ECF0F1;
     }
     body{
-    	background-color: #27AE60;
+    	background-color: #ffffff;
     }
     </style>
     <script src="<?php echo base_url(); ?>public/js/bootstrap.min.js"></script>

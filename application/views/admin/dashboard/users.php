@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1 dashboard-center">
-    <nav class="navbar navbar-inverse" role="navigation">
+    <nav style="background-color: #ffffff" class="navbar navbar-inverse" role="navigation">
       <div class="navbar-header">
         <div class="logosmall">
-          <img src="<?php echo base_url() . 'public/img/logo_small_free.png'?>">
+            <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>">
         </div>
       </div>
-      <div class="collapse navbar-collapse" id="navbar-collapse-01">
+      <div style="margin-top: 7px" class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">
           <li><a href="<?php echo base_url() . 'admin'; ?>">Панель управления</a></li>
           <li><a href="<?php echo base_url() . 'admin/ideas'; ?>">Идеи и комментарии</a></li>
@@ -15,8 +15,16 @@
           <li><a href="<?php echo base_url() . 'admin/system'; ?>">Системные настройки</a></li>
           <?php } ?>
         </ul>
-          <p class="navbar-text navbar-right">Авторизован как <span style="color:#27AE60"><?php echo $_SESSION['phpback_username']; ?></span><a href="<?php echo base_url() . 'action/logout'; ?>"><button type="button" class="btn btn-danger btn-xs" style="margin-left:10px;">Выйти</button></a></p>
-
+          <p class="navbar-text navbar-right">Авторизован как
+              <a href="<?php echo base_url() . 'home/profile/' . $_SESSION['phpback_userid'].'/'.Display::slugify($_SESSION['phpback_username']); ?>">
+                  <button class="sub_admin_name_button">
+                      <?php echo $_SESSION['phpback_username']; ?>
+                  </button>
+              </a>
+              <a href="<?php echo base_url() . 'action/logout'; ?>">
+                  <button type="button" class="sub_admin_logout_button">Выйти</button>
+              </a>
+          </p>
       </div><!-- /.navbar-collapse -->
     </nav><!-- /navbar -->
     <div>
@@ -54,7 +62,13 @@
               </td>
               <td>
                   <div class="pull-right">
-                    <a href="<?php echo base_url() . 'admin/users/' . $user->id; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать</button></a>
+                    <a href="<?php echo base_url() . 'admin/users/' . $user->id; ?>"><button type="submit" style="
+                                        font-size: 15px;
+	                                    color: #ffffff;
+	                                    background-color: #ec7063;
+	                                    padding: 8px 13px 8px 13px;
+	                                    border: solid 1px #ec7063;
+                                        border-radius: 20px">Заблокировать</button></a>
                   </div>
               </td>
             </tr>
@@ -97,7 +111,12 @@
               </td>
               <td>
                   <div class="pull-right">
-                    <a href="<?php echo base_url() . 'adminaction/unban/' . $user->id;?>"><button type="submit" class="btn btn-warning btn-sm" style="width:130px">Разбанить</button></a>
+                    <a href="<?php echo base_url() . 'adminaction/unban/' . $user->id;?>"><button type="submit" style="font-size: 15px;
+	                                    color: #ffffff;
+	                                    background-color: #f1c40f;
+	                                    padding: 8px 13px 8px 13px;
+	                                    border: solid 1px #f1c40f;
+                                        border-radius: 20px">Разбанить</button></a>
                   </div>
               </td>
             </tr>
@@ -115,7 +134,12 @@
               <input type="text" class="form-control" name="days" style="width:100px" maxlength="4"> (0 для блокировки навсегда)
             </div>
             <div class="form-group">
-              <button name="banuser"type="submit" class="btn btn-primary">Заблокировать</button>
+              <button name="banuser"type="submit" style="font-size: 15px;
+                                                        color: #ffffff;
+                                                        background-color: #ec7063;
+                                                        padding: 8px 25px 8px 25px;
+                                                        border: solid 1px #ec7063;
+                                                        border-radius: 20px">Заблокировать</button>
             </div>
           </form>
       </div>

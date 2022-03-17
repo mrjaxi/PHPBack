@@ -25,7 +25,7 @@
 						<div style="margin-top:-10px"><small><?php echo $lang['label_votes']; ?></small></div>
 					</div>
 					<div class="dropdown view-idea-vote">
-					  <button name="Vote" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width:100%"><?php echo $lang['label_vote']; ?></button>
+					  <button name="Vote" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width:100%; margin-top: 10px"><?php echo $lang['label_vote']; ?></button>
 					  <span class="dropdown-arrow dropdown-arrow-inverse"></span>
 					  <ul class="dropdown-menu dropdown-inverse">
 					    <li><a href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>">1 <?php echo $lang['label_votes']; ?></a></li>
@@ -96,10 +96,10 @@
 				<ul class="nav-pills" style="list-style:none;margin-left:-40px;">
 				<li>
 					<?php if($idea->status == 'new'): ?>
-						<a href="<?php echo base_url() . 'adminaction/approveidea/' . $idea->id; ?>"><button type="submit" class="btn btn-success btn-sm" style="width:130px"><?php echo $lang['label_idea_approve']; ?></button></a>
+						<a href="<?php echo base_url() . 'adminaction/approveidea/' . $idea->id; ?>"><button type="submit" class="btn btn-success btn-sm" style="width:130px; border-radius: 20px"><?php echo $lang['label_idea_approve']; ?></button></a>
 					<?php elseif($idea->status != 'completed' && $idea->status != 'declined'): ?>
 						<div class="dropdown">
-						  <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" style="width:130px"><?php echo $lang['label_change_status']; ?></button>
+						  <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" style="width:130px;border-radius: 20px"><?php echo $lang['label_change_status']; ?></button>
 						  <span class="dropdown-arrow dropdown-arrow-inverse"></span>
 						  <ul class="dropdown-menu dropdown-inverse">
 						    <li><a href="<?php echo base_url() . "adminaction/ideastatus/declined/" . $idea->id;?>"><?php echo $lang['idea_declined']; ?></a></li>
@@ -112,10 +112,10 @@
 					<?php endif; ?>
 				</li>
 				<li>
-					<button type="submit" class="btn btn-danger btn-sm" style="width:130px" <?php $temp = base_url() . 'adminaction/deleteidea/' . $idea->id;?> onclick="popup_sure('<?php echo $lang['text_sure_delete_idea']; ?>','<?php echo $temp; ?>');"><?php echo $lang['label_delete_idea']; ?></button>
+					<button type="submit" class="btn btn-danger btn-sm" style="width:130px; border-radius: 20px;margin-left: 5px" <?php $temp = base_url() . 'adminaction/deleteidea/' . $idea->id;?> onclick="popup_sure('<?php echo $lang['text_sure_delete_idea']; ?>','<?php echo $temp; ?>');"><?php echo $lang['label_delete_idea']; ?></button>
 				</li>
 				<li>
-					<a href="<?php echo base_url() . 'admin/users/' . $idea->authorid; ?>" target="_blank"><button type="submit" class="btn btn-danger btn-sm" style="width:130px"><?php echo $lang['label_ban_user']; ?></button></a>
+					<a href="<?php echo base_url() . 'admin/users/' . $idea->authorid; ?>" target="_blank"><button type="submit" class="btn btn-danger btn-sm" style="width:130px; border-radius: 20px;margin-left: 5px"><?php echo $lang['label_ban_user']; ?></button></a>
 				</li>
 
 				</ul>
@@ -126,18 +126,18 @@
 			<?php if(isset($_SESSION['phpback_userid'])): ?>
 			<div class="row">
 				<div class="col-md-10 col-md-offset-2" style="margin-top:10px">
-					<form role="form" method="post" action="<?php echo base_url() . 'action/comment/' . $idea->id; ?>">
+					<form role="form" method="post" action="<?php echo base_url() . 'action/comment/' . $idea->id; ?>" onsubmit="checkFilledTextArea();return false" >
 						<div class="form-group">
 						  <label>Комментарий</label>
-						    <textarea class="form-control" rows="4" name="content"></textarea>
+						    <textarea id="checkField" class="form-control" rows="4" name="content"></textarea>
 						  </div>
 						  <input type="hidden" name="ideaname" value="<?php echo str_replace(" ", "-", $idea->title); ?>">
-						  <button type="submit" name="commentbutton" class="btn btn-default"><?php echo $lang['label_submit']; ?></button>
+						  <button id="buttonSend" type="submit" name="commentbutton" class="btn btn-default"><?php echo $lang['label_submit']; ?></button>
 					</form>
 				</div>
 			</div>
 			<?php endif; ?>
-			
+
 			<?php foreach ($comments as $comment) : ?>
 			<div class="row">
 				<div class="col-md-10 col-md-offset-2">

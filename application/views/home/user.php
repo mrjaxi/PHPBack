@@ -1,4 +1,8 @@
-<div class="col-md-9">	
+<head>
+    <link href="<?php echo base_url(); ?>public/css/all.css" rel="stylesheet">
+</head>
+
+<div class="col-md-9">
 	<small><ol class="breadcrumb">
 			  <li><a href="<?php echo base_url();?>">Feedback</a></li>
 			  <li><?php echo $lang['label_profiles']; ?></li>
@@ -22,8 +26,12 @@
 	<?php endif;?>
 	<small>
 		<ul class="nav nav-tabs">
-	  		<li id="table4" class="active"><a onclick="showtable4('resetvotestable','table4');"><?php echo $lang['label_reset_votes']; ?></a></li>
-	  		<li id="table5"><a onclick="showtable4('changepasswordtable','table5');"><?php echo $lang['label_change_password']; ?></a></li>
+	  		<li id="table4" class="active">
+                <a onclick="showtable4('resetvotestable','table4');"><?php echo $lang['label_reset_votes']; ?></a>
+            </li>
+	  		<li id="table5">
+                <a onclick="showtable4('changepasswordtable','table5');"><?php echo $lang['label_change_password']; ?></a>
+            </li>
 	  		<?php if($_SESSION['phpback_isadmin'] >= 1) : ?><li><a href="<?php echo base_url() . 'admin/'; ?>" target="_blank">Панель администратора</a></li><?php endif; ?>
 		</ul>
 		<table id="resetvotestable" class="table table-striped">
@@ -59,7 +67,7 @@
 	              <input type="password" class="form-control" name="rnew" style="width:150px" required>
 	            </div>
 	            <div class="form-group">
-	              <button type="submit" class="btn btn-primary"><?= $lang['label_change_password']; ?></button>
+	              <button type="submit" class="sub_post_idea_button_style" style="padding: 6px 13px 6px 13px"><?= $lang['label_change_password']; ?></button>
 	            </div>
         	</form>
 		</div>

@@ -19,13 +19,14 @@ body {
 
 
 .header {
-    background-color: #333;
+    background-color: #ffffff;
+	border: solid 2px #ebedef;
     margin-bottom: 25px;
+	padding: 10px;
 }
 
 .header--title-container {
-    color:#ECF0F1;
-    padding-left:30px;
+    padding-left: 30px;
 }
 
 .header--title {
@@ -39,8 +40,6 @@ body {
 .nav.nav-tabs {
     cursor: pointer;
 }
-
-
 
 .ideas-completed, .ideas-started, .ideas-planned, .ideas-considered
 {
@@ -139,3 +138,110 @@ body {
 	vertical-align:2px;
 }
 
+.sub_login_button_style {
+	color: #2C71F5;
+	background-color: #fff;
+	border: 1px solid #2C71F5;
+	padding: 13px;
+	width:180px;
+	font-size: 15px;
+	line-height: 1.385;
+	border-radius: 35px;
+	transition: all .4s ease;
+}
+
+.sub_login_button_style:hover {
+	background-color: #2C71F5;
+	color: #ffffff;
+}
+
+.sub_post_idea_button_style {
+	font-size: 15px;
+	color: #ffffff;
+	background-color: #2C71F5;
+	border: none;
+	border-radius: 35px;
+	padding: 10px 25px 10px 25px;
+}
+
+.sub_new_idea_button_style {
+	font-size: 15px;
+	color: #ffffff;
+	width: 100%;
+	background-color: #2C71F5;
+	border: none;
+	border-radius: 35px;
+	padding: 10px;
+}
+
+.sub_username_profile_button {
+	font-size: 15px;
+	color: #2C71F5;
+	background-color: #ffffff;
+	border: solid 1px #2C71F5;
+	border-radius: 35px;
+	padding: 13px 25px 13px 25px;
+	margin-left: 20px;
+	transition: all .4s ease;
+}
+
+.sub_username_profile_button:hover {
+	background-color: #2C71F5;
+	color: #ffffff;
+}
+
+.sub_logout_button {
+	font-size: 15px;
+	color: #ec7063;
+	background-color: #ffffff;
+	border: solid 1px #ec7063;
+	border-radius: 35px;
+	padding: 13px 25px 13px 25px;
+	margin-left: 10px;
+	transition: all .4s ease;
+}
+
+.sub_logout_button:hover{
+	color: #ffffff;
+	background-color: #ec7063
+}
+
+.sub_block_user_button {
+	font-size: 15px;
+	color: #ffffff;
+	background-color: #ec7063;
+	padding: 13px 25px 13px 25px;
+	border: solid 1px #ec7063;
+}
+
+.sub_admin_logout_button {
+	font-size: 15px;
+	color: #ec7063;
+	background-color: #ffffff;
+	border: solid 1px #ec7063;
+	border-radius: 35px;
+	padding: 0px 13px 0px 13px;
+	margin-left: 10px;
+	transition: all .4s ease;
+}
+
+.sub_admin_logout_button:hover{
+	color: #ffffff;
+	background-color: #ec7063
+}
+
+.sub_admin_name_button {
+	font-size: 15px;
+	color: #2C71F5;
+	background-color: #ffffff;
+	border: solid 1px #2C71F5;
+	border-radius: 35px;
+	padding: 0px 13px 0px 13px;
+	margin-left: 20px;
+	transition: all .4s ease;
+}
+
+.sub_admin_name_button:hover {
+	background-color: #2C71F5;
+	color: #ffffff;
+}

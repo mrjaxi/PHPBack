@@ -1,3 +1,7 @@
+<head>
+    <link href="<?php echo base_url(); ?>public/css/all.css" rel="stylesheet">
+</head>
+
 <div class="col-md-7">
   <small><ol class="breadcrumb">
         <li><a href="<?php echo base_url();?>">Feedback</a></li>
@@ -23,7 +27,14 @@
       <input type="checkbox" value="" id="checkbox1" name="rememberme" data-toggle="checkbox">
         <?php echo $lang['form_remember']; ?>
     </label>
-    <button type="submit" class="btn btn-primary"><?php echo $lang['label_log_in']; ?></button> <a href="<?php echo base_url() . 'home/register';?>"><span style="padding-left:10px"><?php echo $lang['text_create_an_account']; ?></span></a>
+    <button type="submit" class="sub_post_idea_button_style">
+        <?php echo $lang['label_log_in']; ?>
+    </button>
+      <a href="<?php echo base_url() . 'home/register';?>">
+          <span style="padding-left:10px">
+              <?php echo $lang['text_create_an_account']; ?>
+          </span>
+      </a>
   </form>
 </div>
 <div class="col-md-2"></div>
