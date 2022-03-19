@@ -27,14 +27,12 @@ class Api extends CI_Controller {
         $this->autoLoginByCookie();
     }
 
-    public function api(){
-        $say_hello["hello"] = array(
+    public function test(){
+        $say_hello["json"] = json_encode(array(
             "func" => "Hello rest api"
-        );
+        ));
 
-        $this->load->json_encode(
-            $say_hello
-        );
+        $this->load->view('api/json',$say_hello);
     }
 
     private function getDefaultData() {
