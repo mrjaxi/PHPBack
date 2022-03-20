@@ -56,12 +56,14 @@ class Api extends CI_Controller
                     return;
                 }
             }
+
             if (strlen($name) < 3) {
                 $login_data["response"] = array(
                     "error" => "Имя пользователя не может быть меньше 3 символов",
                 );
 
                 $this->load->view('api/json', $login_data);
+                return;
             }
             if (!preg_match("/^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+).([a-zA-Z]{2,4})$/", $email)) {
                 $login_data["response"] = array(
@@ -69,6 +71,7 @@ class Api extends CI_Controller
                 );
 
                 $this->load->view('api/json', $login_data);
+                return;
             }
             if (strlen($pass) < 6) {
                 $login_data["response"] = array(
@@ -76,6 +79,7 @@ class Api extends CI_Controller
                 );
 
                 $this->load->view('api/json', $login_data);
+                return;
             }
 
             if ($this->post->add_user($name, $email, $pass, $votes, false)) {
@@ -108,6 +112,7 @@ class Api extends CI_Controller
                 );
 
                 $this->load->view('api/json', $login_data);
+                return;
             } else {
                 $login_data["response"] = array(
                     "error" => "Такой пользователь уже существует",
@@ -161,6 +166,50 @@ class Api extends CI_Controller
 
             $this->load->view('api/json', $login_data);
         }
+    }
+
+    public function add_idea(){
+        header("content-type: application/json");
+        if(!isset($_SESSION['phpback_userid'])){
+            $login_data["response"] = array(
+                "error" => "Вы не авторизованы",
+            );
+
+            $this->load->view('api/json', $login_data);
+            return;
+        }
+
+        $title = $_GET['title'];
+        $desc = $_GET['description'];
+        $catid = $_GET['category'];
+
+        if($catid == 0){
+            $login_data["response"] = array(
+                "error" => "Неверно выбрана категория",
+            );
+
+            $this->load->view('api/json', $login_data);
+            return;
+        }
+        if(strlen($title) < 9){
+            $login_data["response"] = array(
+                "error" => "Заголовок не может быть меньше 9 символов",
+            );
+
+            $this->load->view('api/json', $login_data);
+            return;
+        }
+        if(strlen($desc) < 20){
+            $login_data["response"] = array(
+                "error" => "Описание не может быть меньше 20 символов",
+            );
+
+            $this->load->view('api/json', $login_data);
+            return;
+        }
+
+        if(@isset($_SESSION['phpback_userid']))
+            $this->post->add_idea($title, $desc, $_SESSION['phpback_userid'], $catid);
     }
 
     private function verifyBanning() {
