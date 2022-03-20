@@ -32,7 +32,96 @@ class Api extends CI_Controller
     }
 
     public function register() {
-        $this->load->view('api/register');
+        require_once('public/recaptcha/recaptchalib.php');
+
+        header("content-type: application/json");
+
+        $votes = $this->get->getSetting('maxvotes');
+        $title = $this->get->getSetting('title');
+        $mainmail = $this->get->getSetting('mainmail');
+
+        $email = $_GET['email'];
+        $pass = $_GET['pass'];
+        $name = $_GET['name'];
+
+        if ($email !== null and $pass !== null and $name !== null) {
+            if ($this->get->getSetting('recaptchapublic') != "") {
+                $resp = recaptcha_check_answer($this->get->getSetting('recaptchaprivate'),
+                    $_SERVER["REMOTE_ADDR"],
+                    $_POST["recaptcha_challenge_field"],
+                    $_POST["recaptcha_response_field"]);
+
+                if (!$resp->is_valid) {
+                    header('Location: ' . base_url() . 'home/register/recaptcha');
+                    return;
+                }
+            }
+            if (strlen($name) < 3) {
+                $login_data["response"] = array(
+                    "error" => "Имя пользователя не может быть меньше 3 символов",
+                );
+
+                $this->load->view('api/json', $login_data);
+            }
+            if (!preg_match("/^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+).([a-zA-Z]{2,4})$/", $email)) {
+                $login_data["response"] = array(
+                    "error" => "Неправильная почта",
+                );
+
+                $this->load->view('api/json', $login_data);
+            }
+            if (strlen($pass) < 6) {
+                $login_data["response"] = array(
+                    "error" => "Пароль не может быть меньше 6 символов",
+                );
+
+                $this->load->view('api/json', $login_data);
+            }
+
+            if ($this->post->add_user($name, $email, $pass, $votes, false)) {
+                $message = "Добро пожаловать в систему обратной связи: $title\n\nВаш Email: $email\nВаш пароль: $pass\n\n\nПожалуйста, авторизуйтесь:" . base_url() . "home/login\n";
+                $this->load->library('email');
+
+                $this->email->initialize($this->get->email_config());
+
+                $this->email->from($mainmail, 'PHPBack');
+                $this->email->to($email);
+
+                $this->email->subject("New account - $title");
+                $this->email->message($message);
+
+                $this->email->send();
+
+                $result = $this->get->login($email, $pass);
+
+                if ($result !== 0) {
+                    $user = $this->get->getUser($result);
+                    $this->get->setSessionUserValues($user);
+
+                    if (@isset($_POST['rememberme']) && $_POST['rememberme']) {
+                        $this->get->setSessionCookie();
+                    }
+                }
+
+                $login_data["response"] = array(
+                    "success" => "Вы успешно зарегистрировались",
+                );
+
+                $this->load->view('api/json', $login_data);
+            } else {
+                $login_data["response"] = array(
+                    "error" => "Такой пользователь уже существует",
+                );
+
+                $this->load->view('api/json', $login_data);
+            }
+        } else {
+            $login_data["response"] = array(
+                "error" => "Не отправлены поля name, pass или email",
+            );
+
+            $this->load->view('api/json', $login_data);
+        }
     }
 
     public function login() {
@@ -63,7 +152,7 @@ class Api extends CI_Controller
                     "error" => "Неверный логин или пароль",
                 );
 
-                $this->load->view('api/login', $login_data);
+                $this->load->view('api/json', $login_data);
             }
         } else {
             $login_data["response"] = array(
