@@ -249,6 +249,7 @@ class Action extends CI_Controller{
             "</html>";
             exit;
     }
+
 }
 
 ?>
