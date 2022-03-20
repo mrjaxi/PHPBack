@@ -56,7 +56,7 @@ class Api extends CI_Controller
                     "success" => "Вы успешно вошли",
                 );
 
-                $this->load->view('api/login', $login_data);
+                $this->load->view('api/json', $login_data);
             }
             else {
                 $login_data["response"] = array(
@@ -70,7 +70,7 @@ class Api extends CI_Controller
                 "error" => "Вы не отправили логин или пароль",
             );
 
-            $this->load->view('api/login', $login_data);
+            $this->load->view('api/json', $login_data);
         }
     }
 

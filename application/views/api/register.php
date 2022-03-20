@@ -1,1 +1,0 @@
-<body><h2><?php echo "REGISTER" ?></h2></body>
