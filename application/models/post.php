@@ -23,9 +23,11 @@ class Post extends CI_Model
 	}
 
 	public function add_username_api($name, $email){
-        $sql = $this->db->query("UPDATE users SET name='" . $name . "' WHERE email=" . $this->db->escape($email));
+        $sql = $this->db->query("SELECT id FROM users WHERE email=" . $this->db->escape($email));
 
-//        if($sql->num_rows()) return false;
+        if($sql->num_rows() == 0) return false;
+
+        $this->db->query("UPDATE users SET name='" . $name . "' WHERE email=" . $this->db->escape($email));
 
         return true;
     }
