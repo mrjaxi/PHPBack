@@ -4,7 +4,7 @@
 
 <div class="col-md-9">
 	<small><ol class="breadcrumb">
-			  <li><a href="<?php echo base_url();?>">Feedback</a></li>
+			  <li><a href="<?php echo base_url();?>">Обратная связь</a></li>
 			  <li><?php echo $lang['label_profiles']; ?></li>
 			  <li class="active"><?php echo $user->name; ?></li>
 	</ol></small>

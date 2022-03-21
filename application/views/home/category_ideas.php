@@ -1,7 +1,7 @@
 	<div class="col-md-9">
 	
 		<div class="breadcrumb-wrapper"><ol class="breadcrumb">
-			<li><a href="<?php echo base_url();?>">Feedback</a></li>
+			<li><a href="<?php echo base_url();?>">Обратная связь</a></li>
 			<li class="active"><?php echo $category->name; ?></li>
 		</ol></div>
 		<div>

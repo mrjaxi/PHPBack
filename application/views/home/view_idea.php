@@ -1,6 +1,6 @@
 <div class="col-md-9">
 			<div class="breadcrumb-wrapper"><ol class="breadcrumb">
-			  <li><a href="<?php echo base_url();?>">Feedback</a></li>
+			  <li><a href="<?php echo base_url();?>">Обратная связь</a></li>
 			  <li><a href="<?php echo base_url() . 'home/category/' . $idea->categoryid . "/" . str_replace(" ", "-", $categories[$idea->categoryid]->name); ?>"><?php echo $categories[$idea->categoryid]->name;?></a></li>
 			  <li class="active"><?php echo $idea->title; ?></li>
 			</ol></div>

@@ -115,30 +115,24 @@ class Api extends CI_Controller
         }
     }
 
-    public function changeusername(){
-        $email = $_GET['email'];
-        $name = $_GET['name'];
+    public function setUsername(){
+        $email = $_POST['email'];
+        $name = $_POST['name'];
 
-        if ($email !== null and $name !== null) {
-            if ($this->post->add_username_api($name, $email)) {
-                $login_data["response"] = array(
+        if (!empty($email) and !empty($name)) {
+            if ($this->post->update_username_api($name, $email)) {
+                return $this->setResponse(array(
                     "success" => "Вы успешно сменили имя",
-                );
-                $this->load->view('api/json', $login_data);
-                return;
+                ));
             } else {
-                $login_data["response"] = array(
+                return $this->setResponse(array(
                     "error" => "Такого пользователя не существует",
-                );
-                $this->load->view('api/json', $login_data);
-                return;
+                ));
             }
         } else {
-            $login_data["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Вы не отправили логин или пароль",
-            );
-
-            $this->load->view('api/json', $login_data);
+            ));
         }
     }
 

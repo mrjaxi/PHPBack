@@ -22,7 +22,7 @@ class Post extends CI_Model
         $this->lang->load('log', $this->getSetting('language'));
 	}
 
-	public function add_username_api($name, $email){
+	public function update_username_api($name, $email){
         $sql = $this->db->query("SELECT id FROM users WHERE email=" . $this->db->escape($email));
 
         if($sql->num_rows() == 0) return false;
