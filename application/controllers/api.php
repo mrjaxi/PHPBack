@@ -28,7 +28,7 @@ class Api extends CI_Controller
         $this->lang->load('default', $this->get->getSetting('language'));
 
         $this->verifyBanning();
-        if($this->banned){
+        if(!empty($this->banned)){
             $response["response"] = array(
                 "error" => $this->banned,
             );
@@ -56,11 +56,11 @@ class Api extends CI_Controller
                 $name = "Незнакомец";
             }
             if (!preg_match("/^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+).([a-zA-Z]{2,4})$/", $email)) {
-                $login_data["response"] = array(
+                $response["response"] = array(
                     "error" => "Неправильная почта",
                 );
 
-                $this->load->view('api/json', $login_data);
+                $this->load->view('api/json', $response);
                 return;
             }
 
@@ -76,25 +76,25 @@ class Api extends CI_Controller
                     }
                 }
 
-                $login_data["response"] = array(
+                $response["response"] = array(
                     "success" => "Вы успешно зарегистрировались",
                 );
 
-                $this->load->view('api/json', $login_data);
+                $this->load->view('api/json', $response);
                 return;
             } else {
-                $login_data["response"] = array(
+                $response["response"] = array(
                     "error" => "Такой пользователь уже существует",
                 );
 
-                $this->load->view('api/json', $login_data);
+                $this->load->view('api/json', $response);
             }
         } else {
-            $login_data["response"] = array(
+            $response["response"] = array(
                 "error" => "Не отправлены поля pass или email",
             );
 
-            $this->load->view('api/json', $login_data);
+            $this->load->view('api/json', $response);
         }
     }
 
@@ -113,35 +113,35 @@ class Api extends CI_Controller
                     $this->get->setSessionCookie();
                 }
 
-                $login_data["response"] = array(
+                $response["response"] = array(
                     "success" => "Вы успешно вошли",
                 );
 
-                $this->load->view('api/json', $login_data);
+                $this->load->view('api/json', $response);
             }
             else {
-                $login_data["response"] = array(
+                $response["response"] = array(
                     "error" => "Неверный логин или пароль",
                 );
 
-                $this->load->view('api/json', $login_data);
+                $this->load->view('api/json', $response);
             }
         } else {
-            $login_data["response"] = array(
+            $response["response"] = array(
                 "error" => "Вы не отправили email или pass",
             );
 
-            $this->load->view('api/json', $login_data);
+            $this->load->view('api/json', $response);
         }
     }
 
     public function add_idea(){
         if(!isset($_SESSION['phpback_userid'])){
-            $login_data["response"] = array(
+            $response["response"] = array(
                 "error" => "Вы не авторизованы",
             );
 
-            $this->load->view('api/json', $login_data);
+            $this->load->view('api/json', $response);
             return;
         }
 
@@ -150,42 +150,49 @@ class Api extends CI_Controller
         $catid = $_POST['category'];
 
         if(empty($title) and empty($desc) and empty($catid)){
-            $login_data["response"] = array(
+            $response["response"] = array(
                 "error" => "Не введены значения title, description, category",
             );
-            $this->load->view('api/json', $login_data);
+            $this->load->view('api/json', $response);
             return;
         }
         if($catid < 1){
-            $login_data["response"] = array(
+            $response["response"] = array(
                 "error" => "Неверно выбрана категория",
             );
-            $this->load->view('api/json', $login_data);
+            $this->load->view('api/json', $response);
             return;
         }
         if(strlen($title) < 5){
-            $login_data["response"] = array(
+            $response["response"] = array(
                 "error" => "Заголовок не может быть меньше 5 символов",
             );
-
-            $this->load->view('api/json', $login_data);
+            $this->load->view('api/json', $response);
             return;
         }
         if(strlen($desc) < 10){
-            $login_data["response"] = array(
+            $response["response"] = array(
                 "error" => "Описание не может быть меньше 10 символов",
             );
-
-            $this->load->view('api/json', $login_data);
+            $this->load->view('api/json', $response);
             return;
         }
 
-        if(@isset($_SESSION['phpback_userid']))
+        if(@isset($_SESSION['phpback_userid'])) {
             $this->post->add_idea($title, $desc, $_SESSION['phpback_userid'], $catid);
+            return $this->setResponse(array(
+                "success" => "Идея успешно добавлена"
+            ));
+        }
     }
 
     public function get_Category(){
 
+    }
+
+    private function setResponse($data = array()){
+        $response["response"] = $data;
+        return $this->load->view('api/json', $response);
     }
 
     private function verifyBanning() {
@@ -209,7 +216,7 @@ class Api extends CI_Controller
             else $i = -1; // -1 на неопределенный срок
 
 //            header('Location: '. base_url() .'home/login/banned/' . $i);
-            $this->banned = $lang['error_banned_inf'];
+            $this->banned = "Вы были забанены на неопределенный срок";
             exit;
         }
     }
