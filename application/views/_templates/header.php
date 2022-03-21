@@ -54,6 +54,8 @@ See LICENSE.TXT for details.  -->
           document.getElementById('checkField').value = "";
           alert("Вы не заполнили поле")
           return false
+      } else {
+          return true
       }
   }
   </script>

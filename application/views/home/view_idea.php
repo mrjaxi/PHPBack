@@ -124,13 +124,13 @@
 			<?php if(isset($_SESSION['phpback_userid'])): ?>
 			<div class="row">
 				<div class="col-md-10 col-md-offset-2" style="margin-top:10px">
-					<form role="form" method="post" action="<?php echo base_url() . 'action/comment/' . $idea->id; ?>" onsubmit="checkFilledTextArea();return false" >
+					<form role="form" method="post" action="<?php echo base_url() . 'action/comment/' . $idea->id; ?>" onsubmit="return checkFilledTextArea()" >
 						<div class="form-group">
 						  <label>Комментарий</label>
 						    <textarea id="checkField" class="form-control" rows="4" name="content"></textarea>
 						  </div>
 						  <input type="hidden" name="ideaname" value="<?php echo str_replace(" ", "-", $idea->title); ?>">
-						  <button id="buttonSend" type="submit" name="commentbutton" class="btn btn-default"><?php echo $lang['label_submit']; ?></button>
+						  <button id="buttonSend" type="submit" name="commentbutton" class="btn btn-default" style="background-color: #2C71F5"><?php echo $lang['label_submit']; ?></button>
 					</form>
 				</div>
 			</div>
