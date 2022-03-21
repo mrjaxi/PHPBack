@@ -9,20 +9,20 @@ Copyright (c) 2014 PHPBack
 http://www.phpback.org
 Released under the GNU General Public License WITHOUT ANY WARRANTY.
 See LICENSE.TXT for details.
-**********************************************************************/
+ **********************************************************************/
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Post extends CI_Model
 {
-	public function __construct(){
-		parent::__construct();
-		$this->load->database();
+    public function __construct(){
+        parent::__construct();
+        $this->load->database();
 
         $this->lang->load('log', $this->getSetting('language'));
-	}
+    }
 
-	public function update_username_api($name, $email){
+    public function update_username_api($name, $email){
         $sql = $this->db->query("SELECT id FROM users WHERE email=" . $this->db->escape($email));
 
         if($sql->num_rows() == 0) return false;
@@ -32,7 +32,7 @@ class Post extends CI_Model
         return true;
     }
 
-	public function add_user($name, $email, $pass, $votes, $isadmin){
+    public function add_user($name, $email, $pass, $votes, $isadmin){
         $pass = $this->hashing->hash($pass);
         $votes = (int) $votes;
         $isadmin = (int) $isadmin;
@@ -43,28 +43,28 @@ class Post extends CI_Model
         if($sql->num_rows()) return false;
 
         if($isadmin){
-        	$data = array(
-	   			'name' => $name,
+            $data = array(
+                'name' => $name,
                 'email' => $email,
-	   			'pass' => $pass,
-	   			'votes' => $votes,
-	   			'isadmin' => $isadmin,
+                'pass' => $pass,
+                'votes' => $votes,
+                'isadmin' => $isadmin,
                 'banned' => '0'
-			);
+            );
         }
         else{
-        	$data = array(
-	   			'name' => $name,
+            $data = array(
+                'name' => $name,
                 'email' => $email,
-	   			'pass' => $pass,
-	   			'votes' => $votes,
-	   			'isadmin' => '0',
+                'pass' => $pass,
+                'votes' => $votes,
+                'isadmin' => '0',
                 'banned' => '0'
-			);
+            );
         }
 
-		$this->db->insert('users', $data);
-		$this->log($this->lang->language['log_user_registered'] . ": $name($email)", "general", 0);
+        $this->db->insert('users', $data);
+        $this->log($this->lang->language['log_user_registered'] . ": $name($email)", "general", 0);
         return true;
     }
 
@@ -72,19 +72,21 @@ class Post extends CI_Model
         $author_id = (int) $author_id;
         $category_id = (int) $category_id;
         if($author_id < 1 || $category_id < 1) return false;
+        $date = date("d/m/y H:i");
         $data = array(
-	   			'title' => $title,
-	   			'content' => $content,
-	   			'authorid' => $author_id,
-	   			'date' => date("d/m/y H:i"),
-	   			'votes' => '0',
-	   			'comments' => '0',
-	   			'status' => 'new',
-	   			'categoryid' => $category_id,
-			);
+            'title' => $title,
+            'content' => $content,
+            'authorid' => $author_id,
+            'date' => $date,
+            'votes' => '0',
+            'comments' => '0',
+            'status' => 'new',
+            'categoryid' => $category_id,
+        );
         $this->db->insert('ideas', $data);
-      	$this->log($this->lang->language['log_new_idea'] . ": $title", "user", $author_id);
-        return true;
+        $idea = $this->db->query("SELECT * FROM ideas WHERE date='$date'")->result()[0];
+        $this->log($this->lang->language['log_new_idea'] . ": $title", "user", $author_id);
+        return $idea;
     }
 
     public function add_comment($idea_id, $comment, $user_id){
@@ -95,11 +97,11 @@ class Post extends CI_Model
         if($idea_id < 1 || $user_id < 1) return false;
 
         $data = array(
-	   			'content' => $comment,
-	   			'ideaid' => $idea_id,
-	   			'userid' => $user_id,
-	   			'date' => date("d/m/y H:i"),
-			);
+            'content' => $comment,
+            'ideaid' => $idea_id,
+            'userid' => $user_id,
+            'date' => date("d/m/y H:i"),
+        );
         $this->db->insert('comments', $data);
 
         $sql = $this->db->query("SELECT * FROM ideas WHERE id='$idea_id'");
@@ -127,10 +129,10 @@ class Post extends CI_Model
         if(!$sql->num_rows()){
             if($votes <= $USER->votes){
                 $data = array(
-		   			'ideaid' => $idea_id,
-		   			'userid' => $user_id,
-		   			'number' => $votes,
-				);
+                    'ideaid' => $idea_id,
+                    'userid' => $user_id,
+                    'number' => $votes,
+                );
                 $this->db->insert('votes', $data);
                 $this->update_by_id('ideas', 'votes', $idea->votes + $votes, $idea_id);
                 $this->log(str_replace(array('%s1', '%s2'), array("#$idea_id", $votes), $this->lang->language['log_idea_voted']), "user", $user_id);
@@ -182,19 +184,19 @@ class Post extends CI_Model
     }
 
     public function flag($cid, $userid){
-    	$cid = (int) $cid;
-    	$userid = (int) $userid;
+        $cid = (int) $cid;
+        $userid = (int) $userid;
         if($cid < 1 || $userid < 1) return false;
         $sql = $this->db->query("SELECT * FROM flags WHERE userid='$userid' AND toflagid='$cid'");
         if($sql->num_rows() != 0) return false;
 
-    	$data = array(
-    		'id' => '',
-    		'toflagid' => $cid,
-    		'userid' => $userid,
-    		'date' => date("d/m/y H:i"),
-    		);
-    	$this->db->insert('flags', $data);
+        $data = array(
+            'id' => '',
+            'toflagid' => $cid,
+            'userid' => $userid,
+            'date' => date("d/m/y H:i"),
+        );
+        $this->db->insert('flags', $data);
         return true;
     }
 
@@ -283,11 +285,11 @@ class Post extends CI_Model
     public function log($string, $to, $toid){
         $toid = (int) $toid;
         $data = array(
-        	'content' => $string,
-        	'date' => date("d/m/y H:i"),
-        	'type' => $to,
-        	'toid' => $toid,
-        	);
+            'content' => $string,
+            'date' => date("d/m/y H:i"),
+            'type' => $to,
+            'toid' => $toid,
+        );
         $this->db->insert('logs', $data);
     }
 

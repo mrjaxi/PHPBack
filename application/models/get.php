@@ -6,31 +6,31 @@ Copyright (c) 2014 PHPBack
 http://www.phpback.org
 Released under the GNU General Public License WITHOUT ANY WARRANTY.
 See LICENSE.TXT for details.
-**********************************************************************/
+ **********************************************************************/
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Get extends CI_Model
 {
-	public function __construct(){
-		parent::__construct();
-		$this->load->database();
-	}
+    public function __construct(){
+        parent::__construct();
+        $this->load->database();
+    }
 
-	public function getCategories() {
-    	$result = $this->db->query('SELECT * FROM categories ORDER BY name')->result();
+    public function getCategories() {
+        $result = $this->db->query('SELECT * FROM categories ORDER BY name')->result();
         $categoryList = array();
         foreach ($result as $category) {
             $categoryList[$category->id] = $category;
         }
 
         $this->decorateCategories($categoryList);
-    	return $categoryList;
+        return $categoryList;
     }
 
 
     public function getIdea($idea_id){
-    	$idea_id = (int) $idea_id;
+        $idea_id = (int) $idea_id;
 
         $idea = $this->get_row_by_id('ideas', $idea_id);
 
@@ -39,9 +39,9 @@ class Get extends CI_Model
 
 
     public function getCommentsByIdea($idea_id){
-    	$idea_id = (int) $idea_id;
-    	$query = "SELECT * FROM comments WHERE ideaid='$idea_id'";
-    	return $this->db->query($query)->result();
+        $idea_id = (int) $idea_id;
+        $query = "SELECT * FROM comments WHERE ideaid='$idea_id'";
+        return $this->db->query($query)->result();
     }
 
 
@@ -96,10 +96,10 @@ class Get extends CI_Model
 
     public function getIdeasByCategory($category, $order, $type, $page){
         $page = (int) $page;
-    	$category = (int) $category;
+        $category = (int) $category;
         $max = $this->getSetting('max_results');
         $from = ($page - 1) * $max;
-    	$query = "SELECT * FROM ideas WHERE categoryid='$category' AND status !='new' ORDER BY ";
+        $query = "SELECT * FROM ideas WHERE categoryid='$category' AND status !='new' ORDER BY ";
         switch ($order) {
             case 'id':
                 $query .= "id ";
@@ -118,7 +118,7 @@ class Get extends CI_Model
             $query .= " LIMIT $from, $max";
         }
 
-    	$ideas = $this->db->query($query)->result();
+        $ideas = $this->db->query($query)->result();
 
         return $this->decorateIdeas($ideas);
     }
@@ -153,6 +153,12 @@ class Get extends CI_Model
         return $this->get_row_by_id('users', $user_id);
     }
 
+    public function getUserByEmail($user_email){
+        $user_email = (string) $user_email;
+        $user = $this->db->query("SELECT * FROM users WHERE email='$user_email'")->result();
+        return $user[0];
+    }
+
     public function getUserIdeas($user_id){
         $user_id = (int) $user_id;
         $ideas = $this->db->query("SELECT * FROM ideas WHERE authorid='$user_id'")->result();
@@ -160,12 +166,24 @@ class Get extends CI_Model
         return $this->decorateIdeas($ideas);
     }
 
+    public function isLoginEmailHashPass($email, $pass){
+        $user = $this->db->query("SELECT * FROM users WHERE email='$email' AND pass='$pass'")->result()[0];
+
+        if(!empty($user))
+            return $user;
+        else
+            return null;
+
+    }
+
     public function login($email, $password){
         $sql = $this->db->query("SELECT * FROM users WHERE email=" . $this->db->escape($email));
         if($sql->num_rows() != 0){
             $user = $sql->row();
-            if ($this->hashing->matches($password, $user->pass)) return $user->id;
-            else return 0;
+            if ($this->hashing->matches($password, $user->pass) || ($user->pass == $password))
+                return $user->id;
+            else
+                return 0;
         }
         else return 0;
     }
@@ -214,10 +232,10 @@ class Get extends CI_Model
             $token .= $characters[rand(0, strlen($characters) - 1)];
         }
         $data = array(
-        	'id' => '0',
-        	'userid' => $userid,
-        	'token' => $this->hashing->hash($token)
-        	);
+            'id' => '0',
+            'userid' => $userid,
+            'token' => $this->hashing->hash($token)
+        );
         $this->db->insert('_sessions', $data);
         $sql = $this->db->query("SELECT * FROM _sessions WHERE userid='$userid' ORDER BY id DESC LIMIT 1");
         $t = $sql->row();
@@ -278,8 +296,8 @@ class Get extends CI_Model
                     $end[$t-1]['votes']++;
                 }
                 else{
-                $com = $this->get_comment($flags->toflagid);
-                $end[] = array('id' => $flags->toflagid, 'content' => $com->content, 'userid' => $com->userid, 'ideaid' => $com->ideaid , 'votes' => 1);
+                    $com = $this->get_comment($flags->toflagid);
+                    $end[] = array('id' => $flags->toflagid, 'content' => $com->content, 'userid' => $com->userid, 'ideaid' => $com->ideaid , 'votes' => 1);
                     $t++;
                 }
             }
