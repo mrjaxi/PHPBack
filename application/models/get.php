@@ -148,7 +148,6 @@ class Get extends CI_Model
         return $this->decorateIdeas($ideas);
     }
 
-
     public function getUser($user_id){
         $user_id = (int) $user_id;
         return $this->get_row_by_id('users', $user_id);

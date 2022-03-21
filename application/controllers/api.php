@@ -119,7 +119,15 @@ class Api extends CI_Controller
         $email = $_POST['email'];
         $name = $_POST['name'];
 
-        if (!empty($email) and !empty($name)) {
+        $email_cookie = $_SESSION['phpback_useremail'];
+
+        if (!empty($email) and !empty($name) and !empty($email_cookie)) {
+            if ($email !== $email_cookie){
+                return $this->setResponse(array(
+                    "error" => "У вас нет прав доступа на изменения имени",
+                ));
+            }
+
             if ($this->post->update_username_api($name, $email)) {
                 return $this->setResponse(array(
                     "success" => "Вы успешно сменили имя",
