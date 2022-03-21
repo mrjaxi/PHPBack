@@ -115,6 +115,33 @@ class Api extends CI_Controller
         }
     }
 
+    public function changeusername(){
+        $email = $_GET['email'];
+        $name = $_GET['name'];
+
+        if ($email !== null and $name !== null) {
+            if ($this->post->add_username_api($name, $email)) {
+                $login_data["response"] = array(
+                    "success" => "Вы успешно сменили имя",
+                );
+                $this->load->view('api/json', $login_data);
+                return;
+            } else {
+                $login_data["response"] = array(
+                    "error" => "Такого пользователя не существует",
+                );
+                $this->load->view('api/json', $login_data);
+                return;
+            }
+        } else {
+            $login_data["response"] = array(
+                "error" => "Вы не отправили логин или пароль",
+            );
+
+            $this->load->view('api/json', $login_data);
+        }
+    }
+
     public function add_idea(){
         if(!isset($_SESSION['phpback_userid'])){
             return $this->setResponse(array(
