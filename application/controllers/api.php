@@ -27,6 +27,7 @@ class Api extends CI_Controller
 
         $this->lang->load('default', $this->get->getSetting('language'));
 
+        $this->autoLoginByCookie();
         $this->verifyBanning();
         if(!empty($this->banned)){
             $response["response"] = array(
@@ -121,7 +122,7 @@ class Api extends CI_Controller
 
         $email_cookie = $_SESSION['phpback_useremail'];
 
-        if (!empty($email) and !empty($name) and !empty($email_cookie)) {
+        if (!empty($email) and !empty($name)) {
             if ($email !== $email_cookie){
                 return $this->setResponse(array(
                     "error" => "У вас нет прав доступа на изменения имени",
