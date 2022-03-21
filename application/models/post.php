@@ -115,7 +115,7 @@ class Post extends CI_Model
         $user_id = (int) $user_id;
         $votes = (int) $votes;
         if($idea_id < 1 || $user_id < 1) return false;
-        if($votes > 3 || $votes < 1) return false;
+        if($votes !== 1) return false;
 
         $USER = $this->get_row_by_id('users', $user_id);
         $idea = $this->get_row_by_id('ideas', $idea_id);
@@ -132,7 +132,6 @@ class Post extends CI_Model
 		   			'number' => $votes,
 				);
                 $this->db->insert('votes', $data);
-                $this->update_by_id('users','votes', $USER->votes - $votes, $USER->id);
                 $this->update_by_id('ideas', 'votes', $idea->votes + $votes, $idea_id);
                 $this->log(str_replace(array('%s1', '%s2'), array("#$idea_id", $votes), $this->lang->language['log_idea_voted']), "user", $user_id);
                 return true;

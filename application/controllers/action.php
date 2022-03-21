@@ -132,7 +132,6 @@ class Action extends CI_Controller{
             $user = $this->get->getUser($vote->userid);
 
             $this->post->update_by_id('ideas', 'votes', $idea->votes - $vote->number, $idea->id);
-            $this->post->update_by_id('users', 'votes', $user->votes + $vote->number, $user->id);
             $this->post->delete_row_by_id('votes', $id);
         }
 
