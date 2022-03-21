@@ -385,8 +385,8 @@ class Get extends CI_Model
     }
 
     private function decorateIdea(&$idea) {
-        $idea->parsedTitle = $this->display->getParsedString($idea->title);
-        $idea->url = base_url() . 'home/idea/' . $idea->id . "/" . $idea->parsedTitle;
+//        $idea->parsedTitle = $this->display->getParsedString($idea->title);
+        $idea->url = base_url() . 'home/idea/' . $idea->id; // . "/" . $idea->parsedTitle;
 
         return $idea;
     }
@@ -394,7 +394,7 @@ class Get extends CI_Model
     private function decorateCategories(&$categories) {
         foreach ($categories as &$category) {
             $category->url = base_url() . 'home/category/' . $category->id . '/';
-            $category->url .= $this->display->getParsedString($category->name);
+//            $category->url .= $this->display->getParsedString($category->name);
         }
     }
 
