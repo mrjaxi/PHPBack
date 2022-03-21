@@ -38,10 +38,6 @@ class Api extends CI_Controller
         }
     }
 
-    public function index() {
-        $this->load->view('api/index');
-    }
-
     public function register() {
         $votes = $this->get->getSetting('maxvotes');
         $title = $this->get->getSetting('title');
@@ -56,12 +52,9 @@ class Api extends CI_Controller
                 $name = "Незнакомец";
             }
             if (!preg_match("/^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+).([a-zA-Z]{2,4})$/", $email)) {
-                $response["response"] = array(
+                return $this->setResponse(array(
                     "error" => "Неправильная почта",
-                );
-
-                $this->load->view('api/json', $response);
-                return;
+                ));
             }
 
             if ($this->post->add_user($name, $email, $pass, $votes, false)) {
@@ -76,25 +69,18 @@ class Api extends CI_Controller
                     }
                 }
 
-                $response["response"] = array(
+                return $this->setResponse(array(
                     "success" => "Вы успешно зарегистрировались",
-                );
-
-                $this->load->view('api/json', $response);
-                return;
+                ));
             } else {
-                $response["response"] = array(
+                return $this->setResponse(array(
                     "error" => "Такой пользователь уже существует",
-                );
-
-                $this->load->view('api/json', $response);
+                ));
             }
         } else {
-            $response["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Не отправлены поля pass или email",
-            );
-
-            $this->load->view('api/json', $response);
+            ));
         }
     }
 
@@ -113,36 +99,27 @@ class Api extends CI_Controller
                     $this->get->setSessionCookie();
                 }
 
-                $response["response"] = array(
+                return $this->setResponse(array(
                     "success" => "Вы успешно вошли",
-                );
-
-                $this->load->view('api/json', $response);
+                ));
             }
             else {
-                $response["response"] = array(
+                return $this->setResponse(array(
                     "error" => "Неверный логин или пароль",
-                );
-
-                $this->load->view('api/json', $response);
+                ));
             }
         } else {
-            $response["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Вы не отправили email или pass",
-            );
-
-            $this->load->view('api/json', $response);
+            ));
         }
     }
 
     public function add_idea(){
         if(!isset($_SESSION['phpback_userid'])){
-            $response["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Вы не авторизованы",
-            );
-
-            $this->load->view('api/json', $response);
-            return;
+            ));
         }
 
         $title = $_POST['title'];
@@ -150,32 +127,24 @@ class Api extends CI_Controller
         $catid = $_POST['category'];
 
         if(empty($title) and empty($desc) and empty($catid)){
-            $response["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Не введены значения title, description, category",
-            );
-            $this->load->view('api/json', $response);
-            return;
+            ));
         }
         if($catid < 1){
-            $response["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Неверно выбрана категория",
-            );
-            $this->load->view('api/json', $response);
-            return;
+            ));
         }
         if(strlen($title) < 5){
-            $response["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Заголовок не может быть меньше 5 символов",
-            );
-            $this->load->view('api/json', $response);
-            return;
+            ));
         }
         if(strlen($desc) < 10){
-            $response["response"] = array(
+            return $this->setResponse(array(
                 "error" => "Описание не может быть меньше 10 символов",
-            );
-            $this->load->view('api/json', $response);
-            return;
+            ));
         }
 
         if(@isset($_SESSION['phpback_userid'])) {
