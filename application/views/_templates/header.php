@@ -62,7 +62,9 @@ See LICENSE.TXT for details.  -->
   <div class="row header">
     <div class="pull-left header--title-container">
 <!--      <h4 id="header--title">--><?//= $title; ?><!--</h4>-->
-        <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>"/>
+        <a href="<?php echo base_url() ?>">
+            <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>"/>
+        </a>
     </div>
     <?php if(@isset($_SESSION['phpback_userid'])): ?>
     <div class="pull-right" style="padding-right:40px;">
