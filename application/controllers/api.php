@@ -51,7 +51,7 @@ class Api extends CI_Controller
         $pass = $_POST['pass'];
         $name = $_POST['name'];
 
-        if ($email !== null and $pass !== null) {
+        if (!empty($email) and !empty($pass)) {
             if(empty($name)){
                 $name = "Незнакомец";
             }
@@ -91,7 +91,7 @@ class Api extends CI_Controller
             }
         } else {
             $login_data["response"] = array(
-                "error" => "Не отправлены поля name, pass или email",
+                "error" => "Не отправлены поля pass или email",
             );
 
             $this->load->view('api/json', $login_data);
@@ -102,7 +102,7 @@ class Api extends CI_Controller
         $email = $_POST['email'];
         $pass = $_POST['pass'];
 
-        if ($email !== null and $pass !== null) {
+        if (!empty($email) and !empty($pass)) {
             $result = $this->get->login($email, $pass);
 
             if ($result !== 0) {
@@ -149,11 +149,17 @@ class Api extends CI_Controller
         $desc = $_POST['description'];
         $catid = $_POST['category'];
 
+        if(empty($title) and empty($desc) and empty($catid)){
+            $login_data["response"] = array(
+                "error" => "Не введены значения title, description, category",
+            );
+            $this->load->view('api/json', $login_data);
+            return;
+        }
         if($catid < 1){
             $login_data["response"] = array(
                 "error" => "Неверно выбрана категория",
             );
-
             $this->load->view('api/json', $login_data);
             return;
         }
@@ -176,6 +182,10 @@ class Api extends CI_Controller
 
         if(@isset($_SESSION['phpback_userid']))
             $this->post->add_idea($title, $desc, $_SESSION['phpback_userid'], $catid);
+    }
+
+    public function get_Category(){
+
     }
 
     private function verifyBanning() {
