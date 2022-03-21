@@ -14,9 +14,12 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Api extends CI_Controller
 {
+    private $banned = null;
+
     public function __construct() {
         parent::__construct();
         session_start();
+        header("content-type: application/json");
 
         $this->load->helper('url');
         $this->load->model('get');
@@ -25,6 +28,14 @@ class Api extends CI_Controller
         $this->lang->load('default', $this->get->getSetting('language'));
 
         $this->verifyBanning();
+        if($this->banned){
+            $response["response"] = array(
+                "error" => $this->banned,
+            );
+
+            $this->load->view('api/json', $response);
+            exit;
+        }
     }
 
     public function index() {
@@ -32,38 +43,17 @@ class Api extends CI_Controller
     }
 
     public function register() {
-        require_once('public/recaptcha/recaptchalib.php');
-
-        header("content-type: application/json");
-
         $votes = $this->get->getSetting('maxvotes');
         $title = $this->get->getSetting('title');
         $mainmail = $this->get->getSetting('mainmail');
 
-        $email = $_GET['email'];
-        $pass = $_GET['pass'];
-        $name = $_GET['name'];
+        $email = $_POST['email'];
+        $pass = $_POST['pass'];
+        $name = $_POST['name'];
 
-        if ($email !== null and $pass !== null and $name !== null) {
-            if ($this->get->getSetting('recaptchapublic') != "") {
-                $resp = recaptcha_check_answer($this->get->getSetting('recaptchaprivate'),
-                    $_SERVER["REMOTE_ADDR"],
-                    $_POST["recaptcha_challenge_field"],
-                    $_POST["recaptcha_response_field"]);
-
-                if (!$resp->is_valid) {
-                    header('Location: ' . base_url() . 'home/register/recaptcha');
-                    return;
-                }
-            }
-
-            if (strlen($name) < 3) {
-                $login_data["response"] = array(
-                    "error" => "Имя пользователя не может быть меньше 3 символов",
-                );
-
-                $this->load->view('api/json', $login_data);
-                return;
+        if ($email !== null and $pass !== null) {
+            if(empty($name)){
+                $name = "Незнакомец";
             }
             if (!preg_match("/^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+).([a-zA-Z]{2,4})$/", $email)) {
                 $login_data["response"] = array(
@@ -73,29 +63,8 @@ class Api extends CI_Controller
                 $this->load->view('api/json', $login_data);
                 return;
             }
-            if (strlen($pass) < 6) {
-                $login_data["response"] = array(
-                    "error" => "Пароль не может быть меньше 6 символов",
-                );
-
-                $this->load->view('api/json', $login_data);
-                return;
-            }
 
             if ($this->post->add_user($name, $email, $pass, $votes, false)) {
-                $message = "Добро пожаловать в систему обратной связи: $title\n\nВаш Email: $email\nВаш пароль: $pass\n\n\nПожалуйста, авторизуйтесь:" . base_url() . "home/login\n";
-                $this->load->library('email');
-
-                $this->email->initialize($this->get->email_config());
-
-                $this->email->from($mainmail, 'PHPBack');
-                $this->email->to($email);
-
-                $this->email->subject("New account - $title");
-                $this->email->message($message);
-
-                $this->email->send();
-
                 $result = $this->get->login($email, $pass);
 
                 if ($result !== 0) {
@@ -130,10 +99,8 @@ class Api extends CI_Controller
     }
 
     public function login() {
-        header("content-type: application/json");
-
-        $email = $_GET['email'];
-        $pass = $_GET['pass'];
+        $email = $_POST['email'];
+        $pass = $_POST['pass'];
 
         if ($email !== null and $pass !== null) {
             $result = $this->get->login($email, $pass);
@@ -161,7 +128,7 @@ class Api extends CI_Controller
             }
         } else {
             $login_data["response"] = array(
-                "error" => "Вы не отправили логин или пароль",
+                "error" => "Вы не отправили email или pass",
             );
 
             $this->load->view('api/json', $login_data);
@@ -169,7 +136,6 @@ class Api extends CI_Controller
     }
 
     public function add_idea(){
-        header("content-type: application/json");
         if(!isset($_SESSION['phpback_userid'])){
             $login_data["response"] = array(
                 "error" => "Вы не авторизованы",
@@ -179,11 +145,11 @@ class Api extends CI_Controller
             return;
         }
 
-        $title = $_GET['title'];
-        $desc = $_GET['description'];
-        $catid = $_GET['category'];
+        $title = $_POST['title'];
+        $desc = $_POST['description'];
+        $catid = $_POST['category'];
 
-        if($catid == 0){
+        if($catid < 1){
             $login_data["response"] = array(
                 "error" => "Неверно выбрана категория",
             );
@@ -191,17 +157,17 @@ class Api extends CI_Controller
             $this->load->view('api/json', $login_data);
             return;
         }
-        if(strlen($title) < 9){
+        if(strlen($title) < 5){
             $login_data["response"] = array(
-                "error" => "Заголовок не может быть меньше 9 символов",
+                "error" => "Заголовок не может быть меньше 5 символов",
             );
 
             $this->load->view('api/json', $login_data);
             return;
         }
-        if(strlen($desc) < 20){
+        if(strlen($desc) < 10){
             $login_data["response"] = array(
-                "error" => "Описание не может быть меньше 20 символов",
+                "error" => "Описание не может быть меньше 10 символов",
             );
 
             $this->load->view('api/json', $login_data);
@@ -216,7 +182,7 @@ class Api extends CI_Controller
         if (@isset($_SESSION['phpback_userid']) && ($ban = $this->get->getBanValue($_SESSION['phpback_userid'])) != 0) {
             date_default_timezone_set('America/Los_Angeles');
 
-            //Remove ban if ban expired
+            // Remove ban if ban expired
             if ($ban <= date("Ymd") && $ban != -1) {
                 $this->post->unban($_SESSION['phpback_userid']);
                 return;
@@ -230,10 +196,33 @@ class Api extends CI_Controller
                     if(date('Ymd', strtotime("+$i days")) == $ban) break;
                 }
             }
-            else $i = -1;
+            else $i = -1; // -1 на неопределенный срок
 
-            header('Location: '. base_url() .'home/login/banned/' . $i);
+//            header('Location: '. base_url() .'home/login/banned/' . $i);
+            $this->banned = $lang['error_banned_inf'];
             exit;
+        }
+    }
+
+    private function destroyUserCookie() {
+        if(@isset($_COOKIE['phpback_sessionid'])){
+            $this->get->verifyToken($_COOKIE['phpback_sessionid']);
+            setcookie('phpback_sessionid', '', time()-3600, '/');
+        }
+    }
+
+    private function autoLoginByCookie() {
+        if(@!isset($_SESSION['phpback_userid']) && @isset($_COOKIE['phpback_sessionid'])) {
+            $result = $this->get->verifyToken($_COOKIE['phpback_sessionid']);
+            if($result != 0) {
+                $user = $this->get->getUser($result);
+                $_SESSION['phpback_userid'] = $user->id;
+                $_SESSION['phpback_username'] = $user->name;
+                $_SESSION['phpback_useremail'] = $user->email;
+                setcookie('phpback_sessionid',  $this->get->new_token($_SESSION['phpback_userid']), time()+3600*24*30, '/');
+                header('Location: '. base_url() .'home');
+                exit;
+            }
         }
     }
 }
