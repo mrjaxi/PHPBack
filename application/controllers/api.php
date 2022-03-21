@@ -177,7 +177,9 @@ class Api extends CI_Controller
     }
 
     public function get_Category(){
-
+        return $this->setResponse(array(
+            "categories" => $this->get->getCategories()
+        ));
     }
 
     private function setResponse($data = array()){
