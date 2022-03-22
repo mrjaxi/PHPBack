@@ -75,12 +75,12 @@
 	<?php endif;?>
 	<small>
 	<ul class="nav nav-tabs">
-  		<li id="table1" class="active"><a onclick="showtable('activitytable','table1');"><?php echo $lang['label_activity']; ?></a></li>
-  		<li id="table2"><a onclick="showtable('ideastable','table2');"><?php echo $lang['label_ideas']; ?> <span class="badge"><?php echo count($ideas);?></span></a></li>
+  		<li id="table1"><a onclick="showtable('activitytable','table1');"><?php echo $lang['label_activity']; ?></a></li>
+  		<li id="table2" class="active"><a onclick="showtable('ideastable','table2');"><?php echo $lang['label_ideas']; ?> <span class="badge"><?php echo count($ideas);?></span></a></li>
   		<li id="table3"><a onclick="showtable('commentstable','table3');"><?php echo $lang['label_comments']; ?></a></li>
 	</ul>
 	<div id="listing">
-		<table id="activitytable" class="table table-striped">
+		<table id="activitytable" class="table table-striped" style="display:none">
 			<thead>
 		        <tr>
 		          <th><?php echo $lang['label_log']; ?></th>
@@ -88,19 +88,21 @@
 		        </tr>
 		    </thead>
       		<tbody>
-      			<?php foreach ($logs as $log): ?>
-				<tr>
-					<td>
-						<?php echo $log->content; ?>
-					</td>
-					<td>
-						<?php echo $log->date; ?>
-					</td>
-				</tr>
-			    <?php endforeach; ?>
+                <?php if((isset($_SESSION['phpback_userid']) && $user->id == $_SESSION['phpback_userid']) || (isset($_SESSION['phpback_isadmin']) && $_SESSION['phpback_isadmin'] >= 1)):?>
+                    <?php foreach ($logs as $log): ?>
+                    <tr>
+                        <td>
+                            <?php echo $log->content; ?>
+                        </td>
+                        <td>
+                            <?php echo $log->date; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
 			</tbody>
 		</table>
-		<table id="ideastable" class="table table-condensed" style="display:none">
+		<table id="ideastable" class="table table-condensed">
 			<thead>
 		        <tr>
 		          <th><?php echo $lang['label_idea']; ?></th>
