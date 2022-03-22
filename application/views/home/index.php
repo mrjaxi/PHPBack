@@ -80,10 +80,10 @@
 					<?php foreach ($ideas['considered'] as $idea): ?>
 						<tr>
 							<td>
-								<span class="label label-default considered-idea--tag" style="margin-right:5px">
+								<span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" class="label label-default considered-idea--tag" style="margin-right:5px">
 									<?= $lang['idea_considered']; ?>
 								</span>
-								<a href="<?= $idea->url; ?>">
+								<a style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" href="<?= $idea->url; ?>">
 									<?= $idea->title; ?>
 								</a>
 							</td>

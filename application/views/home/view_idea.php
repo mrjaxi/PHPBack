@@ -33,8 +33,8 @@
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-10">
-					<h6><?php echo $idea->title; ?></h6>
-					<span style="color:#34495E"><small><?php echo $idea->content; ?></small></span>
+					<h6 style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;"><?php echo $idea->title; ?></h6>
+					<span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word; style="color:#34495E"><small><?php echo $idea->content; ?></small></span>
 					<div>
 					<ul class="nav-pills" style="list-style:none;margin-left:-40px">
 					<li style="padding-right:10px"><span class="label label-<?php
@@ -151,7 +151,7 @@
 								<a style="color:#E25F5F" href="<?php echo base_url() . 'action/flag/'. $comment->id . '/' . $idea->id . '/' . str_replace(" ", "-", $idea->title);?>"><i><small><?php echo $lang['text_flag_comment']; ?></small></i></a>
 							<?php endif;?>
 							</span>
-						<div class="comment-text">
+						<div style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" class="comment-text">
 							<?php echo $comment->content;?>
 						</div>
 					 </div>
