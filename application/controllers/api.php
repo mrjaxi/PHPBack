@@ -35,7 +35,7 @@ class Api extends CI_Controller
         $userBase64 = $_GET['user'];
 
         if (!empty($userBase64) and !empty($url)) {
-            $user = explode(":", base64_decode(strtr($userBase64, '._-', '+/=')));
+            $user = $this->decodeBase64User($userBase64);
             $email = $user[0];
             $pass  = $user[1];
             $isLogin = $this->get->isLoginEmailHashPass($email, $pass);
@@ -172,7 +172,7 @@ class Api extends CI_Controller
         }
 
         $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
-        $userBase64 = strtr(base64_encode($user->email . ':' . $user->pass), '+/=', '._-');
+        $userBase64 = $this->encodeBase64User($user->email, $user->pass);
         return $this->setResponse(array(
             "success" => "Идея успешно добавлена",
             "url" => base_url() . "api/auto_redirect" .
@@ -190,6 +190,14 @@ class Api extends CI_Controller
     private function setResponse($data = array()){
         $response["response"] = $data;
         return $this->load->view('api/json', $response);
+    }
+
+    private function decodeBase64User($userBase64){
+        return explode(":", base64_decode(strtr($userBase64, '._-', '+/=')));
+    }
+
+    private function encodeBase64User($email, $pass){
+        return strtr(base64_encode($email . ':' . $pass), '+/=', '._-');
     }
 
     private function autoLoginByCookie() {
