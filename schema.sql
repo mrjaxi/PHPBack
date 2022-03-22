@@ -1,38 +1,16 @@
--- phpMyAdmin SQL Dump
--- version 5.0.4deb2ubuntu5
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Mar 18, 2022 at 07:49 PM
--- Server version: 8.0.28-0ubuntu0.21.10.3
--- PHP Version: 8.0.8
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `phpback`
---
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `categories`
 --
 
-CREATE TABLE `categories` (
-  `id` int NOT NULL,
-  `name` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `ideas` int NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS categories (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name tinytext  NOT NULL,
+  description text  NOT NULL,
+  ideas int(11) NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `categories`
@@ -47,13 +25,15 @@ INSERT INTO `categories` (`id`, `name`, `description`, `ideas`) VALUES
 -- Table structure for table `comments`
 --
 
-CREATE TABLE `comments` (
-  `id` int NOT NULL,
-  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `ideaid` int NOT NULL,
-  `userid` int NOT NULL,
-  `date` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS comments (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  content text  NOT NULL,
+  ideaid int(11) NOT NULL,
+  userid int(11) NOT NULL,
+  date tinytext  NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `comments`
@@ -70,12 +50,14 @@ INSERT INTO `comments` (`id`, `content`, `ideaid`, `userid`, `date`) VALUES
 -- Table structure for table `flags`
 --
 
-CREATE TABLE `flags` (
-  `id` int NOT NULL,
-  `toflagid` int NOT NULL,
-  `userid` int NOT NULL,
-  `date` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS flags (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  toflagid int(11) NOT NULL,
+  userid int(11) NOT NULL,
+  date tinytext  NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -83,17 +65,20 @@ CREATE TABLE `flags` (
 -- Table structure for table `ideas`
 --
 
-CREATE TABLE `ideas` (
-  `id` int NOT NULL,
-  `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `authorid` int NOT NULL,
-  `date` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `votes` int NOT NULL,
-  `comments` int NOT NULL,
-  `status` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `categoryid` int NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS ideas (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  title tinytext  NOT NULL,
+  content text  NOT NULL,
+  authorid int(11) NOT NULL,
+  date tinytext  NOT NULL,
+  votes int(11) NOT NULL,
+  comments int(11) NOT NULL,
+  status tinytext  NOT NULL,
+  categoryid int(11) NOT NULL,
+  PRIMARY KEY (id),
+  KEY category_id (categoryid),
+  CONSTRAINT fk_category_id FOREIGN KEY (categoryid) REFERENCES categories (id) ON DELETE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ideas`
@@ -110,13 +95,15 @@ INSERT INTO `ideas` (`id`, `title`, `content`, `authorid`, `date`, `votes`, `com
 -- Table structure for table `logs`
 --
 
-CREATE TABLE `logs` (
-  `id` int NOT NULL,
-  `content` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `date` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `type` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `toid` int NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS logs (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  content tinytext  NOT NULL,
+  date tinytext  NOT NULL,
+  type tinytext  NOT NULL,
+  toid int(11) NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `logs`
@@ -187,11 +174,13 @@ INSERT INTO `logs` (`id`, `content`, `date`, `type`, `toid`) VALUES
 -- Table structure for table `settings`
 --
 
-CREATE TABLE `settings` (
-  `id` int NOT NULL,
-  `name` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `value` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS settings (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name tinytext  NOT NULL,
+  value tinytext  NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `settings`
@@ -218,15 +207,17 @@ INSERT INTO `settings` (`id`, `name`, `value`) VALUES
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int NOT NULL,
-  `name` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `email` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `pass` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `votes` int NOT NULL,
-  `isadmin` tinyint(1) NOT NULL,
-  `banned` int NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS users (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name tinytext  NOT NULL,
+  email tinytext  NOT NULL,
+  pass tinytext  NOT NULL,
+  votes int(11) NOT NULL,
+  isadmin tinyint(1) NOT NULL,
+  banned int(11) NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -245,12 +236,14 @@ INSERT INTO `users` (`id`, `name`, `email`, `pass`, `votes`, `isadmin`, `banned`
 -- Table structure for table `votes`
 --
 
-CREATE TABLE `votes` (
-  `id` int NOT NULL,
-  `ideaid` int NOT NULL,
-  `userid` int NOT NULL,
-  `number` int NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE IF NOT EXISTS votes (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  ideaid int(11) NOT NULL,
+  userid int(11) NOT NULL,
+  number int(11) NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -258,138 +251,10 @@ CREATE TABLE `votes` (
 -- Table structure for table `_sessions`
 --
 
-CREATE TABLE `_sessions` (
-  `id` int NOT NULL,
-  `userid` int NOT NULL,
-  `token` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `comments`
---
-ALTER TABLE `comments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `flags`
---
-ALTER TABLE `flags`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `ideas`
---
-ALTER TABLE `ideas`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `logs`
---
-ALTER TABLE `logs`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `settings`
---
-ALTER TABLE `settings`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `votes`
---
-ALTER TABLE `votes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `_sessions`
---
-ALTER TABLE `_sessions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `comments`
---
-ALTER TABLE `comments`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `flags`
---
-ALTER TABLE `flags`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ideas`
---
-ALTER TABLE `ideas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `logs`
---
-ALTER TABLE `logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
-
---
--- AUTO_INCREMENT for table `settings`
---
-ALTER TABLE `settings`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `votes`
---
-ALTER TABLE `votes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `_sessions`
---
-ALTER TABLE `_sessions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+CREATE TABLE IF NOT EXISTS _sessions (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  userid int(11) NOT NULL,
+  token tinytext NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
