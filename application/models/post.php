@@ -294,17 +294,26 @@ class Post extends CI_Model
     }
 
     public function add_category($name, $description){
-        $data = array(
-            'name' => $name,
-            'description' => $description,
-            'ideas' => 0,
-        );
-        $this->db->insert('categories', $data);
+        if(!$this->categoryExists($name)){
+            $data = array(
+                'name' => $name,
+                'description' => $description,
+                'ideas' => 0,
+            );
+            $this->db->insert('categories', $data);
+        }
     }
 
     public function delete_category($id){
         $id = (int) $id;
         $this->db->query("DELETE FROM categories WHERE id='$id'");
+    }
+
+    private function categoryExists($name) {
+        $name = (string) $name;
+        $result = $this->db->query("SELECT id FROM categories WHERE name='$name'");
+        if($result->num_rows() == 0) return false;
+        return true;
     }
 
     private function get_row_by_id($table, $id){

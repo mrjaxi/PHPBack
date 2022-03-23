@@ -76,8 +76,6 @@ CREATE TABLE IF NOT EXISTS ideas (
   status tinytext  NOT NULL,
   categoryid int(11) NOT NULL,
   PRIMARY KEY (id),
-  KEY category_id (categoryid),
-  CONSTRAINT fk_category_id FOREIGN KEY (categoryid) REFERENCES categories (id) ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --

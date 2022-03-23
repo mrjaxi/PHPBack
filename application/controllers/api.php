@@ -175,13 +175,17 @@ class Api extends CI_Controller
                 "message" => "Заголовок не может быть меньше 5 символов",
             ));
         }
-
         if(strlen($desc) < 10){
             return $this->setResponse(array(
                 "state" => "error",
                 "message" => "Описание не может быть меньше 10 символов",
             ));
         }
+        if(!$this->get->categoryExists($catid)){
+            $this->post->add_category("Прочее", "Все записи, которые не определили к конкретной категории");
+            $catid = $this->get->category_id("Прочее");
+        }
+
         $user = $this->get->getUserByEmail($email);
         if(empty($user)){
             if(empty($pass)){
@@ -190,11 +194,13 @@ class Api extends CI_Controller
                     "message" => "Нет пароля чтобы зарегистрировать нового пользователя",
                 ));
             }
+
             $votes = $this->get->getSetting('maxvotes');
             if($this->post->add_user($name, $email, $pass, $votes, false)){
                 $user = $this->get->getUserByEmail($email);
                 $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
                 $userBase64 = $this->encodeBase64User($user->email, $user->pass);
+
                 return $this->setResponse(array(
                     "state" => "success",
                     "url" => base_url() . "api/auto_redirect" .
@@ -207,21 +213,29 @@ class Api extends CI_Controller
                     "message" => "Не удалось зарегистрировать нового пользователя",
                 ));
             }
-        }
+        } else {
+            $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
+            $userBase64 = $this->encodeBase64User($user->email, $user->pass);
 
-        $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
-        $userBase64 = $this->encodeBase64User($user->email, $user->pass);
-        return $this->setResponse(array(
-            "state" => "success",
-            "url" => base_url() . "api/auto_redirect" .
-                "?url=" . base_url() . "home/idea/" . $idea->id .
-                "&user=" . $userBase64
-        ));
+            return $this->setResponse(array(
+                "state" => "success",
+                "url" => base_url() . "api/auto_redirect" .
+                    "?url=" . base_url() . "home/idea/" . $idea->id .
+                    "&user=" . $userBase64
+            ));
+        }
     }
 
     public function getCategories(){
         return $this->setResponse(array(
             "categories" => $this->get->getCategories()
+        ));
+    }
+
+    public function test(){
+        $id = $_POST["id"];
+        return $this->setResponse(array(
+            "response" => $this->get->categoryExists($id)
         ));
     }
 
