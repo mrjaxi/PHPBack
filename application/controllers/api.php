@@ -143,6 +143,7 @@ class Api extends CI_Controller
         $desc = $_POST['description'];
         $catid = $_POST['category'];
         $email = $_POST['email'];
+        $pass = $_POST['pass'];
 
         if(empty($title) or empty($desc) or empty($catid) or empty($email)){
             return $this->setResponse(array(
@@ -166,9 +167,27 @@ class Api extends CI_Controller
         }
         $user = $this->get->getUserByEmail($email);
         if(empty($user)){
-            return $this->setResponse(array(
-                "error" => "Пользователя с таким email не существует",
-            ));
+            if(empty($pass)){
+                return $this->setResponse(array(
+                    "error" => "Нет пароля чтобы зарегистрировать нового пользователя",
+                ));
+            }
+            $votes = $this->get->getSetting('maxvotes');
+            if($this->post->add_user("Незнакомец", $email, $pass, $votes, false)){
+                $user = $this->get->getUserByEmail($email);
+                $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
+                $userBase64 = $this->encodeBase64User($user->email, $user->pass);
+                return $this->setResponse(array(
+                    "success" => "Идея успешно добавлена",
+                    "url" => base_url() . "api/auto_redirect" .
+                        "?url=" . base_url() . "home/idea/" . $idea->id .
+                        "&user=" . $userBase64
+                ));
+            } else {
+                return $this->setResponse(array(
+                    "error" => "Не удалось зарегистрировать нового пользователя",
+                ));
+            }
         }
 
         $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
