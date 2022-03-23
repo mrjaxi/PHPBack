@@ -7,7 +7,7 @@
 			
 			<div class="row">
 				<div class="col-xs-12 col-sm-2">
-					<div class="vote-count-box view-idea-vote">
+					<div class="vote-count-box view-idea-vote" style="min-width: 110px"">
 						<span style="color:#3498DB;margin-top:-10px">
 						<b><?php if($idea->votes <= 99999) {
 								if($idea->votes < 1000) echo $idea->votes;
@@ -25,7 +25,7 @@
 						<div style="margin-top:-10px"><small><?php echo $lang['label_votes']; ?></small></div>
 					</div>
 					<div class="dropdown view-idea-vote">
-					  <button name="Vote" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width:100%; margin-top: 10px"><?php echo $lang['label_vote']; ?></button>
+					  <button name="Vote" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width:100%; margin-top: 10px; min-width: 110px"><?php echo $lang['label_vote']; ?></button>
 					  <span class="dropdown-arrow dropdown-arrow-inverse"></span>
 					  <ul class="dropdown-menu dropdown-inverse">
 					    <li><a href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>">1 <?php echo $lang['label_votes']; ?></a></li>
