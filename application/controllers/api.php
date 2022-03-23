@@ -160,6 +160,7 @@ class Api extends CI_Controller
                 "error" => "Заголовок не может быть меньше 5 символов",
             ));
         }
+        
         if(strlen($desc) < 10){
             return $this->setResponse(array(
                 "error" => "Описание не может быть меньше 10 символов",
