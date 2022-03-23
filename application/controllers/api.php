@@ -144,6 +144,10 @@ class Api extends CI_Controller
         $catid = $_POST['category'];
         $email = $_POST['email'];
         $pass = $_POST['pass'];
+        $name = $_POST['name'];
+        if(empty($name)){
+            $name = "Незнакомец";
+        }
 
         if(empty($title) or empty($desc) or empty($catid) or empty($email)){
             return $this->setResponse(array(
@@ -160,7 +164,7 @@ class Api extends CI_Controller
                 "error" => "Заголовок не может быть меньше 5 символов",
             ));
         }
-        
+
         if(strlen($desc) < 10){
             return $this->setResponse(array(
                 "error" => "Описание не может быть меньше 10 символов",
@@ -174,7 +178,7 @@ class Api extends CI_Controller
                 ));
             }
             $votes = $this->get->getSetting('maxvotes');
-            if($this->post->add_user("Незнакомец", $email, $pass, $votes, false)){
+            if($this->post->add_user($name, $email, $pass, $votes, false)){
                 $user = $this->get->getUserByEmail($email);
                 $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
                 $userBase64 = $this->encodeBase64User($user->email, $user->pass);
