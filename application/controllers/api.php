@@ -50,9 +50,10 @@ class Api extends CI_Controller
                     }
                 }
             }
+            header('Location: ' . $url);
+        } else {
+            header('Location: ' . base_url() . 'home');
         }
-
-        header('Location: ' . $url);
 
         $this->autoLoginByCookie();
     }
@@ -73,21 +74,24 @@ class Api extends CI_Controller
 
                 if ($result !== 0) {
                     return $this->setResponse(array(
-                        "success" => "Вы успешно зарегистрировались",
+                        "state" => "success",
                     ));
                 } else {
                     return $this->setResponse(array(
-                        "error" => "Не получилось авторизоваться",
+                        "state" => "error",
+                        "message" => "Не получилось авторизоваться",
                     ));
                 }
             } else {
                 return $this->setResponse(array(
-                    "error" => "Такой пользователь уже существует",
+                    "state" => "error",
+                    "message" => "Такой пользователь уже существует",
                 ));
             }
         } else {
             return $this->setResponse(array(
-                "error" => "Не отправлены поля pass или email",
+                "state" => "error",
+                "message" => "Не отправлены поля pass или email",
             ));
         }
     }
@@ -101,17 +105,19 @@ class Api extends CI_Controller
 
             if ($result !== 0) {
                 return $this->setResponse(array(
-                    "success" => "Вы успешно вошли",
+                    "state" => "success",
                 ));
             }
             else {
                 return $this->setResponse(array(
-                    "error" => "Неверный логин или пароль",
+                    "state" => "error",
+                    "message" => "Неверный логин или пароль",
                 ));
             }
         } else {
             return $this->setResponse(array(
-                "error" => "Вы не отправили email или pass",
+                "state" => "error",
+                "message" => "Вы не отправили email или pass",
             ));
         }
     }
@@ -124,16 +130,18 @@ class Api extends CI_Controller
 
             if ($this->post->update_username_api($name, $email)) {
                 return $this->setResponse(array(
-                    "success" => "Вы успешно сменили имя",
+                    "state" => "success",
                 ));
             } else {
                 return $this->setResponse(array(
-                    "error" => "Такого пользователя не существует",
+                    "state" => "error",
+                    "message" => "Такого пользователя не существует",
                 ));
             }
         } else {
             return $this->setResponse(array(
-                "error" => "Вы не отправили логин или пароль",
+                "state" => "error",
+                "message" => "Вы не отправили логин или пароль",
             ));
         }
     }
@@ -151,30 +159,35 @@ class Api extends CI_Controller
 
         if(empty($title) or empty($desc) or empty($catid) or empty($email)){
             return $this->setResponse(array(
-                "error" => "Не введены значения title, description, category, email",
+                "state" => "error",
+                "message" => "Не введены значения title, description, category, email",
             ));
         }
         if($catid < 1){
             return $this->setResponse(array(
-                "error" => "Неверно выбрана категория",
+                "state" => "error",
+                "message" => "Неверно выбрана категория",
             ));
         }
         if(strlen($title) < 5){
             return $this->setResponse(array(
-                "error" => "Заголовок не может быть меньше 5 символов",
+                "state" => "error",
+                "message" => "Заголовок не может быть меньше 5 символов",
             ));
         }
 
         if(strlen($desc) < 10){
             return $this->setResponse(array(
-                "error" => "Описание не может быть меньше 10 символов",
+                "state" => "error",
+                "message" => "Описание не может быть меньше 10 символов",
             ));
         }
         $user = $this->get->getUserByEmail($email);
         if(empty($user)){
             if(empty($pass)){
                 return $this->setResponse(array(
-                    "error" => "Нет пароля чтобы зарегистрировать нового пользователя",
+                    "state" => "error",
+                    "message" => "Нет пароля чтобы зарегистрировать нового пользователя",
                 ));
             }
             $votes = $this->get->getSetting('maxvotes');
@@ -183,14 +196,15 @@ class Api extends CI_Controller
                 $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
                 $userBase64 = $this->encodeBase64User($user->email, $user->pass);
                 return $this->setResponse(array(
-                    "success" => "Идея успешно добавлена",
+                    "state" => "success",
                     "url" => base_url() . "api/auto_redirect" .
                         "?url=" . base_url() . "home/idea/" . $idea->id .
                         "&user=" . $userBase64
                 ));
             } else {
                 return $this->setResponse(array(
-                    "error" => "Не удалось зарегистрировать нового пользователя",
+                    "state" => "error",
+                    "message" => "Не удалось зарегистрировать нового пользователя",
                 ));
             }
         }
@@ -198,7 +212,7 @@ class Api extends CI_Controller
         $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
         $userBase64 = $this->encodeBase64User($user->email, $user->pass);
         return $this->setResponse(array(
-            "success" => "Идея успешно добавлена",
+            "state" => "success",
             "url" => base_url() . "api/auto_redirect" .
                 "?url=" . base_url() . "home/idea/" . $idea->id .
                 "&user=" . $userBase64
