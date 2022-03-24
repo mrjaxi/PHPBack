@@ -61,39 +61,45 @@ class Api extends CI_Controller
     public function register() {
         $votes = $this->get->getSetting('maxvotes');
 
-        $email = $_POST['email'];
-        $pass = $_POST['pass'];
-        $name = $_POST['name'];
+        $usersData = (array) json_decode($_POST['usersData'], true);
 
-        if (!empty($email) and !empty($pass)) {
-            if(empty($name)){
-                $name = "Незнакомец";
+        if(empty($usersData)){
+            return $this->setResponse(array(
+                "state" => "error",
+                "message" => "Не отправлена usersData",
+            ));
+        }
+
+        $countUsers = 0;
+        $existsUsers = 0;
+        for($i = 0; $i < count($usersData);$i++){
+            $email = $usersData[$i]['email'];
+            $pass  = $usersData[$i]['pass'];
+            $name  = $usersData[$i]['name'];
+
+            if (empty($email) or empty($pass)) {
+                return $this->setResponse(array(
+                    "state" => "error",
+                    "message" => "Не отправлены поля pass или email",
+                ));
             }
+            if(empty($name)){ $name = "Незнакомец"; }
+
             if ($this->post->add_user($name, $email, $pass, $votes, false)) {
                 $result = $this->get->login($email, $pass);
 
-                if ($result !== 0) {
-                    return $this->setResponse(array(
-                        "state" => "success",
-                    ));
-                } else {
-                    return $this->setResponse(array(
-                        "state" => "error",
-                        "message" => "Не получилось авторизоваться",
-                    ));
-                }
-            } else {
-                return $this->setResponse(array(
-                    "state" => "error",
-                    "message" => "Такой пользователь уже существует",
-                ));
-            }
-        } else {
-            return $this->setResponse(array(
-                "state" => "error",
-                "message" => "Не отправлены поля pass или email",
-            ));
+                if ($result !== 0) $countUsers++;
+            } else $existsUsers++;
         }
+        $response = array(
+            "state" => "success",
+            "message" => "Успешно зарегистрировано $countUsers пользователей",
+        );
+        if($existsUsers !== 0) {
+            $response += ["existsUsers" => "$existsUsers пользователей уже существовало"];
+        }
+
+        return $this->setResponse($response);
     }
 
     public function login() {
