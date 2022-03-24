@@ -93,10 +93,10 @@ class Api extends CI_Controller
         }
         $response = array(
             "state" => "success",
-            "message" => "Успешно зарегистрировано $countUsers пользователей",
+            "added" => $countUsers,
         );
         if($existsUsers !== 0) {
-            $response += ["existsUsers" => "$existsUsers пользователей уже существовало"];
+            $response += ["existsUsers" => $existsUsers];
         }
 
         return $this->setResponse($response);
