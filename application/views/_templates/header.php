@@ -71,16 +71,16 @@ See LICENSE.TXT for details.  -->
     <?php if(@isset($_SESSION['phpback_userid'])): ?>
     <div class="pull-right" style="padding-right:40px;">
         <a href="<?php echo base_url() . 'home/profile/' . $_SESSION['phpback_userid'].'/'.Display::slugify($_SESSION['phpback_username']); ?>">
-            <button type="button" class="sub_username_profile_button"><?php echo $_SESSION['phpback_username']; ?></button>
+            <button type="button" class="sub_username_profile_button" style="padding: 10px 25px 10px 25px"><?php echo $_SESSION['phpback_username']; ?></button>
         </a>
           <a href="<?php echo base_url() . 'action/logout'; ?>">
-            <button type="button" class="sub_logout_button"><?php echo $lang['label_log_out']; ?></button>
+            <button type="button" class="sub_logout_button" style="padding: 10px 25px 10px 25px"><?php echo $lang['label_log_out']; ?></button>
           </a>
     </div>
     <?php else : ?>
     <div class="pull-right" style="padding-right:40px;">
       <a href="<?php echo base_url() . 'home/login'; ?>">
-          <button type="button" class="sub_login_button_style"><?php echo $lang['label_log_in']; ?></button>
+          <button type="button" class="sub_login_button_style" style="padding: 10px 15px 10px 15px"><?php echo $lang['label_log_in']; ?></button>
       </a>
     </div>
     <?php endif; ?>
