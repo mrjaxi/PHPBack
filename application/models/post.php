@@ -22,14 +22,26 @@ class Post extends CI_Model
         $this->lang->load('log', $this->getSetting('language'));
     }
 
-    public function update_username_api($name, $email){
-        $sql = $this->db->query("SELECT id FROM users WHERE email=" . $this->db->escape($email));
+    public function add_category($name, $description){
+        if(!$this->categoryExists($name)){
+            $data = array(
+                'name' => $name,
+                'description' => $description,
+                'ideas' => 0,
+            );
+            $this->db->insert('categories', $data);
+        }
+    }
 
-        if($sql->num_rows() == 0) return false;
-
-        $this->db->query("UPDATE users SET name='" . $name . "' WHERE email=" . $this->db->escape($email));
-
-        return true;
+    public function add_type($name, $description = null){
+        if(!$this->typeExists($name)){
+            $data = array(
+                'name' => $name,
+                'description' => $description,
+                'ideas' => 0,
+            );
+            $this->db->insert('categories', $data);
+        }
     }
 
     public function add_user($name, $email, $pass, $votes, $isadmin){
@@ -111,6 +123,55 @@ class Post extends CI_Model
         return true;
     }
 
+    public function flag($cid, $userid){
+        $cid = (int) $cid;
+        $userid = (int) $userid;
+        if($cid < 1 || $userid < 1) return false;
+        $sql = $this->db->query("SELECT * FROM flags WHERE userid='$userid' AND toflagid='$cid'");
+        if($sql->num_rows() != 0) return false;
+
+        $data = array(
+            'id' => '',
+            'toflagid' => $cid,
+            'userid' => $userid,
+            'date' => date("d/m/y H:i"),
+        );
+        $this->db->insert('flags', $data);
+        return true;
+    }
+
+    public function update_username_api($name, $email){
+        $sql = $this->db->query("SELECT id FROM users WHERE email=" . $this->db->escape($email));
+
+        if($sql->num_rows() == 0) return false;
+
+        $this->db->query("UPDATE users SET name='" . $name . "' WHERE email=" . $this->db->escape($email));
+
+        return true;
+    }
+
+    public function update_by_id($table, $field, $value, $id){
+        $id = (int) $id;
+        $value = $this->db->escape($value);
+
+        if(!$this->isAlphaNumeric($table)) return false;
+        if(!$this->isAlphaNumeric($field)) return false;
+
+        $query = "UPDATE $table SET $field=$value WHERE id='$id'";
+        $this->db->query($query);
+    }
+
+    public function updateadmin($id, $level){
+        $id = (int) $id;
+        $sql = $this->db->query("SELECT id FROM users WHERE id='$id'");
+        if($sql->num_rows()){
+            if($level == 0 || $level == 1 || $level == 2 || $level == 3){
+                $this->update_by_id('users', 'isadmin', $level, $id);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function vote($idea_id, $user_id, $votes){
         $idea_id = (int) $idea_id;
@@ -152,29 +213,6 @@ class Post extends CI_Model
         }
     }
 
-    public function updateadmin($id, $level){
-        $id = (int) $id;
-        $sql = $this->db->query("SELECT id FROM users WHERE id='$id'");
-        if($sql->num_rows()){
-            if($level == 0 || $level == 1 || $level == 2 || $level == 3){
-                $this->update_by_id('users', 'isadmin', $level, $id);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function update_by_id($table, $field, $value, $id){
-        $id = (int) $id;
-        $value = $this->db->escape($value);
-
-        if(!$this->isAlphaNumeric($table)) return false;
-        if(!$this->isAlphaNumeric($field)) return false;
-
-        $query = "UPDATE $table SET $field=$value WHERE id='$id'";
-        $this->db->query($query);
-    }
-
     public function delete_row_by_id($table, $id){
         $id = (int) $id;
         if(!$this->isAlphaNumeric($table)) return false;
@@ -183,32 +221,20 @@ class Post extends CI_Model
         $this->db->query("DELETE FROM $table WHERE id='$id'");
     }
 
-    public function flag($cid, $userid){
-        $cid = (int) $cid;
-        $userid = (int) $userid;
-        if($cid < 1 || $userid < 1) return false;
-        $sql = $this->db->query("SELECT * FROM flags WHERE userid='$userid' AND toflagid='$cid'");
-        if($sql->num_rows() != 0) return false;
-
-        $data = array(
-            'id' => '',
-            'toflagid' => $cid,
-            'userid' => $userid,
-            'date' => date("d/m/y H:i"),
-        );
-        $this->db->insert('flags', $data);
-        return true;
-    }
-
     public function do_ban($id, $date){
         $id = (int) $id;
         $date = (int) $date;
         $this->update_by_id('users', 'banned', $date, $id);
     }
 
-    public function unban($id){
+    public function delete_category($id){
         $id = (int) $id;
-        $this->update_by_id('users', 'banned', '0', $id);
+        $this->db->query("DELETE FROM categories WHERE id='$id'");
+    }
+
+    public function delete_type($id){
+        $id = (int) $id;
+        $this->db->query("DELETE FROM types WHERE id='$id'");
     }
 
     public function deletecomment($id){
@@ -250,6 +276,11 @@ class Post extends CI_Model
         $this->db->query("DELETE FROM votes WHERE ideaid='$id'");
     }
 
+
+    public function unban($id){
+        $id = (int) $id;
+        $this->update_by_id('users', 'banned', '0', $id);
+    }
 
     public function change_status($ideaid, $status){
         $ideaid = (int) $ideaid;
@@ -293,25 +324,16 @@ class Post extends CI_Model
         $this->db->insert('logs', $data);
     }
 
-    public function add_category($name, $description){
-        if(!$this->categoryExists($name)){
-            $data = array(
-                'name' => $name,
-                'description' => $description,
-                'ideas' => 0,
-            );
-            $this->db->insert('categories', $data);
-        }
-    }
-
-    public function delete_category($id){
-        $id = (int) $id;
-        $this->db->query("DELETE FROM categories WHERE id='$id'");
-    }
-
     private function categoryExists($name) {
         $name = (string) $name;
         $result = $this->db->query("SELECT id FROM categories WHERE name='$name'");
+        if($result->num_rows() == 0) return false;
+        return true;
+    }
+
+    private function typeExists($name) {
+        $name = (string) $name;
+        $result = $this->db->query("SELECT id FROM types WHERE name='$name'");
         if($result->num_rows() == 0) return false;
         return true;
     }

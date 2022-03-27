@@ -22,6 +22,28 @@ INSERT INTO `categories` (`id`, `name`, `description`, `ideas`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `types`
+--
+
+CREATE TABLE IF NOT EXISTS types (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name tinytext  NOT NULL,
+  description text  NOT NULL,
+  ideas int(11) NOT NULL,
+  PRIMARY KEY (id),
+  KEY id (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+INSERT INTO `types` (`id`, `name`, `ideas`) VALUES
+(1, 'Предложить идею', 0),
+(2, 'Сообщить о проблеме', 0),
+(3, 'Поблагодарить', 0),
+(4, 'Задать вопрос', 0),
+(5, 'Без категории', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `comments`
 --
 
@@ -75,17 +97,25 @@ CREATE TABLE IF NOT EXISTS ideas (
   comments int(11) NOT NULL,
   status tinytext  NOT NULL,
   categoryid int(11) NOT NULL,
+  typeid int(11) NOT NULL,
   PRIMARY KEY (id),
+  KEY id (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ideas`
 --
 
-INSERT INTO `ideas` (`id`, `title`, `content`, `authorid`, `date`, `votes`, `comments`, `status`, `categoryid`) VALUES
-(1, 'ewgwegwgwegwegweg', 'egwegwegwegwegwegwegwegwe', 1, '17/03/22 14:30', 0, 1, 'completed', 1),
-(2, 'gerggggggggggggggggg', 'ggggggggggggggggggggggggggggggggggg', 1, '17/03/22 15:44', 0, 0, 'considered', 1),
-(3, 'ggfhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh', 'hhhhhhhhhhhffggfghfggffggh', 1, '17/03/22 15:45', 0, 2, 'considered', 1);
+INSERT INTO `ideas` (`authorid`, `categoryid`, `comments`, `content`, `date`, `id`, `status`, `title`, `votes`) VALUES
+(5, 4, 2, 'После принятия или отклонения задания ментором нужно открывать следующее задание', '16/03/22 12:21', 1, 'considered', 'Оптимизировать проверку заданий', 2),
+(11, 4, 0, 'sdfsdfsdfsdf', '23/03/22 15:02', 15, 'new', 'sdfsdfsdf', 0),
+(11, 4, 0, 'sdfgsdfgsdfgsddfsdf', '23/03/22 15:17', 20, 'new', 'dfgdfgdfgdfg', 0),
+(11, 4, 0, 'testtesttetstetstetstetstetestt', '23/03/22 15:30', 22, 'new', 'atmatest', 0),
+(11, 3, 0, 'dgdfgdfgdfgdfg', '23/03/22 15:40', 27, 'new', 'testttt', 0),
+(11, 2, 0, 'werwerwerwerwerwer', '23/03/22 15:41', 28, 'new', 'werwerwerwer', 0),
+(11, 3, 0, 'shdgfkhsdfgskdjfsd', '23/03/22 15:45', 29, 'new', 'sjhdfgkhjsdfjkhsdfkjh', 0),
+(15, 5, 0, 'сделать звонко и по красоте ваще', '23/03/22 16:50', 33, 'considered', 'Сделать систему обратной связи', 0);
+
 
 -- --------------------------------------------------------
 

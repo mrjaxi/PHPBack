@@ -234,7 +234,9 @@ class Api extends CI_Controller
 
     public function getCategories(){
         return $this->setResponse(array(
-            "categories" => $this->get->getCategories()
+            "state" => "success",
+            "categories" => array_values($this->get->getCategories()),
+            "types" => array_values($this->get->getTypes())
         ));
     }
 

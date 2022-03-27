@@ -18,7 +18,7 @@ class Get extends CI_Model
     }
 
     public function getCategories() {
-        $result = $this->db->query('SELECT * FROM categories ORDER BY name')->result();
+        $result = $this->db->query('SELECT * FROM categories ORDER BY id')->result();
         $categoryList = array();
         foreach ($result as $category) {
             $categoryList[$category->id] = $category;
@@ -28,6 +28,16 @@ class Get extends CI_Model
         return $categoryList;
     }
 
+    public function getTypes() {
+        $result = $this->db->query('SELECT * FROM types ORDER BY id')->result();
+        $typeList = array();
+        foreach ($result as $type) {
+            $typeList[$type->id] = $type;
+        }
+
+        $this->decorateTypes($typeList);
+        return $typeList;
+    }
 
     public function getIdea($idea_id){
         $idea_id = (int) $idea_id;
@@ -48,6 +58,12 @@ class Get extends CI_Model
     public function getQuantityOfApprovedIdeas($categoryid){
         $categoryid = (int) $categoryid;
         $query = $this->db->query("SELECT * FROM ideas WHERE categoryid='$categoryid' AND status !='new'");
+        return $query->num_rows();
+    }
+
+    public function getQuantityOfApprovedIdeasByType($typeid){
+        $typeid = (int) $typeid;
+        $query = $this->db->query("SELECT * FROM ideas WHERE typeid='$typeid' AND status !='new'");
         return $query->num_rows();
     }
 
@@ -94,6 +110,13 @@ class Get extends CI_Model
         return true;
     }
 
+    public function typeExists($id) {
+        $id = (int) $id;
+        $result = $this->db->query("SELECT id FROM types WHERE id='$id'");
+        if($result->num_rows() == 0) return false;
+        return true;
+    }
+
     public function getIdeasByCategory($category, $order, $type, $page){
         $page = (int) $page;
         $category = (int) $category;
@@ -123,6 +146,34 @@ class Get extends CI_Model
         return $this->decorateIdeas($ideas);
     }
 
+    public function getIdeasByType($type_id, $order, $type, $page){
+        $page = (int) $page;
+        $type_id = (int) $type_id;
+        $max = $this->getSetting('max_results');
+        $from = ($page - 1) * $max;
+        $query = "SELECT * FROM ideas WHERE typeid='$type_id' AND status !='new' ORDER BY ";
+        switch ($order) {
+            case 'id':
+                $query .= "id ";
+                break;
+            case 'title':
+                $query .= 'title ';
+                break;
+            default:
+                $query .= "votes ";
+                break;
+        }
+        if($type == "desc") $query .= "DESC";
+        else $query .= "ASC";
+
+        if($page != 0){
+            $query .= " LIMIT $from, $max";
+        }
+
+        $ideas = $this->db->query($query)->result();
+
+        return $this->decorateIdeas($ideas);
+    }
 
     public function getIdeasBySearchQuery($query){
         $keywords = explode(" ", $query);
@@ -363,6 +414,16 @@ class Get extends CI_Model
         }
     }
 
+    public function type_id($name) {
+        $name = $this->db->escape($name);
+        $sql = $this->db->query("SELECT id FROM types where name=$name");
+        if($sql->num_rows() == 0) return 0;
+        else{
+            $cat = $sql->row();
+            return $cat->id;
+        }
+    }
+
     public function email_config() {
         $config['protocol']     = 'smtp';
         $config['smtp_host']    = $this->getSetting('smtp-host');
@@ -412,6 +473,13 @@ class Get extends CI_Model
         foreach ($categories as &$category) {
             $category->url = base_url() . 'home/category/' . $category->id . '/';
 //            $category->url .= $this->display->getParsedString($category->name);
+        }
+    }
+
+    private function decorateTypes(&$types) {
+        foreach ($types as &$type) {
+            $type->url = base_url() . 'home/type/' . $type->id . '/';
+//            $type->url .= $this->display->getParsedString($type->name);
         }
     }
 
