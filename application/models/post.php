@@ -276,9 +276,11 @@ class Post extends CI_Model
         }
 
         $cat = $this->get_row_by_id('categories', $idea->categoryid);
+        $type = $this->get_row_by_id('types', $idea->typeid);
 
         if ($idea->status !== 'new' && $idea->status !== 'declined') {
             $this->update_by_id('categories', 'ideas', $cat->ideas - 1, $cat->id);
+            $this->update_by_id('types', 'ideas', $type->ideas - 1, $type->id);
         }
 
         $this->db->query("DELETE FROM ideas WHERE id='$id'");
@@ -317,9 +319,11 @@ class Post extends CI_Model
         $id = (int) $id;
         $idea = $this->db->query("SELECT * FROM ideas WHERE id='$id'")->row();
         $category = $this->get_row_by_id('categories', $idea->categoryid);
+        $type = $this->get_row_by_id('types', $idea->categoryid);
 
         $this->change_status($id, 'considered');
         $this->update_by_id('categories', 'ideas', $category->ideas + 1, $category->id);
+        $this->update_by_id('types', 'ideas', $type->ideas + 1, $type->id);
     }
 
     public function log($string, $to, $toid){
