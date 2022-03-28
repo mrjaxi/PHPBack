@@ -310,6 +310,9 @@ class Post extends CI_Model
             if ($status == 'declined' && $idea->status !== 'new') {
                 $category = $this->get_row_by_id('categories', $idea->categoryid);
                 $this->update_by_id('categories', 'ideas', $category->ideas - 1, $category->id);
+
+                $type = $this->get_row_by_id('types', $idea->typeid);
+                $this->update_by_id('types', 'ideas', $type->ideas - 1, $type->id);
             }
         }
         $this->update_by_id('ideas', 'status', $status, $ideaid);
