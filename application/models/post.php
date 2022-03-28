@@ -105,7 +105,7 @@ class Post extends CI_Model
         $this->log($this->lang->language['log_new_idea'] . ": $title", "user", $author_id);
 
         $message = $this->lang->language['log_new_idea'] . ": $title\n\nСсылка: " . base_url() . "home/idea/" . $idea->id;
-        $this->sendEmail($message, "damedvedev@atmapro.ru");
+        $this->sendEmail($message);
 
         return $idea;
     }
@@ -380,12 +380,12 @@ class Post extends CI_Model
         return $config;
     }
 
-    private function sendEmail($message, $toemail){
+    private function sendEmail($message){
 //        $message = "Добро пожаловать в систему обратной связи: $title\n\nВаш Email: $email\nВаш пароль: $pass\n\n\nПожалуйста, авторизуйтесь:" . base_url() . "home/login\n";
         $this->email->initialize($this->email_config());
 
         $this->email->from($this->getSetting('mainmail'), 'Атмагуру FeedBack');
-        $this->email->to($toemail);
+        $this->email->to("bumblebeelion@atma.company");
 
         $this->email->subject("Новый отклик");
         $this->email->message($message);

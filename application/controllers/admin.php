@@ -6,7 +6,7 @@ Copyright (c) 2014 PHPBack
 http://www.phpback.org
 Released under the GNU General Public License WITHOUT ANY WARRANTY.
 See LICENSE.TXT for details.
-**********************************************************************/
+ **********************************************************************/
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -14,16 +14,16 @@ require_once(__DIR__ . "../../../vendor/autoload.php");
 use \VisualAppeal\AutoUpdate;
 
 class Admin extends CI_Controller {
-	public function __construct(){
-		parent::__construct();
-		$this->load->helper('url');
-		$this->load->model('get');
+    public function __construct(){
+        parent::__construct();
+        $this->load->helper('url');
+        $this->load->model('get');
 
         $this->version = '1.3.1';
-	}
+    }
 
-	public function index($error = 'no'){
-		session_start();
+    public function index($error = 'no'){
+        session_start();
         $data = array();
         if($error == "error"){
             $data['error'] = 'yes';
@@ -44,7 +44,7 @@ class Admin extends CI_Controller {
             header('Location: ' . base_url() . 'admin/dashboard/');
             exit;
         }
-	}
+    }
 
     public function dashboard(){
         $this->start();
@@ -64,6 +64,7 @@ class Admin extends CI_Controller {
         $data['newideas_num'] = $this->get->get_new_ideas_num();
         $data['flags'] = $this->get->get_flags();
         $data['categories'] = $this->get->getCategories();
+        $data['types'] = $this->get->getTypes();
         if(!@isset($_POST['search'])){
             $data['form'] = array(
                 "status-completed" => 0,
@@ -73,11 +74,17 @@ class Admin extends CI_Controller {
                 "status-declined" => 0,
                 "orderby" => "votes",
                 "isdesc" => 1
-                );
+            );
             $cat = array();
             foreach ($data['categories'] as $t) {
                 $cat[] = $t->id;
                 $s = "category-".$t->id;
+                $data['form'][$s] = 1;
+            }
+            $type = array();
+            foreach ($data['types'] as $t) {
+                $cat[] = $t->id;
+                $s = "type-".$t->id;
                 $data['form'][$s] = 1;
             }
             $st = array("considered", "planned");
@@ -92,7 +99,7 @@ class Admin extends CI_Controller {
                 "status-declined" => ($this->input->post('status-declined', true)) ? 1 : 0,
                 "orderby" => $this->input->post('orderby', true),
                 "isdesc" => ($this->input->post('isdesc', true)) ? 1 : 0
-                );
+            );
             $st = array();
             if($this->input->post('status-completed', true)) $st[] = "completed";
             if($this->input->post('status-started', true)) $st[] = "started";
@@ -103,8 +110,19 @@ class Admin extends CI_Controller {
             $cat = array();
             foreach ($data['categories'] as $t) {
                 $s = "category-".$t->id;
-                if($this->input->post('category-' . $t->id, true)){
+                if($this->input->post($s, true)){
                     $cat[] = $t->id;
+                    $data['form'][$s] = 1;
+                }
+                else{
+                    $data['form'][$s] = 0;
+                }
+            }
+            $type = array();
+            foreach ($data['types'] as $t) {
+                $s = "type-".$t->id;
+                if($this->input->post($s, true)){
+                    $type[] = $t->id;
                     $data['form'][$s] = 1;
                 }
                 else{
@@ -118,7 +136,7 @@ class Admin extends CI_Controller {
             $data['form']['orderby']
         ));
 
-        $data['ideas'] = $this->get->getIdeas($data['form']['orderby'], $data['form']['isdesc'], 0, 150, $st, $cat);
+        $data['ideas'] = $this->get->getIdeas($data['form']['orderby'], $data['form']['isdesc'], 0, 150, $st, $cat, $type);
 
         $this->load->view('admin/dashboard/header', $data);
         $this->load->view('admin/dashboard/ideas', $data);

@@ -67,7 +67,7 @@ class Get extends CI_Model
         return $query->num_rows();
     }
 
-    public function getIdeas($orderby, $isdesc, $from, $limit, $status = array(), $categories = array()){
+    public function getIdeas($orderby, $isdesc, $from, $limit, $status = array(), $categories = array(), $types = array()){
         $query = "SELECT * FROM ideas ";
 
         if (count($categories)) {
@@ -79,8 +79,18 @@ class Get extends CI_Model
             $query = substr($query, 0, -3);
             $query .= ") ";
         }
+        if (count($types)) {
+            if (count($categories)) $query .= "OR (";
+            else $query .= "WHERE ( ";
+            foreach ($types as $typeid) {
+                $sanitizedTypeId = (int) $typeid;
+                $query .= "typeid='$sanitizedTypeId' OR ";
+            }
+            $query = substr($query, 0, -3);
+            $query .= ") ";
+        }
         if (count($status)) {
-            if (count($categories)) $query .= "AND (";
+            if (count($categories) || count($types)) $query .= "AND (";
             else $query .= "WHERE ( ";
             foreach ($status as $s) {
                 $s = $this->db->escape($s);
@@ -97,7 +107,7 @@ class Get extends CI_Model
         else $query .= "ASC";
 
         $query .= " LIMIT $from, $limit";
-
+//        return var_dump($query);
         $ideas = $this->db->query($query)->result();
 
         return $this->decorateIdeas($ideas);
