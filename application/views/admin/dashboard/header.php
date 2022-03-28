@@ -59,6 +59,7 @@ See LICENSE.TXT for details.  -->
       document.getElementById('generaltable').style.display = 'none';
       document.getElementById('admintable').style.display = 'none';
       document.getElementById('categorytable').style.display = 'none';
+      document.getElementById('typetable').style.display = 'none';
       document.getElementById('upgradetable').style.display = 'none';
       document.getElementById(tableid).style.display = '';
 
@@ -66,6 +67,7 @@ See LICENSE.TXT for details.  -->
       document.getElementById("table2").className = "";
       document.getElementById("table3").className = "";
       document.getElementById("table4").className = "";
+      document.getElementById("table5").className = "";
       document.getElementById(tablelink).className = "active";
     }
     function popup_sure(text, url) {

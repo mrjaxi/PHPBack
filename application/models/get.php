@@ -419,8 +419,8 @@ class Get extends CI_Model
         $sql = $this->db->query("SELECT id FROM types where name=$name");
         if($sql->num_rows() == 0) return 0;
         else{
-            $cat = $sql->row();
-            return $cat->id;
+            $type = $sql->row();
+            return $type->id;
         }
     }
 

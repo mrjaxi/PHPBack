@@ -18,6 +18,7 @@ class Post extends CI_Model
     public function __construct(){
         parent::__construct();
         $this->load->database();
+        $this->load->library('email');
 
         $this->lang->load('log', $this->getSetting('language'));
     }
@@ -40,7 +41,7 @@ class Post extends CI_Model
                 'description' => $description,
                 'ideas' => 0,
             );
-            $this->db->insert('categories', $data);
+            $this->db->insert('types', $data);
         }
     }
 
@@ -80,10 +81,12 @@ class Post extends CI_Model
         return true;
     }
 
-    public function add_idea($title, $content, $author_id, $category_id){
+    public function add_idea($title, $content, $author_id, $category_id, $type_id){
         $author_id = (int) $author_id;
         $category_id = (int) $category_id;
-        if($author_id < 1 || $category_id < 1) return false;
+        $type_id = (int) $type_id;
+        if($author_id < 1 || $category_id < 1 || $type_id < 1) return false;
+
         $date = date("d/m/y H:i");
         $data = array(
             'title' => $title,
@@ -94,10 +97,16 @@ class Post extends CI_Model
             'comments' => '0',
             'status' => 'new',
             'categoryid' => $category_id,
+            'typeid' => $type_id
         );
         $this->db->insert('ideas', $data);
         $idea = $this->db->query("SELECT * FROM ideas WHERE date='$date'")->result()[0];
+
         $this->log($this->lang->language['log_new_idea'] . ": $title", "user", $author_id);
+
+        $message = $this->lang->language['log_new_idea'] . ": $title\n\nСсылка: " . base_url() . "home/idea/" . $idea->id;
+        $this->sendEmail($message, "damedvedev@atmapro.ru");
+
         return $idea;
     }
 
@@ -354,6 +363,34 @@ class Post extends CI_Model
 
     private function isAlphaNumeric($text) {
         return ctype_alnum($text);
+    }
+
+    private function email_config() {
+        $config['protocol']     = 'smtp';
+        $config['smtp_host']    = $this->getSetting('smtp-host');
+        $config['smtp_port']    = $this->getSetting('smtp-port');
+        $config['smtp_timeout'] = '7';
+        $config['smtp_user']    = $this->getSetting('smtp-user');
+        $config['smtp_pass']    = $this->getSetting('smtp-pass');
+        $config['charset']      = 'utf-8';
+        $config['newline']      = "\r\n";
+        $config['mailtype']     = 'text'; // or html
+        $config['validation']   = FALSE;
+
+        return $config;
+    }
+
+    private function sendEmail($message, $toemail){
+//        $message = "Добро пожаловать в систему обратной связи: $title\n\nВаш Email: $email\nВаш пароль: $pass\n\n\nПожалуйста, авторизуйтесь:" . base_url() . "home/login\n";
+        $this->email->initialize($this->email_config());
+
+        $this->email->from($this->getSetting('mainmail'), 'Атмагуру FeedBack');
+        $this->email->to($toemail);
+
+        $this->email->subject("Новый отклик");
+        $this->email->message($message);
+
+        $this->email->send();
     }
 }
 

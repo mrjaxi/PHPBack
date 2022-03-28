@@ -6,7 +6,7 @@ Copyright (c) 2014 PHPBack
 http://www.phpback.org
 Released under the GNU General Public License WITHOUT ANY WARRANTY.
 See LICENSE.TXT for details.
-**********************************************************************/
+ **********************************************************************/
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -32,9 +32,9 @@ class Action extends CI_Controller{
 
         if($this->get->getSetting('recaptchapublic') != ""){
             $resp = recaptcha_check_answer($this->get->getSetting('recaptchaprivate'),
-                                    $_SERVER["REMOTE_ADDR"],
-                                    $_POST["recaptcha_challenge_field"],
-                                    $_POST["recaptcha_response_field"]);
+                $_SERVER["REMOTE_ADDR"],
+                $_POST["recaptcha_challenge_field"],
+                $_POST["recaptcha_response_field"]);
 
             if(!$resp->is_valid){
                 header('Location: '. base_url() .'home/register/recaptcha');
@@ -188,20 +188,25 @@ class Action extends CI_Controller{
         $title = $this->input->post('title', true);
         $desc = $this->input->post('description', true);
         $catid = $this->input->post('category', true);
+        $typeid = $this->input->post('type', true);
         if($catid == 0){
-            $this->redirectpost(base_url() . "home/postidea/errorcat", array('title' => $title, 'desc' => $desc, 'catid' => $catid));
+            $this->redirectpost(base_url() . "home/postidea/errorcat", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
+            return;
+        }
+        if($typeid == 0){
+            $this->redirectpost(base_url() . "home/postidea/errortype", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
             return;
         }
         if(strlen($title) < 9){
-            $this->redirectpost(base_url() . "home/postidea/errortitle", array('title' => $title, 'desc' => $desc, 'catid' => $catid));
+            $this->redirectpost(base_url() . "home/postidea/errortitle", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
             return;
         }
         if(strlen($desc) < 20){
-            $this->redirectpost(base_url() . "home/postidea/errordesc", array('title' => $title, 'desc' => $desc, 'catid' => $catid));
+            $this->redirectpost(base_url() . "home/postidea/errordesc", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
             return;
         }
         if(@isset($_SESSION['phpback_userid']))
-            $this->post->add_idea($title, $desc, $_SESSION['phpback_userid'], $catid);
+            $this->post->add_idea($title, $desc, $_SESSION['phpback_userid'], $catid, $typeid);
         header("Location: " . base_url() . "home/profile/" . $_SESSION['phpback_userid']);
     }
 
@@ -233,20 +238,20 @@ class Action extends CI_Controller{
                         document.forms["redirectpost"].submit();
                     }
                 </script>
-                <title>Please Wait...</title>
+                <title>Пожалуйста, подождите...</title>
             </head>
             <body onload="close();">
-            Redirecting...<br>
+            Перенаправление...<br>
             <form name="redirectpost" method="post" action="' . $url .'">';
-            if ( !is_null($data) ) {
-                foreach ($data as $k => $v) {
-                    echo '<input type="hidden" name="' . $k . '" value="' . $v . '"> ';
-                }
+        if ( !is_null($data) ) {
+            foreach ($data as $k => $v) {
+                echo '<input type="hidden" name="' . $k . '" value="' . $v . '"> ';
             }
-            echo "</form>";
-            "</body>";
-            "</html>";
-            exit;
+        }
+        echo "</form>";
+        "</body>";
+        "</html>";
+        exit;
     }
 
 }

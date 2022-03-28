@@ -6,24 +6,24 @@ Copyright (c) 2014 PHPBack
 http://www.phpback.org
 Released under the GNU General Public License WITHOUT ANY WARRANTY.
 See LICENSE.TXT for details.
-**********************************************************************/
+ **********************************************************************/
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Home extends CI_Controller {
-	public function __construct() {
-		parent::__construct();
+    public function __construct() {
+        parent::__construct();
         session_start();
 
-		$this->load->helper('url');
-		$this->load->model('get');
-		$this->load->model('post');
+        $this->load->helper('url');
+        $this->load->model('get');
+        $this->load->model('post');
 
-		$this->lang->load('default', $this->get->getSetting('language'));
+        $this->lang->load('default', $this->get->getSetting('language'));
 
         $this->verifyBanning();
-	}
-	public function index() {
+    }
+    public function index() {
         $this->autoLoginByCookie();
 
         //Use this function to parse $freename variables getDisplayHelpers();
@@ -38,14 +38,14 @@ class Home extends CI_Controller {
             'considered' => $this->get->getIdeas('id', 1, 0, 10, array('considered')),
         );
 
-		$this->load->view('_templates/header', $data);
-		$this->load->view('home/index', $data);
-		$this->load->view('_templates/menu', $data);
-		$this->load->view('_templates/footer', $data);
+        $this->load->view('_templates/header', $data);
+        $this->load->view('home/index', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
 
-	}
+    }
 
-	public function category($id, $name = "", $order = "votes", $type = "desc", $page = '1') {
+    public function category($id, $name = "", $order = "votes", $type = "desc", $page = '1') {
         if (!$this->get->categoryExists($id)){
             header('Location: ' . base_url() . 'home');
             return;
@@ -63,9 +63,9 @@ class Home extends CI_Controller {
         $data['order'] = $order;
 
         $this->load->view('_templates/header', $data);
-		$this->load->view('home/category_ideas', $data);
-		$this->load->view('_templates/menu', $data);
-		$this->load->view('_templates/footer', $data);
+        $this->load->view('home/category_ideas', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
     }
 
     public function type($id, $name = "", $order = "votes", $type = "desc", $page = '1') {
@@ -76,7 +76,7 @@ class Home extends CI_Controller {
 
         $data = $this->getDefaultData();
         $data['ideas'] = $this->get->getIdeasByType($id, $order, $type, $page);
-        $data['type'] = $data['types'][$id];
+        $data['typetable'] = $data['types'][$id];
         $total = $this->get->getQuantityOfApprovedIdeasByType($id);
         $data['max_results'] = (int) $this->get->getSetting('max_results');
         $data['page'] = (int) $page;
@@ -86,7 +86,7 @@ class Home extends CI_Controller {
         $data['order'] = $order;
 
         $this->load->view('_templates/header', $data);
-        $this->load->view('home/category_ideas', $data);
+        $this->load->view('home/type_ideas', $data);
         $this->load->view('_templates/menu', $data);
         $this->load->view('_templates/footer', $data);
     }
@@ -98,9 +98,9 @@ class Home extends CI_Controller {
         $data['ideas'] = $this->get->getIdeasBySearchQuery($query);
 
         $this->load->view('_templates/header', $data);
-		$this->load->view('home/search_results', $data);
-		$this->load->view('_templates/menu', $data);
-		$this->load->view('_templates/footer', $data);
+        $this->load->view('home/search_results', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
     }
 
     public function idea($id) {
@@ -125,9 +125,9 @@ class Home extends CI_Controller {
         $data['idea'] = $idea;
 
         $this->load->view('_templates/header', $data);
-		$this->load->view('home/view_idea', $data);
-		$this->load->view('_templates/menu', $data);
-		$this->load->view('_templates/footer', $data);
+        $this->load->view('home/view_idea', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
     }
 
 
@@ -152,9 +152,9 @@ class Home extends CI_Controller {
         }
 
         $this->load->view('_templates/header', $data);
-		$this->load->view('home/user', $data);
-		$this->load->view('_templates/menu', $data);
-		$this->load->view('_templates/footer', $data);
+        $this->load->view('home/user', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
     }
 
 
@@ -180,19 +180,20 @@ class Home extends CI_Controller {
         $data['ban'] = $ban;
 
         $this->load->view('_templates/header', $data);
-		$this->load->view('home/login', $data);
-		$this->load->view('_templates/menu', $data);
-		$this->load->view('_templates/footer', $data);
+        $this->load->view('home/login', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
     }
 
     public function postidea($error = "none") {
         $data = $this->getDefaultData();
         $data['error'] = $error;
         $data['POST'] = array(
-					'title' => $this->input->post('title'),
-					'catid' => $this->input->post('catid'),
-					'desc' => $this->input->post('desc')
-				);
+            'title' => $this->input->post('title'),
+            'catid' => $this->input->post('catid'),
+            'typeid'=> $this->input->post('typeid'),
+            'desc'  => $this->input->post('desc')
+        );
 
         $this->load->view('_templates/header', $data);
         $this->load->view('home/post_idea', $data);
@@ -206,9 +207,9 @@ class Home extends CI_Controller {
         $data['error'] = $error;
 
         $this->load->view('_templates/header', $data);
-		$this->load->view('home/register', $data);
-		$this->load->view('_templates/menu', $data);
-		$this->load->view('_templates/footer', $data);
+        $this->load->view('home/register', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
     }
 
     private function getDefaultData() {

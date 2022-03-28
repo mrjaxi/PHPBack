@@ -15,6 +15,9 @@
 		case 'errorcat':
 			echo $lang['error_category'];
 			break;
+        case 'errortype':
+            echo $lang['error_type'];
+            break;
 		case 'errordesc':
 			echo $lang['error_description'];
 			break;
@@ -26,7 +29,7 @@
 	    <input type="text" class="form-control" name="title" value="<?php if(@isset($POST['title'])) echo $POST['title'];?>" minlength="9" max="100" required>
 	  </div>
 	  <div class="form-group">
-	  <label><?php echo $lang['label_category']; ?></label>
+	    <label><?php echo $lang['label_category']; ?></label>
 	    <select class="form-control" name="category" required>
 		  <option value=""><?php echo $lang['text_select_category']; ?></option>
 		  <?php foreach ($categories as $cat):?>
@@ -34,6 +37,15 @@
 		  <?php endforeach; ?>
 		</select>
 	  </div>
+      <div class="form-group">
+          <label><?php echo $lang['label_type']; ?></label>
+          <select class="form-control" name="type" required>
+              <option value=""><?php echo $lang['text_select_type']; ?></option>
+              <?php foreach ($types as $type):?>
+                  <option value="<?php echo $type->id;?>" <?php if(@isset($POST['typeid']) && $POST['typeid'] == $type->id) echo 'selected="selected"';?>><?php echo $type->name;?></option>
+              <?php endforeach; ?>
+          </select>
+      </div>
 	  <div class="form-group">
 	  <label><?php echo $lang['label_description'];?></label>
 	    <textarea class="form-control" rows="4" name="description" minlength="20" max="1500" required><?php if(@isset($POST['desc'])) echo $POST['desc'];?></textarea>

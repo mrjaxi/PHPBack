@@ -14,8 +14,6 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Api extends CI_Controller
 {
-    private $banned = null;
-
     public function __construct() {
         parent::__construct();
         session_start();
@@ -156,6 +154,7 @@ class Api extends CI_Controller
         $title = $_POST['title'];
         $desc = $_POST['description'];
         $catid = $_POST['category'];
+        $typeid = $_POST['type'];
         $email = $_POST['email'];
         $pass = $_POST['pass'];
         $name = $_POST['name'];
@@ -163,16 +162,22 @@ class Api extends CI_Controller
             $name = "Незнакомец";
         }
 
-        if(empty($title) or empty($desc) or empty($catid) or empty($email)){
+        if(empty($title) or empty($desc) or empty($catid) or empty($typeid) or empty($email)){
             return $this->setResponse(array(
                 "state" => "error",
-                "message" => "Не введены значения title, description, category, email",
+                "message" => "Не введены значения title, description, category, type, email",
             ));
         }
         if($catid < 1){
             return $this->setResponse(array(
                 "state" => "error",
                 "message" => "Неверно выбрана категория",
+            ));
+        }
+        if($typeid < 1){
+            return $this->setResponse(array(
+                "state" => "error",
+                "message" => "Неверно выбран тип",
             ));
         }
         if(strlen($title) < 5){
@@ -191,6 +196,10 @@ class Api extends CI_Controller
             $this->post->add_category("Прочее", "Все записи, которые не определили к конкретной категории");
             $catid = $this->get->category_id("Прочее");
         }
+        if(!$this->get->typeExists($catid)){
+            $this->post->add_type("Без классификации", "Все записи, которые не определили к конкретному типу");
+            $catid = $this->get->type_id("Без классификации");
+        }
 
         $user = $this->get->getUserByEmail($email);
         if(empty($user)){
@@ -204,7 +213,7 @@ class Api extends CI_Controller
             $votes = $this->get->getSetting('maxvotes');
             if($this->post->add_user($name, $email, $pass, $votes, false)){
                 $user = $this->get->getUserByEmail($email);
-                $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
+                $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid);
                 $userBase64 = $this->encodeBase64User($user->email, $user->pass);
 
                 return $this->setResponse(array(
@@ -220,7 +229,7 @@ class Api extends CI_Controller
                 ));
             }
         } else {
-            $idea = $this->post->add_idea($title, $desc, $user->id, $catid);
+            $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid);
             $userBase64 = $this->encodeBase64User($user->email, $user->pass);
 
             return $this->setResponse(array(

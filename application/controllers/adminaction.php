@@ -124,14 +124,14 @@ class Adminaction extends CI_Controller{
         $this->start(3);
         $name = $this->input->post('name', true);
         $description = $this->input->post('description', true);
-        $result = $this->get->category_id($name);
-        if ($result){
-            $this->post->update_by_id('categories', 'description', $description, $result);
-            $this->post->log("'$name'" . $this->lang->language['log_category_description'], 'user', $_SESSION['phpback_userid']);
+        $category_id = $this->get->category_id($name);
+        if ($category_id){
+            $this->post->update_by_id('categories', 'description', $description, $category_id);
+            $this->post->log("'$name' " . $this->lang->language['log_category_description'], 'user', $_SESSION['phpback_userid']);
         }
         else{
             $this->post->add_category($name, $description);
-            $this->post->log("'$name'" . $this->lang->language['log_category_created'], 'user', $_SESSION['phpback_userid']);
+            $this->post->log("'$name' " . $this->lang->language['log_category_created'], 'user', $_SESSION['phpback_userid']);
         }
 
         header('Location: ' . base_url() . 'admin/system');
@@ -161,6 +161,51 @@ class Adminaction extends CI_Controller{
         }
         $this->post->delete_category($id);
         $this->post->log(str_replace('%s', "#$id", $this->lang->language['log_category_deleted']), 'user', $_SESSION['phpback_userid']);
+        header('Location: ' . base_url() . 'admin/system');
+    }
+
+    public function addtype(){
+        $this->start(3);
+        $name = $this->input->post('name', true);
+        $description = $this->input->post('description', true);
+        $description = empty($description) ? null : $description;
+        $type_id = $this->get->type_id($name);
+        if ($type_id){
+            $this->post->update_by_id('types', 'description', $description, $type_id);
+            $this->post->log("'$name' " . $this->lang->language['log_type_description'], 'user', $_SESSION['phpback_userid']);
+        }
+        else{
+            $this->post->add_type($name, $description);
+            $this->post->log("'$name' " . $this->lang->language['log_type_created'], 'user', $_SESSION['phpback_userid']);
+        }
+
+        header('Location: ' . base_url() . 'admin/system');
+    }
+
+    public function updatetypes(){
+        $this->start(3);
+        $types = $this->get->getTypes();
+        foreach ($types as $type) {
+            $temp = $this->input->post("type-$type->id", true);
+            if($temp != $type->name){
+                $this->post->update_by_id('types', 'name', $temp , $type->id);
+                $this->post->log(str_replace(array('%s1', '%s2'), array($type->name, $temp), $this->lang->language['log_type_changed']), 'user', $_SESSION['phpback_userid']);
+            }
+        }
+        header('Location: ' . base_url() . 'admin/system');
+    }
+
+    public function deletetype(){
+        $this->start(3);
+        $id = $this->input->post('typeid', true);
+        if($this->input->post('ideas', true)){
+            $ideas = $this->get->getIdeasByType($id , 'id', 'desc', 0);
+            foreach ($ideas as $idea){
+                $this->post->deleteidea($idea->id);
+            }
+        }
+        $this->post->delete_type($id);
+        $this->post->log(str_replace('%s', "#$id", $this->lang->language['log_type_deleted']), 'user', $_SESSION['phpback_userid']);
         header('Location: ' . base_url() . 'admin/system');
     }
 
