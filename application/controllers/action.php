@@ -14,6 +14,7 @@ class Action extends CI_Controller{
 
     public function __construct(){
         parent::__construct();
+
         $this->load->helper('url');
         $this->load->model('get');
         $this->load->model('post');
@@ -138,9 +139,10 @@ class Action extends CI_Controller{
         header('Location:' . base_url() . 'home/profile/' . $vote->userid);
     }
 
-    public function changepassword(){
+    public function changepassword()
+    {
         session_start();
-        if(!isset($_SESSION['phpback_userid'])){
+        if (!isset($_SESSION['phpback_userid'])) {
             header('Location: ' . base_url() . 'home');
             exit;
         }
@@ -149,11 +151,11 @@ class Action extends CI_Controller{
         $new = $this->input->post('new', true);
         $rnew = $this->input->post('rnew', true);
         $toredirect = base_url() . 'home/profile/' . $_SESSION['phpback_userid'];
-        if(strlen($new) > 5){
-            if($new == $rnew){
+        if (strlen($new) > 5) {
+            if ($new == $rnew) {
                 $user = $this->get->getUser($_SESSION['phpback_userid']);
 
-                if($this->hashing->matches($old, $user->pass)){
+                if ($this->hashing->matches($old, $user->pass)) {
                     $this->post->update_by_id('users', 'pass', $this->hashing->hash($new), $user->id);
                     $message = "You have changed your password to: $new\n";
                     $this->load->library('email');
@@ -171,24 +173,31 @@ class Action extends CI_Controller{
                     $this->email->send();
 
                     header('Location: ' . $toredirect);
-                }
-                else $this->redirectpost($toredirect, array('error' => 2));
+                } else $this->redirectpost($toredirect, array('error' => 2));
 
-            }
-            else $this->redirectpost($toredirect, array('error' => 1));
-        }
-        else $this->redirectpost($toredirect, array('error' => 3));
+            } else $this->redirectpost($toredirect, array('error' => 1));
+        } else $this->redirectpost($toredirect, array('error' => 3));
     }
+
     public function newidea(){
         session_start();
+
         if(!isset($_SESSION['phpback_userid'])){
             header('Location: ' . base_url() . 'home');
             exit;
         }
+
+        if(isset($_FILES['file'])) {
+            $name = mt_rand(0, 10000) . $_FILES['file']['name'];
+            copy($_FILES['file']['tmp_name'], 'img/' . $name);
+        }
+
         $title = $this->input->post('title', true);
         $desc = $this->input->post('description', true);
         $catid = $this->input->post('category', true);
         $typeid = $this->input->post('type', true);
+        $file = $this->input->post('file', true);
+
         if($catid == 0){
             $this->redirectpost(base_url() . "home/postidea/errorcat", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
             return;

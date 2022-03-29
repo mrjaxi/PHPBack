@@ -50,16 +50,17 @@
 	  <label><?php echo $lang['label_description'];?></label>
 	    <textarea class="form-control" rows="4" name="description" minlength="20" max="1500" required><?php if(@isset($POST['desc'])) echo $POST['desc'];?></textarea>
 	  </div>
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" action="<?php echo base_url() . 'action/newidea'?>">
           <label style="
-                    padding: 10px 25px 10px 25px;
+                    padding: 5px 25px 5px 25px;
                     font-size: 15px;
                     border-radius: 35px;
                     color: white;
-                    background-color: #2C71F5
-               " for="upload-photo">Choose file</label>
-          <input id="upload-photo" style="display: none" type="file" name="file" required>
-	        <button type="submit" class="sub_post_idea_button_style"><?php echo $lang['label_submit'];?></button>
+                    background-color: #2C71F5;
+               " for="upload-photo">Выбрать файл</label>
+          <input hidden id="upload-photo" style="display: none" type="file" name="file" required>
+	        <button type="submit" class="sub_post_idea_button_style pull-right"><?php echo $lang['label_submit'];?></button>
+          <div style="width: 100%; height: 1px; background-color: red"></div>
       </form>
 	</form>
 	<?php endif; ?>
