@@ -20,10 +20,10 @@
 					<?php foreach ($ideas['completed'] as $idea): ?>
 						<tr>
 							<td>
-								<span class="label label-info completed-idea--tag" style="margin-right:5px">
+								<span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word" class="label label-info completed-idea--tag" style="margin-right:5px">
 									<?= $lang['idea_completed']; ?>
 								</span>
-								<a href="<?= $idea->url; ?>">
+								<a style="margin-left: 5px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" href="<?= $idea->url; ?>">
 									<?= $idea->title; ?>
 								</a>
 							</td>
@@ -39,10 +39,10 @@
 					<?php foreach ($ideas['planned'] as $idea): ?>
 						<tr>
 							<td>
-								<span class="label label-warning planned-idea--tag" style="margin-right:5px">
+								<span  style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word" class="label label-warning planned-idea--tag" style="margin-right:5px">
 									<?= $lang['idea_planned']; ?>
 								</span>
-								<a href="<?= $idea->url; ?>">
+								<a style="margin-left: 5px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" href="<?= $idea->url; ?>">
 									<?= $idea->title; ?>
 								</a>
 							</td>
@@ -61,10 +61,10 @@
 						<?php foreach ($ideas['started'] as $idea): ?>
 							<tr>
 								<td>
-									<span class="label label-success started-idea--tag" style="margin-right:5px">
+									<span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word" class="label label-success started-idea--tag" style="margin-right:5px">
 										<?= $lang['idea_started']; ?>
 									</span>
-									<a href="<?= $idea->url; ?>">
+									<a style="margin-left: 5px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" href="<?= $idea->url; ?>">
 										<?= $idea->title; ?>
 									</a>
 								</td>
@@ -80,10 +80,10 @@
 					<?php foreach ($ideas['considered'] as $idea): ?>
 						<tr>
 							<td>
-								<span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" class="label label-default considered-idea--tag" style="margin-right:5px">
+								<span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word; margin-right:5px" class="label label-default considered-idea--tag">
 									<?= $lang['idea_considered']; ?>
 								</span>
-								<a style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" href="<?= $idea->url; ?>">
+								<a style="margin-left: 5px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" href="<?= $idea->url; ?>">
 									<?= $idea->title; ?>
 								</a>
 							</td>
