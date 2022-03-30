@@ -1,4 +1,4 @@
-<div class="col-md-9">
+<div class="col-md-9" xmlns:color="http://www.w3.org/1999/xhtml">
     <div class="breadcrumb-wrapper"><ol class="breadcrumb">
             <li><a href="<?php echo base_url();?>">Обратная связь</a></li>
             <li><a href="<?php echo base_url() . 'home/type/' . $idea->typeid . "/" . str_replace(" ", "-", $types[$idea->typeid]->name); ?>"><?php echo $types[$idea->typeid]->name;?></a></li>
@@ -36,6 +36,29 @@
     <div class="col-xs-12 col-sm-10">
         <h6 style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;"><?php echo $idea->title; ?></h6>
         <span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word; style="color:#34495E"><small><?php echo $idea->content; ?></small></span>
+        <?php if($idea->photo !== null): ?>
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <?php for ($i = 0; $i < count(explode(";", $idea->photo)) - 1; $i++): ?>
+                        <div class="item <?php if ($i == 1): echo "active" ?><?php endif; ?> img-view-style">
+                            <a href="<?php echo base_url() . explode(";", $idea->photo)[$i] ?>" data-lightbox="image-<?php echo $i ?>">
+                                <img src="<?php echo base_url() . explode(";", $idea->photo)[$i] ?>">
+                            </a>
+                        </div>
+                    <?php endfor; ?>
+                </div>
+                <!-- Элементы управления -->
+                <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Предыдущий</span>
+                </a>
+                <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Следующий</span>
+                </a>
+            </div>
+<!--            <a href="http://symfserver.jord/public/photo/f8b6c662cedfe8c8cead02e97723ba6d.png" data-lightbox="roadtrip">Image #2</a>-->
+        <?php endif; ?>
         <div>
             <ul class="nav-pills" style="list-style:none;margin-left:-40px">
                 <li style="padding-right:10px"><span class="label label-<?php
@@ -160,3 +183,12 @@
     </div>
 <?php endforeach; ?>
 </div>
+
+<script src="<?= base_url(); ?>public/js/lightbox/js/lightbox-plus-jquery.js"></script>
+<script src="<?= base_url(); ?>public/js/lightbox/js/lightbox.js"></script>
+<script>
+    lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': true
+    })
+</script>

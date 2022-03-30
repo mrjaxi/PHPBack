@@ -32,6 +32,7 @@ $lang['label_sign_in'] = 'Войти';
 $lang['label_submit'] = 'Отправить';
 $lang['label_vote'] = 'Голосовать';
 $lang['label_votes'] = 'Голоса';
+$lang['uploaded_files'] = 'Выбранные файлы';
 
 $lang['text_shared_this_idea'] = 'Поделился этой идеей';
 $lang['text_flag_comment'] = 'Удалить комментарий';
@@ -80,3 +81,5 @@ $lang['error_title'] = 'Заголовок слишком короткий';
 $lang['error_category'] = 'Пожалуйста, выберите категорию';
 $lang['error_type'] = 'Пожалуйста, выберите тип';
 $lang['error_description'] = 'Описание слишком короткое';
+$lang['error_large_file'] = 'Слишком большой файл';
+$lang['error_type_uploaded_file'] = 'Недопустимый тип файла';

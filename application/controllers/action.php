@@ -182,21 +182,20 @@ class Action extends CI_Controller{
     public function newidea(){
         session_start();
 
+//        var_dump($_FILES['file']['name'][1]);
+//        return;
+
         if(!isset($_SESSION['phpback_userid'])){
             header('Location: ' . base_url() . 'home');
             exit;
-        }
-
-        if(isset($_FILES['file'])) {
-            $name = mt_rand(0, 10000) . $_FILES['file']['name'];
-            copy($_FILES['file']['tmp_name'], 'img/' . $name);
         }
 
         $title = $this->input->post('title', true);
         $desc = $this->input->post('description', true);
         $catid = $this->input->post('category', true);
         $typeid = $this->input->post('type', true);
-        $file = $this->input->post('file', true);
+
+        $photo = null;
 
         if($catid == 0){
             $this->redirectpost(base_url() . "home/postidea/errorcat", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
@@ -214,8 +213,34 @@ class Action extends CI_Controller{
             $this->redirectpost(base_url() . "home/postidea/errordesc", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
             return;
         }
+
+        for($i=0; $i < count($_FILES['file']['name']); $i++) {
+            if ($_FILES['file']['error'][$i] == 0) {
+                if ($_FILES['file']['size'][$i] == 0) {
+                    $this->redirectpost(base_url() . "home/postidea/largefile", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
+                    return;
+                }
+
+                $getMime = explode('.', $_FILES['file']['name'][$i]);
+                $mime = strtolower(end($getMime));
+                $types = array('jpg', 'png', 'gif', 'bmp', 'jpeg');
+
+                if (!in_array($mime, $types)) {
+                    $this->redirectpost(base_url() . "home/postidea/errorfiletype", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
+                    return;
+                }
+
+                $name = 'public/photo/' . md5(microtime() . rand(0, 9999)) . "." . $mime;
+
+                $photo = $photo . $name . ";";
+
+                copy($_FILES['file']['tmp_name'][$i], $name);
+            }
+        }
+
         if(@isset($_SESSION['phpback_userid']))
-            $this->post->add_idea($title, $desc, $_SESSION['phpback_userid'], $catid, $typeid);
+            $this->post->add_idea($title, $desc, $_SESSION['phpback_userid'], $catid, $typeid, $photo);
+
         header("Location: " . base_url() . "home/profile/" . $_SESSION['phpback_userid']);
     }
 

@@ -21,9 +21,15 @@
 		case 'errordesc':
 			echo $lang['error_description'];
 			break;
+        case 'largefile':
+            echo $lang['error_large_file'];
+            break;
+        case 'errorfiletype':
+            echo $lang['error_type_uploaded_file'];
+            break;
 	}?></p>
 	<?php endif; ?>
-	<form name="post-idea-form" method="post" action="<?php echo base_url() . 'action/newidea'?>">
+	<form name="post-idea-form" enctype="multipart/form-data" method="post" action="<?php echo base_url() . 'action/newidea'?>">
 	  <div class="form-group">
 	    <label for="exampleInputEmail1"><?php echo $lang['label_idea_title']; ?></label>
 	    <input type="text" class="form-control" name="title" value="<?php if(@isset($POST['title'])) echo $POST['title'];?>" minlength="9" max="100" required>
@@ -50,18 +56,95 @@
 	  <label><?php echo $lang['label_description'];?></label>
 	    <textarea class="form-control" rows="4" name="description" minlength="20" max="1500" required><?php if(@isset($POST['desc'])) echo $POST['desc'];?></textarea>
 	  </div>
-      <form method="post" enctype="multipart/form-data" action="<?php echo base_url() . 'action/newidea'?>">
-          <label style="
-                    padding: 5px 25px 5px 25px;
-                    font-size: 15px;
-                    border-radius: 35px;
-                    color: white;
-                    background-color: #2C71F5;
-               " for="upload-photo">Выбрать файл</label>
-          <input hidden id="upload-photo" style="display: none" type="file" name="file" required>
-	        <button type="submit" class="sub_post_idea_button_style pull-right"><?php echo $lang['label_submit'];?></button>
-          <div style="width: 100%; height: 1px; background-color: red"></div>
-      </form>
-	</form>
+        <label id="upload-label" style="display: none"><?php echo $lang['uploaded_files']; ?></label>
+        <div class="upload-filename" style="
+            width: 100%; min-height: 50px;
+            border: solid 2px #bdc3c7; border-radius: 6px;
+            flex-direction: column; padding: 8px 12px;
+            margin-bottom: 20px; display: none;">
+
+        </div>
+        <label style="
+                padding: 5px 25px 5px 25px;
+                font-size: 15px;
+                border-radius: 35px;
+                color: white;
+                background-color: #2C71F5;
+           " for="upload-photo">Выбрать файл</label>
+        <input multiple class="upload-file-type" hidden id="upload-photo" style="display: none" type="file" name="file[]">
+        <button type="submit" class="sub_post_idea_button_style pull-right"><?php echo $lang['label_submit'];?></button>
+    </form>
 	<?php endif; ?>
 </div>
+
+<script>
+    let count = 0;
+    let imageElements = [];
+
+    // function removeElement(id){
+    //     let imageDeleteElement = document.getElementById("image-item-" + id);
+    //     imageDeleteElement.parentNode.removeChild(imageDeleteElement);
+    //     imageElements.pop();
+    //
+    //     let markedElement = document.getElementById('upload-photo');
+    //     markedElement.files[1].name
+    //
+    //     let inputObject = document.querySelector(".upload-filename");
+    //     let uploadLabel = document.querySelector("#upload-label");
+    //
+    //     if (imageElements.length > 0){
+    //         inputObject.style.setProperty("display", "flex");
+    //         uploadLabel.style.removeProperty("display");
+    //     } else {
+    //         uploadLabel.style.setProperty("display", "none");
+    //         inputObject.style.setProperty("display", "none")
+    //     }
+    //
+    //     console.log(markedElement.files)
+    // }
+
+    document.getElementById('upload-photo').addEventListener('change', function(){
+        if( this.value ){
+            for (let i = 0; i < imageElements.length; i++){
+                let removeElement = document.getElementById(imageElements[i])
+                removeElement.parentNode.removeChild(removeElement)
+            }
+
+            imageElements = [];
+            count = 0;
+
+            console.log(this.files)
+
+            for (let i = 0; i < this.files.length; i++){
+                imageElements.push("image-item-" + (i + 1));
+            }
+
+            let inputObject = document.querySelector(".upload-filename");
+            let uploadLabel = document.querySelector("#upload-label");
+
+            if (imageElements.length > 0){
+                inputObject.style.setProperty("display", "flex")
+                uploadLabel.style.removeProperty("display");
+            } else {
+                uploadLabel.style.setProperty("display", "none");
+                inputObject.style.setProperty("display", "none")
+            }
+
+            for (let j = 0; j < this.files.length; j++) {
+                let innerSpanElement = document.createElement("div");
+                count += 1;
+                innerSpanElement.setAttribute("id", "image-item-" + count)
+
+                innerSpanElement.style.cssText = "display: flex; justify-content: space-between; align-items: center";
+
+                innerSpanElement.innerHTML = "<span>" + this.files[j].name + "</span>";
+
+            // <div id='delete-button-" + count + "'" +
+            //     "style='display: flex; justify-content: center; align-items: center; width: 25px;" +
+            //     " height: 25px; background-color: #ec7063; border-radius: 100px'><img style='width: 12px; height: 12px' src='http://symfserver.jord/public/img/delete_cross.png'></div>
+
+                inputObject.append(innerSpanElement);
+            }
+        }
+    });
+</script>

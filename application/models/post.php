@@ -81,7 +81,7 @@ class Post extends CI_Model
         return true;
     }
 
-    public function add_idea($title, $content, $author_id, $category_id, $type_id){
+    public function add_idea($title, $content, $author_id, $category_id, $type_id, $photo = null){
         $author_id = (int) $author_id;
         $category_id = (int) $category_id;
         $type_id = (int) $type_id;
@@ -97,7 +97,8 @@ class Post extends CI_Model
             'comments' => '0',
             'status' => 'new',
             'categoryid' => $category_id,
-            'typeid' => $type_id
+            'typeid' => $type_id,
+            'photo' => $photo
         );
         $this->db->insert('ideas', $data);
         $idea = $this->db->query("SELECT * FROM ideas WHERE date='$date'")->result()[0];

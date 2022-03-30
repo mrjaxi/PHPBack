@@ -14,6 +14,7 @@ See LICENSE.TXT for details.  -->
     <link rel="icon" type="image/x-icon" href="<?php echo base_url();?>/favicon.ico">
 
     <!-- Loading Bootstrap -->
+    <link href="<?= base_url(); ?>public/js/lightbox/css/lightbox.css" rel="stylesheet" />
     <link href="<?= base_url(); ?>public/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="<?= base_url(); ?>public/bootstrap/css/prettify.css" rel="stylesheet">
 
