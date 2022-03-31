@@ -155,12 +155,17 @@ class Api extends CI_Controller
         $desc = $_POST['description'];
         $catid = $_POST['category'];
         $typeid = $_POST['type'];
+        $files = $_FILES['file'];
         $email = $_POST['email'];
         $pass = $_POST['pass'];
         $name = $_POST['name'];
         if(empty($name)){
             $name = "Незнакомец";
         }
+        if(empty($files['name'][0])){
+            $files = null;
+        }
+//        return var_dump($files);
 
         if(empty($title) or empty($desc) or empty($catid) or empty($typeid) or empty($email)){
             return $this->setResponse(array(
@@ -213,7 +218,9 @@ class Api extends CI_Controller
             $votes = $this->get->getSetting('maxvotes');
             if($this->post->add_user($name, $email, $pass, $votes, false)){
                 $user = $this->get->getUserByEmail($email);
-                $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid);
+                $photo = $this->add_file($files);
+//                return var_dump($photo);
+                $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid, $photo);
                 $userBase64 = $this->encodeBase64User($user->email, $user->pass);
 
                 return $this->setResponse(array(
@@ -229,7 +236,9 @@ class Api extends CI_Controller
                 ));
             }
         } else {
-            $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid);
+            $photo = $this->add_file($files);
+//            return var_dump($photo);
+            $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid, $photo);
             $userBase64 = $this->encodeBase64User($user->email, $user->pass);
 
             return $this->setResponse(array(
@@ -254,6 +263,36 @@ class Api extends CI_Controller
         return $this->setResponse(array(
             "response" => $this->get->categoryExists($id)
         ));
+    }
+
+    private function add_file($files){
+        $photo = null;
+        if($files == null)
+            return $photo;
+
+        for($i=0; $i < count($files['name']); $i++) {
+            if ($files['error'][$i] == 0) {
+                if ($files['size'][$i] == 0) {
+                    continue;
+                }
+
+                $getMime = explode('.', $files['name'][$i]);
+                $mime = strtolower(end($getMime));
+                $types = array('jpg', 'png', 'gif', 'bmp', 'jpeg');
+
+                if (!in_array($mime, $types)) {
+                    continue;
+                }
+
+                $name = 'public/photo/' . md5(microtime() . rand(0, 9999)) . "." . $mime;
+
+                $photo = $photo . $name . ";";
+
+                copy($files['tmp_name'][$i], $name);
+            }
+        }
+
+        return $photo;
     }
 
     private function setResponse($data = array()){

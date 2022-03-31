@@ -36,10 +36,10 @@
     <div class="col-xs-12 col-sm-10">
         <h6 style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;"><?php echo $idea->title; ?></h6>
         <span style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word; style="color:#34495E"><small><?php echo $idea->content; ?></small></span>
-        <?php if($idea->photo !== null): ?>
+        <?php if($idea->photo !== null && count(explode(";", $idea->photo)) != 1 ): ?>
             <div id="carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                    <?php for ($i = 0; $i < count(explode(";", $idea->photo)) - 1; $i++): ?>
+                    <?php for ($i = 0; $i < count(explode(";", $idea->photo)); $i++): ?>
                         <div style="background-color: black" class="item <?php if ($i == 1): echo "active" ?><?php endif; ?>">
                             <a href="<?php echo base_url() . explode(";", $idea->photo)[$i] ?>" data-lightbox="image-<?php echo $i ?>">
                                 <div style="
@@ -64,7 +64,21 @@
                     <span class="sr-only">Следующий</span>
                 </a>
             </div>
-<!--            <a href="http://symfserver.jord/public/photo/f8b6c662cedfe8c8cead02e97723ba6d.png" data-lightbox="roadtrip">Image #2</a>-->
+            <!--            <a href="http://symfserver.jord/public/photo/f8b6c662cedfe8c8cead02e97723ba6d.png" data-lightbox="roadtrip">Image #2</a>-->
+        <?php endif; ?>
+        <?php if($idea->photo !== null && count(explode(";", $idea->photo)) == 1 ): ?>
+            <div style="background-color: black" class="item active">
+                <a href="<?php echo base_url() . $idea->photo ?>" data-lightbox="image-1">
+                    <div style="
+                            background-image: url('<?php echo base_url() . $idea->photo ?>');
+                            background-repeat: no-repeat;
+                            background-size: contain;
+                            background-position: center;
+                            width: 100%;
+                            height: 400px">
+                    </div>
+                </a>
+            </div>
         <?php endif; ?>
         <div>
             <ul class="nav-pills" style="list-style:none;margin-left:-40px">

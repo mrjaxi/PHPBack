@@ -123,6 +123,10 @@ class Home extends CI_Controller {
         $data = $this->getDefaultData();
         $data['comments'] = $comments;
         $data['idea'] = $idea;
+        if($data['idea']->photo != null){
+            $data['idea']->photo = substr($idea->photo, 0, -1);
+        }
+//        return var_dump(json_encode(count(explode(";", $data['idea']->photo))));
 
         $this->load->view('_templates/header', $data);
         $this->load->view('home/view_idea', $data);
