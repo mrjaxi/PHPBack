@@ -332,7 +332,7 @@ class Post extends CI_Model
         $id = (int) $id;
         $idea = $this->db->query("SELECT * FROM ideas WHERE id='$id'")->row();
         $category = $this->get_row_by_id('categories', $idea->categoryid);
-        $type = $this->get_row_by_id('types', $idea->categoryid);
+        $type = $this->get_row_by_id('types', $idea->typeid);
 
         $this->change_status($id, 'considered');
         $this->update_by_id('categories', 'ideas', $category->ideas + 1, $category->id);
