@@ -264,6 +264,15 @@ class Post extends CI_Model
         $sql = $this->db->query("SELECT * FROM comments WHERE ideaid='$id'");
         $comments = $sql->result();
 
+        $ideas = $this->db->query("SELECT photo FROM ideas WHERE id='$id'");
+        $photo = $ideas->result();
+
+        for ($i = 0; $i < count(explode(";", $photo[0]->photo)) - 1; $i++){
+            if (file_exists(explode(";", $photo[0]->photo)[$i])){
+                unlink(explode(";", $photo[0]->photo)[$i]);
+            }
+        }
+
         foreach ($comments as $comment) {
             $commentid = $comment->id;
             $this->db->query("DELETE FROM flags WHERE toflagid='$commentid'");

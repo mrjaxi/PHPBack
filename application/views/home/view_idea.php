@@ -40,9 +40,16 @@
             <div id="carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <?php for ($i = 0; $i < count(explode(";", $idea->photo)) - 1; $i++): ?>
-                        <div class="item <?php if ($i == 1): echo "active" ?><?php endif; ?> img-view-style">
+                        <div style="background-color: black" class="item <?php if ($i == 1): echo "active" ?><?php endif; ?>">
                             <a href="<?php echo base_url() . explode(";", $idea->photo)[$i] ?>" data-lightbox="image-<?php echo $i ?>">
-                                <img src="<?php echo base_url() . explode(";", $idea->photo)[$i] ?>">
+                                <div style="
+                                        background-image: url('<?php echo base_url() . explode(";", $idea->photo)[$i] ?>');
+                                        background-repeat: no-repeat;
+                                        background-size: contain;
+                                        background-position: center;
+                                        width: 100%;
+                                        height: 400px">
+                                </div>
                             </a>
                         </div>
                     <?php endfor; ?>
@@ -188,7 +195,7 @@
 <script src="<?= base_url(); ?>public/js/lightbox/js/lightbox.js"></script>
 <script>
     lightbox.option({
-        'resizeDuration': 200,
+        'resizeDuration': 150,
         'wrapAround': true
     })
 </script>
