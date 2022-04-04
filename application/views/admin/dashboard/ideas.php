@@ -40,7 +40,8 @@
                     <thead>
                     <tr>
                         <th>Идея</th>
-                        <th>Категории</th>
+                        <th>Тип</th>
+                        <th>Категория</th>
                         <th>Комментарии</th>
                         <th>Голоса</th>
                         <th>Дата</th>
@@ -70,6 +71,9 @@
                         ?>">
                             <td>
                                 <a href="<?php echo base_url() . 'home/idea/' . $idea->id . "/" . $freename;?>" target="_blank"><?php echo $idea->title; ?></a>
+                            </td>
+                            <td>
+                                <?php echo $types[$idea->typeid]->name; ?>
                             </td>
                             <td>
                                 <?php echo $categories[$idea->categoryid]->name; ?>

@@ -258,6 +258,19 @@ class Api extends CI_Controller
         ));
     }
 
+    public function closeIssue(){
+        $postData = file_get_contents('php://input');
+        $data = json_decode($postData, true);
+
+        if($data["object_attributes"]["closed_at"] != null){
+            $idea = $this->get->getRowByTable_Column_Value("ideas", "title", $data["object_attributes"]["title"]);
+            if(!empty($idea)){
+                $this->post->change_status($idea->id, "completed");
+                return var_dump(json_encode($idea));
+            }
+        }
+    }
+
     public function test(){
         $id = $_POST["id"];
         return $this->setResponse(array(
@@ -293,6 +306,27 @@ class Api extends CI_Controller
         }
 
         return $photo;
+    }
+
+    private function curl($url, $method, $params=array()){
+        $api_key = "va1wkw9GXs4NhbzgQkGs";
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_POSTFIELDS => json_encode($params),
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/JSON",
+                "Private-Token: " . $api_key
+            ),
+        ));
     }
 
     private function setResponse($data = array()){

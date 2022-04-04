@@ -324,6 +324,10 @@ class Post extends CI_Model
                 $type = $this->get_row_by_id('types', $idea->typeid);
                 $this->update_by_id('types', 'ideas', $type->ideas - 1, $type->id);
             }
+
+            if ($status == 'completed' && $idea->status !== 'new') {
+
+            }
         }
         $this->update_by_id('ideas', 'status', $status, $ideaid);
     }
@@ -337,6 +341,13 @@ class Post extends CI_Model
         $this->change_status($id, 'considered');
         $this->update_by_id('categories', 'ideas', $category->ideas + 1, $category->id);
         $this->update_by_id('types', 'ideas', $type->ideas + 1, $type->id);
+
+        if($type->name == "Сообщить о проблеме") {
+            $this->curl("https://gitlab.atma.company/api/v4/projects/96/issues", "POST", array(
+                "title" => $idea->title,
+                "description" => $idea->content
+            ));
+        }
     }
 
     public function log($string, $to, $toid){
@@ -402,12 +413,38 @@ class Post extends CI_Model
         $this->email->initialize($this->email_config());
 
         $this->email->from($this->getSetting('mainmail'), 'Атмагуру FeedBack');
-        $this->email->to("bumblebeelion@atma.company");
+        $this->email->to("damedvedev@atmapro.ru");
 
         $this->email->subject("Новый отклик");
         $this->email->message($message);
 
         $this->email->send();
+    }
+
+    private function curl($url, $method, $params=array()){
+        $api_key = "va1wkw9GXs4NhbzgQkGs";
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_POSTFIELDS => json_encode($params),
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/JSON",
+                "Private-Token: " . $api_key
+            ),
+        ));
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        return $response;
     }
 }
 

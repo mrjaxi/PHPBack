@@ -17,6 +17,15 @@ class Get extends CI_Model
         $this->load->database();
     }
 
+    public function getRowByTable_Column_Value($table, $column, $value){
+        $result = $this->db->query("SELECT * FROM " . $table . " WHERE " . $column . " = '$value'")->result()[0];
+        if(!empty($result)){
+            return $result;
+        } else {
+            return null;
+        }
+    }
+
     public function getCategories() {
         $result = $this->db->query('SELECT * FROM categories ORDER BY id')->result();
         $categoryList = array();
