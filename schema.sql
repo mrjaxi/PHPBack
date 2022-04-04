@@ -16,8 +16,12 @@ CREATE TABLE IF NOT EXISTS categories (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `description`, `ideas`) VALUES
-(1, 'TEST', 'TEST', 3);
+insert into `categories` (`description`, `id`, `ideas`, `name`) values
+('Всё, что связано с методологией создания эффективного корпоративного обучения', 1, 1, 'Методология'),
+('Всё, что касается приложения', 2, 1, 'Приложение'),
+('Всё, что касается администрирования системы, создания новых карт и прохождение в веб-версии', 3, 0, 'Платформа'),
+('Всe записи, которые не определили к конкретной категории', 4, 0, 'Прочее');
+
 
 -- --------------------------------------------------------
 
@@ -28,7 +32,7 @@ INSERT INTO `categories` (`id`, `name`, `description`, `ideas`) VALUES
 CREATE TABLE IF NOT EXISTS types (
   id int(11) NOT NULL AUTO_INCREMENT,
   name tinytext  NOT NULL,
-  description text  NOT NULL,
+  description text,
   ideas int(11) NOT NULL,
   PRIMARY KEY (id),
   KEY id (id)
@@ -103,13 +107,6 @@ CREATE TABLE IF NOT EXISTS ideas (
 
 -- INSERT INTO `ideas` (`authorid`, `categoryid`, `comments`, `content`, `date`, `id`, `status`, `title`, `votes`) VALUES
 -- (5, 4, 2, 'После принятия или отклонения задания ментором нужно открывать следующее задание', '16/03/22 12:21', 1, 'considered', 'Оптимизировать проверку заданий', 2),
--- (11, 4, 0, 'sdfsdfsdfsdf', '23/03/22 15:02', 15, 'new', 'sdfsdfsdf', 0),
--- (11, 4, 0, 'sdfgsdfgsdfgsddfsdf', '23/03/22 15:17', 20, 'new', 'dfgdfgdfgdfg', 0),
--- (11, 4, 0, 'testtesttetstetstetstetstetestt', '23/03/22 15:30', 22, 'new', 'atmatest', 0),
--- (11, 3, 0, 'dgdfgdfgdfgdfg', '23/03/22 15:40', 27, 'new', 'testttt', 0),
--- (11, 2, 0, 'werwerwerwerwerwer', '23/03/22 15:41', 28, 'new', 'werwerwerwer', 0),
--- (11, 3, 0, 'shdgfkhsdfgskdjfsd', '23/03/22 15:45', 29, 'new', 'sjhdfgkhjsdfjkhsdfkjh', 0),
--- (15, 5, 0, 'сделать звонко и по красоте ваще', '23/03/22 16:50', 33, 'considered', 'Сделать систему обратной связи', 0);
 
 
 -- --------------------------------------------------------
@@ -150,6 +147,22 @@ CREATE TABLE IF NOT EXISTS settings (
 -- Dumping data for table `settings`
 --
 
+insert into `settings` (`id`, `name`, `value`) values
+(1, 'title', 'AtmaGuru');
+(2, 'welcometext-title', 'Добро пожаловать в систему обратной связи');
+(3, 'welcometext-description', 'Здесь вы можете предложить идеи по улучшению наших услуг или проголосовать за идеи других людей');
+(4, 'recaptchapublic', '');
+(5, 'recaptchaprivate', '');
+(6, 'language', 'rus');
+(7, 'maxvotes', '20');
+(8, 'mainmail', 'tip@atmaguru.online');
+(9, 'max_results', '10');
+(10, 'smtp-host', '127.0.0.1');
+(11, 'smtp-port', '25');
+(12, 'smtp-user', '');
+(13, 'smtp-pass', '');
+
+
 -- --------------------------------------------------------
 
 --
@@ -171,6 +184,13 @@ CREATE TABLE IF NOT EXISTS users (
 --
 -- Dumping data for table `users`
 --
+
+insert into `users` (`banned`, `email`, `id`, `isadmin`, `name`, `pass`, `votes`) values
+(0, 'bobcatoshigu@gmail.com', 1, 3, 'jordanpie', '$2a$08$MWfOcPmxZcg5Yv3NFjMhZ.HrIjefMsFQFJIwy8mtrt1SYkSsoCpjO', 20),
+(0, 'yakov@atmadev.ru', 2, 3, 'Yakov', '$2a$08$gtFDNo.OYY6ysPyaWXgNnO/k9qaEsF2WRXWrO9jd4YaQMMxSZlVku', 20),
+(0, 'damedvedev@atmapro.ru', 3, 3, 'Дмитрий Медведев', '$2a$08$xJo6nkE3FYXZlTqplr/XtO5DXeFgLu9MTIeeBT1ZqdpK74CF7A1ie', 20),
+(0, 'BBL@yandex.ru', 4, 0, 'BBL', '$2a$08$OLVEJZzrTTUc8f6O3Xr1YObyT5He774lYaifpKP3V4cqjD8e8MKQ6', 20);
+
 
 -- --------------------------------------------------------
 
