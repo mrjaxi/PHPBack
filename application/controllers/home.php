@@ -121,6 +121,11 @@ class Home extends CI_Controller {
         }
 
         $data = $this->getDefaultData();
+        if(@isset($_SESSION['phpback_userid'])){
+            $data["user_is_vote"] = $this->get->isUserVoteIdea($_SESSION['phpback_userid'], $idea->id);
+        } else {
+            $data["user_is_vote"] = false;
+        }
         $data['comments'] = $comments;
         $data['idea'] = $idea;
         if($data['idea']->photo != null){

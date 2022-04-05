@@ -124,19 +124,21 @@ class Action extends CI_Controller{
         header("Location: " . $idea->url);
     }
 
-    public function unvote($id){
+    public function unvote($voteId, $route = "profile"){
         session_start();
-        $vote = $this->get->get_row_by_id('votes', $id);
+        $vote = $this->get->get_row_by_id('votes', $voteId);
+        $idea = $this->get->getIdea($vote->ideaid);
 
         if ($vote && isset($_SESSION['phpback_userid']) && $_SESSION['phpback_userid'] == $vote->userid) {
-            $idea = $this->get->getIdea($vote->ideaid);
-            $user = $this->get->getUser($vote->userid);
-
             $this->post->update_by_id('ideas', 'votes', $idea->votes - $vote->number, $idea->id);
-            $this->post->delete_row_by_id('votes', $id);
+            $this->post->delete_row_by_id('votes', $voteId);
         }
 
-        header('Location:' . base_url() . 'home/profile/' . $vote->userid);
+        if($route == "profile"){
+            header('Location:' . base_url() . 'home/profile/' . $vote->userid);
+        } else {
+            header("Location: " . $idea->url);
+        }
     }
 
     public function changepassword()

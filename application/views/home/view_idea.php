@@ -25,13 +25,12 @@
 							</b></span><br>
             <div style="margin-top:-10px"><small><?php echo $lang['label_votes']; ?></small></div>
         </div>
-        <div class="dropdown view-idea-vote">
-            <button name="Vote" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width:100%; margin-top: 10px; min-width: 110px"><?php echo $lang['label_vote']; ?></button>
-            <span class="dropdown-arrow dropdown-arrow-inverse"></span>
-            <ul class="dropdown-menu dropdown-inverse">
-                <li><a href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>">1 <?php echo $lang['label_votes']; ?></a></li>
-            </ul>
-        </div>
+        <?php if(!($user_is_vote > 0)  && $idea->status != "completed"): ?>
+            <a href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>" class="btn btn-primary" style="width:100%; margin-top: 10px; min-width: 110px"><?php echo "+"; ?></a>
+        <?php endif; ?>
+        <?php if($user_is_vote > 0 && $idea->status != "completed"): ?>
+            <a href="<?php echo base_url() . "action/unvote/".$user_is_vote."/idea";?>" class="btn btn-primary" style="background-color:#f1c40f; width:100%; margin-top: 10px; min-width: 110px"><?php echo "—"; ?></a>
+        <?php endif; ?>
     </div>
     <div class="col-xs-12 col-sm-10">
         <h6 style="overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;"><?php echo $idea->title; ?></h6>

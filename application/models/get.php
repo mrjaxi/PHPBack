@@ -418,6 +418,18 @@ class Get extends CI_Model
         return $list;
     }
 
+    public function isUserVoteIdea($userid, $ideaid){
+        $userid = (int) $userid;
+        $ideaid = (int) $ideaid;
+        $result = $this->db->query("SELECT * FROM votes WHERE userid='$userid' and ideaid='$ideaid'")->result()[0];
+
+        if(!empty($result)){
+            return $result->id;
+        } else {
+            return false;
+        }
+    }
+
     public function get_admin_users() {
         $sql = $this->db->query("SELECT * FROM users WHERE isadmin <> 0 ORDER BY id");
         return $sql->result();

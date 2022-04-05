@@ -8,7 +8,7 @@
 			  <li><?php echo $lang['label_profiles']; ?></li>
 			  <li class="active"><?php echo $user->name; ?></li>
 	</ol></small>
-	<h5><?php echo $user->name; ?><?php if($user->isadmin): ?><span class="label label-danger" style="margin-left:7px;">Admin</span> <?php endif; ?></h5>
+	<h5><?php echo $user->name; ?><?php if($user->isadmin): ?><span class="label label-danger" style="margin-left:7px;">Админ</span> <?php endif; ?></h5>
 	<?php if(isset($_SESSION['phpback_userid']) && $user->id == $_SESSION['phpback_userid']):?>
 	<?php elseif(isset($_SESSION['phpback_isadmin']) && $_SESSION['phpback_isadmin'] > 1): ?>
 	<a href="<?php echo base_url() . 'admin/users/' . $user->id; ?>" target="_blank"><button type="submit" class="btn btn-danger btn-sm" style="width:130px"><?php echo $lang['label_ban_user']; ?></button></a>
