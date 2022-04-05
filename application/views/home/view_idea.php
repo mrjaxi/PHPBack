@@ -23,7 +23,26 @@
                                 echo "m";
                             }?>
 							</b></span><br>
-            <div style="margin-top:-10px"><small><?php echo $lang['label_votes']; ?></small></div>
+            <div style="margin-top:-10px"><small>
+                    <?php function num_word($value, $words, $show = true)
+                    {
+                        $num = $value % 100;
+                        if ($num > 19) {
+                            $num = $num % 10;
+                        }
+
+                        $out = ($show) ?  $value . ' ' : '';
+                        switch ($num) {
+                            case 1:  $out .= $words[0]; break;
+                            case 2:
+                            case 3:
+                            case 4:  $out .= $words[1]; break;
+                            default: $out .= $words[2]; break;
+                        }
+
+                        return $out;
+                    }
+                    echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов'), false)?></small></div>
         </div>
         <?php if(!($user_is_vote > 0)  && $idea->status != "completed"): ?>
             <a href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>" class="btn btn-primary" style="width:100%; margin-top: 10px; min-width: 110px"><?php echo "+"; ?></a>
