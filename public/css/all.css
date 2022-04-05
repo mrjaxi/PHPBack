@@ -1,32 +1,32 @@
 a:hover {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 body {
-    overflow-x: hidden;
+	overflow-x: hidden;
 }
 
 .breadcrumb {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .breadcrumb-wrapper
 {
-    font-size: 83%;
+	font-size: 83%;
 	line-height: 2;
 	margin-bottom: 10px;
 }
 
 
 .header {
-    background-color: #ffffff;
+	background-color: #ffffff;
 	border: solid 2px #ebedef;
-    margin-bottom: 25px;
+	margin-bottom: 25px;
 	padding: 10px;
 }
 
 .header--title-container {
-    padding-left: 30px;
+	padding-left: 30px;
 }
 
 .header--title {
@@ -34,11 +34,11 @@ body {
 }
 
 .logged-as-label {
-    color:#ECF0F1;
+	color:#ECF0F1;
 }
 
 .nav.nav-tabs {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .ideas-completed, .ideas-started, .ideas-planned, .ideas-considered
@@ -134,7 +134,7 @@ body {
 
 
 /* Line up labels and badges with text better */
-.label, .badge { 
+.label, .badge {
 	vertical-align:2px;
 }
 
@@ -215,14 +215,15 @@ body {
 }
 
 .sub_admin_logout_button {
-	font-size: 15px;
+	font-size: 17px;
 	color: #ec7063;
 	background-color: #ffffff;
 	border: solid 1px #ec7063;
-	border-radius: 35px;
+	border-radius: 30px;
 	padding: 0px 13px 0px 13px;
-	margin-left: 10px;
 	transition: all .4s ease;
+	line-height: 23px;
+	font-weight: 700;
 }
 
 .sub_admin_logout_button:hover{
@@ -231,14 +232,15 @@ body {
 }
 
 .sub_admin_name_button {
-	font-size: 15px;
+	font-size: 17px;
 	color: #2C71F5;
 	background-color: #ffffff;
 	border: solid 1px #2C71F5;
-	border-radius: 35px;
+	border-radius: 30px;
 	padding: 0px 13px 0px 13px;
-	margin-left: 20px;
 	transition: all .4s ease;
+	line-height: 23px;
+	font-weight: 700;
 }
 
 .sub_admin_name_button:hover {

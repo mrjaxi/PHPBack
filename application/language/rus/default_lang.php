@@ -36,7 +36,7 @@ $lang['label_votes'] = 'Голос';
 $lang['uploaded_files'] = 'Выбранные файлы';
 
 $lang['text_shared_this_idea'] = 'Поделился этой идеей';
-$lang['text_flag_comment'] = 'Удалить комментарий';
+$lang['text_flag_comment'] = 'Отметить комментарий';
 $lang['text_create_an_account'] = 'или создать аккаунт';
 $lang['text_registration_success'] = 'Регистрация успешна';
 $lang['text_select_category'] = 'Выберите категорию...';

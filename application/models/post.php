@@ -141,7 +141,7 @@ class Post extends CI_Model
         if($sql->num_rows() != 0) return false;
 
         $data = array(
-            'id' => '',
+//            'id' => '',
             'toflagid' => $cid,
             'userid' => $userid,
             'date' => date("d/m/y H:i"),

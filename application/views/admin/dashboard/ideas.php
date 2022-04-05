@@ -78,8 +78,24 @@
                             <td>
                                 <?php echo $categories[$idea->categoryid]->name; ?>
                             </td>
-                            <td>
-                                <?php echo $idea->comments; ?> Комментариев
+                            <td><?php function num_word($value, $words, $show = true)
+                                {
+                                    $num = $value % 100;
+                                    if ($num > 19) {
+                                        $num = $num % 10;
+                                    }
+
+                                    $out = ($show) ?  $value . ' ' : '';
+                                    switch ($num) {
+                                        case 1:  $out .= $words[0]; break;
+                                        case 2:
+                                        case 3:
+                                        case 4:  $out .= $words[1]; break;
+                                        default: $out .= $words[2]; break;
+                                    }
+
+                                    return $out;
+                                }echo num_word($idea->comments, array('Комментарий', 'Комментария', 'Комментариев')); ?>
                             </td>
                             <td>
                                 <?php echo $idea->votes; ?> Голосов
@@ -260,7 +276,7 @@
                             <td>
                     <span style="font-size:17px;">Выбран <span class="badge"><?php echo $comment['votes']; ?></span><span style="font-size:17px;"> раз</span>
                     <div class="pull-right">
-                      <button name="Delete votes" type="submit" class="btn btn-warning btn-sm" style="width:130px" <?php $temp = base_url() . 'adminaction/deletecomment/' . $comment['id']; ?> onclick="popup_sure('Вы уверены, что хотите удалить этот комментарий?','<?php echo $temp; ?>');">Удалить комментарий</button>
+                      <button name="Delete votes" type="submit" class="btn btn-warning btn-sm" style="min-width:130px" <?php $temp = base_url() . 'adminaction/deletecomment/' . $comment['id']; ?> onclick="popup_sure('Вы уверены, что хотите удалить этот комментарий?','<?php echo $temp; ?>');">Удалить комментарий</button>
                       <?php if($_SESSION['phpback_isadmin'] > 1): ?><a href="<?php echo base_url() . 'admin/users/' . $comment['userid']; ?>"><button type="submit" class="btn btn-danger btn-sm" style="width:130px">Заблокировать</button></a><?php endif;?>
                     </div>
                             </td>
