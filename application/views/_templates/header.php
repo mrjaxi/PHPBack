@@ -25,68 +25,86 @@ See LICENSE.TXT for details.  -->
     <!-- Loading custom styles-->
     <link href="<?php echo base_url(); ?>public/css/all.css" rel="stylesheet">
 
-  <script type="text/javascript">
-  function showtable(tableid, tablelink){
-      document.getElementById('activitytable').style.display = 'none';
-      document.getElementById('ideastable').style.display = 'none';
-      document.getElementById('commentstable').style.display = 'none';
-      document.getElementById(tableid).style.display = '';
-      document.getElementById("table1").className = "";
-      document.getElementById("table2").className = "";
-      document.getElementById("table3").className = "";
-      document.getElementById(tablelink).className = "active";
-  }
-  function showtable4(tableid, tablelink){
-      document.getElementById('resetvotestable').style.display = 'none';
-      document.getElementById('changepasswordtable').style.display = 'none';
-      document.getElementById(tableid).style.display = '';
-      document.getElementById("table4").className = "";
-      document.getElementById("table5").className = "";
-      document.getElementById(tablelink).className = "active";
-  }
-  function popup_sure(text, url) {
-        if (confirm(text) == true) {
-           window.location = url;
+    <script type="text/javascript">
+        function showtable(tableid, tablelink){
+            document.getElementById('activitytable').style.display = 'none';
+            document.getElementById('ideastable').style.display = 'none';
+            document.getElementById('commentstable').style.display = 'none';
+            document.getElementById(tableid).style.display = '';
+            document.getElementById("table1").className = "";
+            document.getElementById("table2").className = "";
+            document.getElementById("table3").className = "";
+            document.getElementById(tablelink).className = "active";
         }
-  }
+        function showtable4(tableid, tablelink){
+            document.getElementById('resetvotestable').style.display = 'none';
+            document.getElementById('changepasswordtable').style.display = 'none';
+            document.getElementById(tableid).style.display = '';
+            document.getElementById("table4").className = "";
+            document.getElementById("table5").className = "";
+            document.getElementById(tablelink).className = "active";
+        }
+        function popup_sure(text, url) {
+            if (confirm(text) == true) {
+                window.location = url;
+            }
+        }
 
-  function checkFilledTextArea() {
-      if (document.getElementById('checkField').value.trim() === ""){
-          document.getElementById('checkField').value = "";
-          alert("Вы не заполнили поле")
-          return false
-      } else {
-          return true
-      }
-  }
-  </script>
+        function checkFilledTextArea() {
+            if (document.getElementById('checkField').value.trim() === ""){
+                document.getElementById('checkField').value = "";
+                alert("Вы не заполнили поле")
+                return false
+            } else {
+                return true
+            }
+        }
+    </script>
 </head>
 <body>
-  <div class="row header">
+<?php function num_word($value, $words, $show = true)
+{
+    $num = $value % 100;
+    if ($num > 19) {
+        $num = $num % 10;
+    }
+
+    $out = ($show) ?  $value . ' ' : '';
+    switch ($num) {
+        case 1:  $out .= $words[0]; break;
+        case 2:
+        case 3:
+        case 4:  $out .= $words[1]; break;
+        default: $out .= $words[2]; break;
+    }
+
+    return $out;
+}?>
+<div class="row header">
     <div class="pull-left header--title-container">
-<!--      <h4 id="header--title">--><?//= $title; ?><!--</h4>-->
+        <!--      <h4 id="header--title">--><?//= $title; ?><!--</h4>-->
         <a href="<?php echo base_url() ?>">
             <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>"/>
         </a>
     </div>
     <?php if(@isset($_SESSION['phpback_userid'])): ?>
-    <div class="pull-right" style="padding-right:40px;">
-        <a href="<?php echo base_url() . 'home/profile/' . $_SESSION['phpback_userid'].'/'.Display::slugify($_SESSION['phpback_username']); ?>">
-            <button type="button" class="sub_username_profile_button" style="padding: 10px 25px 10px 25px"><?php echo $_SESSION['phpback_username']; ?></button>
-        </a>
-          <a href="<?php echo base_url() . 'action/logout'; ?>">
-            <button type="button" class="sub_logout_button" style="padding: 10px 25px 10px 25px"><?php echo $lang['label_log_out']; ?></button>
-          </a>
-    </div>
+        <div class="pull-right" style="padding-right:40px;">
+            <a href="<?php echo base_url() . 'home/profile/' . $_SESSION['phpback_userid'].'/'.Display::slugify($_SESSION['phpback_username']); ?>">
+                <button type="button" class="sub_username_profile_button" style="padding: 10px 25px 10px 25px"><?php echo $_SESSION['phpback_username']; ?></button>
+            </a>
+            <a href="<?php echo base_url() . 'action/logout'; ?>">
+                <button type="button" class="sub_logout_button" style="padding: 10px 25px 10px 25px"><?php echo $lang['label_log_out']; ?></button>
+            </a>
+        </div>
     <?php else : ?>
-    <div class="pull-right" style="padding-right:40px;">
-      <a href="<?php echo base_url() . 'home/login'; ?>">
-          <button type="button" class="sub_login_button_style" style="padding: 10px 15px 10px 15px"><?php echo $lang['label_log_in']; ?></button>
-      </a>
-    </div>
+        <div class="pull-right" style="padding-right:40px;">
+            <a href="<?php echo base_url() . 'home/login'; ?>">
+                <button type="button" class="sub_login_button_style" style="padding: 10px 15px 10px 15px"><?php echo $lang['label_log_in']; ?></button>
+            </a>
+        </div>
     <?php endif; ?>
 
-  </div>
-  
-  <div class="container">
-  <div class="row">
+</div>
+
+<div class="container">
+    <div class="row">

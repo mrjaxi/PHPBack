@@ -96,7 +96,7 @@
                 </div>
                 <div style="margin-top:-10px">
                     <ul class="nav-pills" style="list-style:none;margin-left:-40px">
-                        <li><small class="result-idea--comments"><?php echo $idea->comments; ?> <?php echo $lang['label_comments']; ?></small></li>
+                        <li><small class="result-idea--comments"><?php echo num_word($idea->comments, array('Комментарий', 'Комментария', 'Комментариев')); ?></small></li>
                     </ul><br><br>
                 </div>
             </div>

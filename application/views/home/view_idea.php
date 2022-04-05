@@ -23,26 +23,7 @@
                                 echo "m";
                             }?>
 							</b></span><br>
-            <div style="margin-top:-10px"><small>
-                    <?php function num_word($value, $words, $show = true)
-                    {
-                        $num = $value % 100;
-                        if ($num > 19) {
-                            $num = $num % 10;
-                        }
-
-                        $out = ($show) ?  $value . ' ' : '';
-                        switch ($num) {
-                            case 1:  $out .= $words[0]; break;
-                            case 2:
-                            case 3:
-                            case 4:  $out .= $words[1]; break;
-                            default: $out .= $words[2]; break;
-                        }
-
-                        return $out;
-                    }
-                    echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов'), false)?></small></div>
+            <div style="margin-top:-10px"><small><?php echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов'), false)?></small></div>
         </div>
         <?php if(!($user_is_vote > 0)  && $idea->status != "completed"): ?>
             <a href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>" class="btn btn-primary" style="width:100%; margin-top: 10px; min-width: 110px"><?php echo "+"; ?></a>
@@ -143,7 +124,7 @@
                                     break;
                             }
                             ?></small></span></li>
-                <li style="padding-right:10px"><small><?php echo $idea->comments;?> <?php echo $lang['label_comments']; ?></small></li>
+                <li style="padding-right:10px"><small><?php echo num_word($idea->comments, array('Комментарий', 'Комментария', 'Комментариев')); ?></small></li>
                 <li style="padding-right:10px"><a href="<?php echo base_url() . 'home/category/' . $idea->categoryid . '/' . str_replace(" ", "-", $categories[$idea->categoryid]->name); ?>"><small><?php echo $categories[$idea->categoryid]->name;?></small></a></li>
             </ul><br><br>
             <small><span class="glyphicon glyphicon-user"></span> <a href="<?php echo base_url() . 'home/profile/' . $idea->authorid . '/' . str_replace(" ", "-", $idea->user); ?>"><?php echo $idea->user; ?></a> <i><?php echo $lang['text_shared_this_idea']; ?></i> <span style='color:#555;margin-left:30px;'><?php echo $idea->date; ?></span></small>

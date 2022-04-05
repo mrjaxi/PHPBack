@@ -1,12 +1,12 @@
 <?php
     $lang['log_commented'] = 'Идея %s прокомментирована';
-    $lang['log_comment_deleted'] = 'Комментарий удален %s';
-    $lang['log_idea_approved'] = 'Идея одобрена %s';
-    $lang['log_idea_deleted'] = 'Идея отклонена %s';
-    $lang['log_idea_status'] = 'Статус идеи изменён %s1 to %s2';
+    $lang['log_comment_deleted'] = 'Комментарий %s удален';
+    $lang['log_idea_approved'] = 'Идея %s одобрена';
+    $lang['log_idea_deleted'] = 'Идея %s отклонена';
+    $lang['log_idea_status'] = 'Статус идеи %s1 изменён на %s2';
     $lang['log_user_registered'] = 'Пользователь зарегистрирован';
     $lang['log_new_idea'] = 'Добавлена новая идея';
-    $lang['log_idea_voted'] = 'Идея %s1 за которую %s2 проголосовали';
+    $lang['log_idea_voted'] = 'За идею %s1 отдали %s2 голос';
     $lang['log_user_banned'] = 'Пользователь %s1 заблокирован на %s2 дней';
     $lang['log_user_was_banned'] = 'Пользователь %s был заблокирован';
     $lang['log_user_unbanned'] = 'Пользователь %s был разблокирован';
