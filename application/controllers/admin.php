@@ -83,7 +83,7 @@ class Admin extends CI_Controller {
             }
             $type = array();
             foreach ($data['types'] as $t) {
-                $cat[] = $t->id;
+                $type[] = $t->id;
                 $s = "type-".$t->id;
                 $data['form'][$s] = 1;
             }
