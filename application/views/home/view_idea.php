@@ -26,10 +26,14 @@
             <div style="margin-top:-10px"><small><?php echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов'), false)?></small></div>
         </div>
         <?php if(!($user_is_vote > 0)  && $idea->status != "completed"): ?>
-            <a href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>" class="btn btn-primary" style="width:100%; margin-top: 10px; min-width: 110px"><?php echo "+"; ?></a>
+            <a style="display: flex; margin-top: 10px; min-width: 110px; padding: 0;height: 40px;justify-content: center; align-items: center" href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>" class="btn btn-primary">
+                <img style="filter: invert(100%) sepia(100%) saturate(7%) hue-rotate(156deg) brightness(104%) contrast(102%); width: 20px;height: 20px" src="<?php echo base_url() . "public/img/thumbs-up.png" ?>" />
+            </a>
         <?php endif; ?>
         <?php if($user_is_vote > 0 && $idea->status != "completed"): ?>
-            <a href="<?php echo base_url() . "action/unvote/".$user_is_vote."/idea";?>" class="btn btn-primary" style="background-color:#f1c40f; width:100%; margin-top: 10px; min-width: 110px"><?php echo "—"; ?></a>
+            <a style="display: flex; margin-top: 10px; min-width: 110px; padding: 0; height: 40px;justify-content: center; align-items: center; background-color:#e74c3c" href="<?php echo base_url() . "action/unvote/".$user_is_vote."/idea";?>" class="btn btn-primary">
+                <img style="filter: invert(100%) sepia(100%) saturate(7%) hue-rotate(156deg) brightness(104%) contrast(102%); width: 20px;height: 20px" src="<?php echo base_url() . "public/img/thumbs-down.png" ?>" />
+            </a>
         <?php endif; ?>
     </div>
     <div class="col-xs-12 col-sm-10">
