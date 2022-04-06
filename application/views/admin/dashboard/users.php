@@ -2,9 +2,11 @@
     <div class="col-md-10 col-md-offset-1 dashboard-center">
     <nav style="background-color: #ffffff" class="navbar navbar-inverse" role="navigation">
       <div class="navbar-header">
-        <div class="logosmall">
-            <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>">
-        </div>
+          <a href="<?php echo base_url() ?>">
+            <div class="logosmall">
+                <img src="<?php echo base_url() . 'public/img/logotype_atmaguru.svg'?>">
+            </div>
+          </a>
       </div>
       <div style="margin-top: 7px" class="collapse navbar-collapse" id="navbar-collapse-01">
         <ul class="nav navbar-nav">

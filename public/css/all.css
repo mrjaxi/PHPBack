@@ -223,7 +223,6 @@ body {
 	padding: 0px 13px 0px 13px;
 	transition: all .4s ease;
 	line-height: 23px;
-	font-weight: 700;
 }
 
 .sub_admin_logout_button:hover{
@@ -240,7 +239,6 @@ body {
 	padding: 0px 13px 0px 13px;
 	transition: all .4s ease;
 	line-height: 23px;
-	font-weight: 700;
 }
 
 .sub_admin_name_button:hover {

@@ -31,7 +31,7 @@
                     <li id="table5">
                         <a onclick="showtable4('changepasswordtable','table5');"><?php echo $lang['label_change_password']; ?></a>
                     </li>
-                    <?php if($_SESSION['phpback_isadmin'] >= 1) : ?><li><a href="<?php echo base_url() . 'admin/'; ?>" target="_blank">Панель администратора</a></li><?php endif; ?>
+                    <?php if($_SESSION['phpback_isadmin'] >= 1) : ?><li><a href="<?php echo base_url() . 'admin/'; ?>">Панель администратора</a></li><?php endif; ?>
                 </ul>
                 <table id="resetvotestable" class="table table-striped">
                     <thead>
