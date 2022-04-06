@@ -96,7 +96,9 @@ CREATE TABLE IF NOT EXISTS ideas (
   comments int(11) NOT NULL,
   status tinytext  NOT NULL,
   categoryid int(11) NOT NULL,
-  typeid int(11) NOT NULL,
+  typeid int(11),
+  photo text,
+  href text,
   PRIMARY KEY (id),
   KEY id (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

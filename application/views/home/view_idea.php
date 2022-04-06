@@ -84,6 +84,10 @@
             </div>
         <?php endif; ?>
         <div>
+            <small><span style="margin-top: 15px" class="glyphicon glyphicon-user"></span> <a href="<?php echo base_url() . 'home/profile/' . $idea->authorid . '/' . str_replace(" ", "-", $idea->user); ?>"><?php echo $idea->user; ?></a> <i><?php echo $lang['text_shared_this_idea']; ?></i> <span style='color:#555;margin-left:30px;'><?php echo $idea->date; ?></span></small>
+            <?php if(!empty($idea->href) && isset($_SESSION['phpback_isadmin']) && $_SESSION['phpback_isadmin']) {
+                echo "<br><small>Отправлено из: <a href='{$idea->href}'> {$idea->href} </a></small>";
+            }?>
             <ul class="nav-pills" style="list-style:none;margin-left:-40px">
                 <li style="padding-right:10px"><span class="label label-<?php
                     switch ($idea->status) {
@@ -130,11 +134,7 @@
                             ?></small></span></li>
                 <li style="padding-right:10px"><small><?php echo num_word($idea->comments, array('Комментарий', 'Комментария', 'Комментариев')); ?></small></li>
                 <li style="padding-right:10px"><a href="<?php echo base_url() . 'home/category/' . $idea->categoryid . '/' . str_replace(" ", "-", $categories[$idea->categoryid]->name); ?>"><small><?php echo $categories[$idea->categoryid]->name;?></small></a></li>
-            </ul><br><br>
-            <small><span class="glyphicon glyphicon-user"></span> <a href="<?php echo base_url() . 'home/profile/' . $idea->authorid . '/' . str_replace(" ", "-", $idea->user); ?>"><?php echo $idea->user; ?></a> <i><?php echo $lang['text_shared_this_idea']; ?></i> <span style='color:#555;margin-left:30px;'><?php echo $idea->date; ?></span></small>
-            <?php if(!empty($idea->href) && isset($_SESSION['phpback_isadmin']) && $_SESSION['phpback_isadmin']) {
-                echo "<br><small>Отправлено из: <a href='{$idea->href}'> {$idea->href} </a></small>";
-            }?>
+            </ul>
         </div>
     </div>
 </div>
