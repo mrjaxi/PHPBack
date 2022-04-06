@@ -83,7 +83,7 @@
                             <td><?php echo num_word($idea->comments, array('Комментарий', 'Комментария', 'Комментариев')); ?>
                             </td>
                             <td>
-                                <?php echo $idea->votes; ?> Голосов
+                                <?php echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов')); ?>
                             </td>
                             <td>
                                 <?php echo $idea->date; ?>

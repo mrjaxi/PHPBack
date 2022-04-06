@@ -81,7 +81,7 @@ class Post extends CI_Model
         return true;
     }
 
-    public function add_idea($title, $content, $author_id, $category_id, $type_id, $photo = null){
+    public function add_idea($title, $content, $author_id, $category_id, $type_id = null, $photo = null, $href = null){
         $author_id = (int) $author_id;
         $category_id = (int) $category_id;
         $type_id = (int) $type_id;
@@ -98,7 +98,8 @@ class Post extends CI_Model
             'status' => 'new',
             'categoryid' => $category_id,
             'typeid' => $type_id,
-            'photo' => $photo
+            'photo' => $photo,
+            'href' => $href
         );
         $this->db->insert('ideas', $data);
         $idea = $this->db->query("SELECT * FROM ideas WHERE date='$date'")->result()[0];
@@ -112,8 +113,6 @@ class Post extends CI_Model
     }
 
     public function add_comment($idea_id, $comment, $user_id){
-
-
         $idea_id = (int) $idea_id;
         $user_id = (int) $user_id;
         if($idea_id < 1 || $user_id < 1) return false;
@@ -125,11 +124,15 @@ class Post extends CI_Model
             'date' => date("d/m/y H:i"),
         );
         $this->db->insert('comments', $data);
+        $newcomment = $this->db->query("select * from comments ORDER BY id DESC limit 1")->row();
 
-        $sql = $this->db->query("SELECT * FROM ideas WHERE id='$idea_id'");
-        $idea = $sql->row();
+        $idea = $this->db->query("SELECT * FROM ideas WHERE id='$idea_id'")->row();
+        $ideaUser = $this->db->query("SELECT * FROM users WHERE id='" . $idea->authorid . "'")->row();
         $this->update_by_id('ideas', 'comments', $idea->comments + 1, $idea_id);
         $this->log(str_replace('%s', '#' . $idea_id, $this->lang->language['log_commented']), "user", $user_id);
+
+        $message = "К вашему отзыву оставили новый комментарий: $comment\n\nСсылка: " . base_url() . "home/idea/" . $idea->id . "#comment" . $newcomment->id;
+        $this->sendEmail($message, "Новый комментарий", $ideaUser->email);
         return true;
     }
 
@@ -306,30 +309,48 @@ class Post extends CI_Model
     public function change_status($ideaid, $status){
         $ideaid = (int) $ideaid;
         $idea = $this->db->query("SELECT * FROM ideas WHERE id='$ideaid'")->row();
+        $ideaUser = $this->db->query("SELECT * FROM users WHERE id='" . $idea->authorid . "'")->row();
+        $status_text = $idea->status;
+        switch ($idea->status) {
+            case 'considered':
+                $status_text = $this->lang->language['idea_considered'];
+                break;
+            case 'declined':
+                $status_text = $this->lang->language['idea_declined'];
+                break;
+            case 'started':
+                $status_text = $this->lang->language['idea_started'];
+                break;
+            case 'planned':
+                $status_text = $this->lang->language['idea_planned'];
+                break;
+            case 'completed':
+                $status_text = $this->lang->language['idea_completed'];
+                break;
+            case 'new':
+                $status_text = $this->lang->language['idea_new'];
+                break;
+        }
 
-        if ($status == 'completed' || $status == 'declined') {
-            //Restore all votes
-            $sql = $this->db->query("SELECT * FROM votes WHERE ideaid='$ideaid'");
-            $votes = $sql->result();
-            foreach ($votes as $vote) {
-                $user = $this->get_row_by_id('users', $vote->userid);
-                $this->update_by_id('users', 'votes', $user->votes + $vote->number, $vote->userid);
-            }
-            $this->db->query("DELETE FROM votes WHERE ideaid='$ideaid'");
+        $category = $this->get_row_by_id('categories', $idea->categoryid);
+        $type = $this->get_row_by_id('types', $idea->typeid);
 
-            if ($status == 'declined' && $idea->status !== 'new') {
-                $category = $this->get_row_by_id('categories', $idea->categoryid);
+        if ($idea->status != 'completed' && $idea->status != 'declined' && $idea->status !== 'new') {
+            if ($status == 'completed' || $status == 'declined' || $status == 'new') {
                 $this->update_by_id('categories', 'ideas', $category->ideas - 1, $category->id);
-
-                $type = $this->get_row_by_id('types', $idea->typeid);
                 $this->update_by_id('types', 'ideas', $type->ideas - 1, $type->id);
             }
-
-            if ($status == 'completed' && $idea->status !== 'new') {
-
+        }
+        if($idea->status == 'completed' || $idea->status == 'declined' || $idea->status == 'new'){
+            if($status != 'completed' && $status != 'declined' && $status != 'new') {
+                $this->update_by_id('categories', 'ideas', $category->ideas + 1, $category->id);
+                $this->update_by_id('types', 'ideas', $type->ideas + 1, $type->id);
             }
         }
         $this->update_by_id('ideas', 'status', $status, $ideaid);
+
+        $message = "Статус вашего отзыва изменён на '$status_text'.\n\nСсылка: " . base_url() . "home/idea/" . $idea->id;
+        $this->sendEmail($message, "Статус отзыва изменён", $ideaUser->email);
     }
 
     public function approveidea($id){
@@ -408,14 +429,14 @@ class Post extends CI_Model
         return $config;
     }
 
-    private function sendEmail($message){
+    private function sendEmail($message, $subject="Новый отзыв", $tomail="damedvedev@atmapro.ru"){
 //        $message = "Добро пожаловать в систему обратной связи: $title\n\nВаш Email: $email\nВаш пароль: $pass\n\n\nПожалуйста, авторизуйтесь:" . base_url() . "home/login\n";
         $this->email->initialize($this->email_config());
 
         $this->email->from($this->getSetting('mainmail'), 'Атмагуру FeedBack');
-        $this->email->to("damedvedev@atmapro.ru");
+        $this->email->to($tomail);
 
-        $this->email->subject("Новый отклик");
+        $this->email->subject($subject);
         $this->email->message($message);
 
         $this->email->send();

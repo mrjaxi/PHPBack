@@ -25,12 +25,12 @@
 							</b></span><br>
             <div style="margin-top:-10px"><small><?php echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов'), false)?></small></div>
         </div>
-        <?php if(!($user_is_vote > 0)  && $idea->status != "completed"): ?>
+        <?php if(!($user_is_vote > 0)  && $idea->status != "completed" && $idea->status != 'declined'): ?>
             <a style="display: flex; margin-top: 10px; min-width: 110px; padding: 0;height: 40px;justify-content: center; align-items: center" href="<?php echo base_url() . "action/vote/1/" . $idea->id;?>" class="btn btn-primary">
                 <img style="filter: invert(100%) sepia(100%) saturate(7%) hue-rotate(156deg) brightness(104%) contrast(102%); width: 20px;height: 20px" src="<?php echo base_url() . "public/img/thumbs-up.png" ?>" />
             </a>
         <?php endif; ?>
-        <?php if($user_is_vote > 0 && $idea->status != "completed"): ?>
+        <?php if($user_is_vote > 0 && $idea->status != "completed" && $idea->status != 'declined'): ?>
             <a style="display: flex; margin-top: 10px; min-width: 110px; padding: 0; height: 40px;justify-content: center; align-items: center; background-color:#e74c3c" href="<?php echo base_url() . "action/unvote/".$user_is_vote."/idea";?>" class="btn btn-primary">
                 <img style="filter: invert(100%) sepia(100%) saturate(7%) hue-rotate(156deg) brightness(104%) contrast(102%); width: 20px;height: 20px" src="<?php echo base_url() . "public/img/thumbs-down.png" ?>" />
             </a>
@@ -132,27 +132,40 @@
                 <li style="padding-right:10px"><a href="<?php echo base_url() . 'home/category/' . $idea->categoryid . '/' . str_replace(" ", "-", $categories[$idea->categoryid]->name); ?>"><small><?php echo $categories[$idea->categoryid]->name;?></small></a></li>
             </ul><br><br>
             <small><span class="glyphicon glyphicon-user"></span> <a href="<?php echo base_url() . 'home/profile/' . $idea->authorid . '/' . str_replace(" ", "-", $idea->user); ?>"><?php echo $idea->user; ?></a> <i><?php echo $lang['text_shared_this_idea']; ?></i> <span style='color:#555;margin-left:30px;'><?php echo $idea->date; ?></span></small>
+            <?php if(!empty($idea->href) && isset($_SESSION['phpback_isadmin']) && $_SESSION['phpback_isadmin']) {
+                echo "<br><small>Отправлено из: <a href='{$idea->href}'> {$idea->href} </a></small>";
+            }?>
         </div>
     </div>
 </div>
 
 <?php if(isset($_SESSION['phpback_isadmin']) && $_SESSION['phpback_isadmin']): ?>
-    <div class="row">
+    <div class="row" style="margin-top: 10px; margin-bottom: 10px">
         <div class="col-md-10 col-md-offset-2">
             <ul class="nav-pills" style="list-style:none;margin-left:-40px;">
                 <li>
                     <?php if($idea->status == 'new'): ?>
                         <a href="<?php echo base_url() . 'adminaction/approveidea/' . $idea->id; ?>"><button type="submit" class="btn btn-success btn-sm" style="width:130px; border-radius: 20px"><?php echo $lang['label_idea_approve']; ?></button></a>
-                    <?php elseif($idea->status != 'completed' && $idea->status != 'declined'): ?>
+                    <?php else: ?>
                         <div class="dropdown">
                             <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" style="width:130px;border-radius: 20px"><?php echo $lang['label_change_status']; ?></button>
                             <span class="dropdown-arrow dropdown-arrow-inverse"></span>
                             <ul class="dropdown-menu dropdown-inverse">
-                                <li><a href="<?php echo base_url() . "adminaction/ideastatus/declined/" . $idea->id;?>"><?php echo $lang['idea_declined']; ?></a></li>
-                                <li><a href="<?php echo base_url() . "adminaction/ideastatus/considered/" . $idea->id;?>"><?php echo $lang['idea_considered']; ?></a></li>
-                                <li><a href="<?php echo base_url() . "adminaction/ideastatus/planned/" . $idea->id;?>"><?php echo $lang['idea_planned']; ?></a></li>
-                                <li><a href="<?php echo base_url() . "adminaction/ideastatus/started/" . $idea->id;?>"><?php echo $lang['idea_started']; ?></a></li>
-                                <li><a href="<?php echo base_url() . "adminaction/ideastatus/completed/" . $idea->id;?>"><?php echo $lang['idea_completed']; ?></a></li>
+                                <?php if($idea->status != 'declined'): ?>
+                                    <li><a href="<?php echo base_url() . "adminaction/ideastatus/declined/" . $idea->id;?>"><?php echo $lang['idea_declined']; ?></a></li>
+                                <?php endif; ?>
+                                <?php if($idea->status != 'considered'): ?>
+                                    <li><a href="<?php echo base_url() . "adminaction/ideastatus/considered/" . $idea->id;?>"><?php echo $lang['idea_considered']; ?></a></li>
+                                <?php endif; ?>
+                                <?php if($idea->status != 'planned'): ?>
+                                    <li><a href="<?php echo base_url() . "adminaction/ideastatus/planned/" . $idea->id;?>"><?php echo $lang['idea_planned']; ?></a></li>
+                                <?php endif; ?>
+                                <?php if($idea->status != 'started'): ?>
+                                    <li><a href="<?php echo base_url() . "adminaction/ideastatus/started/" . $idea->id;?>"><?php echo $lang['idea_started']; ?></a></li>
+                                <?php endif; ?>
+                                <?php if($idea->status != 'completed'): ?>
+                                    <li><a href="<?php echo base_url() . "adminaction/ideastatus/completed/" . $idea->id;?>"><?php echo $lang['idea_completed']; ?></a></li>
+                                <?php endif; ?>
                             </ul>
                         </div>
                     <?php endif; ?>
@@ -169,24 +182,9 @@
     </div>
 <?php endif; ?>
 
-<?php if(isset($_SESSION['phpback_userid'])): ?>
-    <div class="row">
-        <div class="col-md-10 col-md-offset-2" style="margin-top:10px">
-            <form role="form" method="post" action="<?php echo base_url() . 'action/comment/' . $idea->id; ?>" onsubmit="return checkFilledTextArea()" >
-                <div class="form-group">
-                    <label>Комментарий</label>
-                    <textarea id="checkField" class="form-control" rows="4" name="content"></textarea>
-                </div>
-                <input type="hidden" name="ideaname" value="<?php echo str_replace(" ", "-", $idea->title); ?>">
-                <button id="buttonSend" type="submit" name="commentbutton" class="btn btn-default" style="background-color: #2C71F5"><?php echo $lang['label_submit']; ?></button>
-            </form>
-        </div>
-    </div>
-<?php endif; ?>
-
 <?php foreach ($comments as $comment) : ?>
     <div class="row">
-        <div class="col-md-10 col-md-offset-2">
+        <div id="comment<?php echo $comment->id; ?>" class="col-md-10 col-md-offset-2">
             <div class="comment-box">
                 <span class="glyphicon glyphicon-comment" style="margin-right:5px"></span>
                 <a href="<?php echo base_url() . 'home/profile/' . $comment->userid . '/' . str_replace(" ", "-", $comment->user); ?>"><?php echo $comment->user; ?></a>
@@ -206,6 +204,21 @@
         </div>
     </div>
 <?php endforeach; ?>
+
+<?php if(isset($_SESSION['phpback_userid'])): ?>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-2" style="margin-top:10px">
+            <form role="form" method="post" action="<?php echo base_url() . 'action/comment/' . $idea->id; ?>" onsubmit="return checkFilledTextArea()" >
+                <div class="form-group">
+                    <label>Оставить комментарий</label>
+                    <textarea id="checkField" class="form-control" rows="4" name="content"></textarea>
+                </div>
+                <input type="hidden" name="ideaname" value="<?php echo str_replace(" ", "-", $idea->title); ?>">
+                <button id="buttonSend" type="submit" name="commentbutton" class="btn btn-default" style="background-color: #2C71F5"><?php echo $lang['label_submit']; ?></button>
+            </form>
+        </div>
+    </div>
+<?php endif; ?>
 </div>
 
 <script src="<?= base_url(); ?>public/js/lightbox/js/lightbox-plus-jquery.js"></script>

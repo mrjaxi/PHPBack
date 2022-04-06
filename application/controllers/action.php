@@ -65,10 +65,10 @@ class Action extends CI_Controller{
 
             $this->email->initialize($this->get->email_config());
 
-            $this->email->from($mainmail, 'PHPBack');
+            $this->email->from($mainmail, 'Атмагуру FeedBack');
             $this->email->to($email);
 
-            $this->email->subject("New account - $title");
+            $this->email->subject("Новый аккаунт - $title");
             $this->email->message($message);
 
             $this->email->send();
@@ -159,17 +159,17 @@ class Action extends CI_Controller{
 
                 if ($this->hashing->matches($old, $user->pass)) {
                     $this->post->update_by_id('users', 'pass', $this->hashing->hash($new), $user->id);
-                    $message = "You have changed your password to: $new\n";
+                    $message = "Ваш пароль изменён на новый: $new\n";
                     $this->load->library('email');
                     $this->email->initialize($this->get->email_config());
 
                     $mainmail = $this->get->getSetting('mainmail');
                     $title = $this->get->getSetting('title');
 
-                    $this->email->from($mainmail, 'PHPBack');
+                    $this->email->from($mainmail, 'Атмагуру FeedBack');
                     $this->email->to($user->email);
 
-                    $this->email->subject("Password changed - $title");
+                    $this->email->subject("Пароль изменён - $title");
                     $this->email->message($message);
 
                     $this->email->send();

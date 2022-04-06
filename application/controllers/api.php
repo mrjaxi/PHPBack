@@ -155,12 +155,16 @@ class Api extends CI_Controller
         $desc = $_POST['description'];
         $catid = $_POST['category'];
         $typeid = $_POST['type'];
+        $href = $_POST['href'];
         $files = $_FILES['file'];
         $email = $_POST['email'];
         $pass = $_POST['pass'];
         $name = $_POST['name'];
         if(empty($name)){
             $name = "Незнакомец";
+        }
+        if(empty($href)){
+            $href = null;
         }
         if(empty($files['name'][0])){
             $files = null;
@@ -219,8 +223,7 @@ class Api extends CI_Controller
             if($this->post->add_user($name, $email, $pass, $votes, false)){
                 $user = $this->get->getUserByEmail($email);
                 $photo = $this->add_file($files);
-//                return var_dump($photo);
-                $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid, $photo);
+                $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid, $photo, $href);
                 $userBase64 = $this->encodeBase64User($user->email, $user->pass);
 
                 return $this->setResponse(array(
@@ -237,8 +240,7 @@ class Api extends CI_Controller
             }
         } else {
             $photo = $this->add_file($files);
-//            return var_dump($photo);
-            $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid, $photo);
+            $idea = $this->post->add_idea($title, $desc, $user->id, $catid, $typeid, $photo, $href);
             $userBase64 = $this->encodeBase64User($user->email, $user->pass);
 
             return $this->setResponse(array(
