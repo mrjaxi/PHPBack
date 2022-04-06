@@ -21,6 +21,7 @@ class Post extends CI_Model
         $this->load->library('email');
 
         $this->lang->load('log', $this->getSetting('language'));
+        $this->lang->load('default', $this->get->getSetting('language'));
     }
 
     public function add_category($name, $description){
@@ -311,7 +312,7 @@ class Post extends CI_Model
         $idea = $this->db->query("SELECT * FROM ideas WHERE id='$ideaid'")->row();
         $ideaUser = $this->db->query("SELECT * FROM users WHERE id='" . $idea->authorid . "'")->row();
         $status_text = $idea->status;
-        switch ($idea->status) {
+        switch ($status) {
             case 'considered':
                 $status_text = $this->lang->language['idea_considered'];
                 break;
@@ -440,6 +441,8 @@ class Post extends CI_Model
         $this->email->message($message);
 
         $this->email->send();
+
+        $this->log("На почту $tomail отправлено: $message", "email", 0);
     }
 
     private function curl($url, $method, $params=array()){
