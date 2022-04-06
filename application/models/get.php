@@ -116,7 +116,6 @@ class Get extends CI_Model
         else $query .= "ASC";
 
         $query .= " LIMIT $from, $limit";
-        var_dump($query);
         $ideas = $this->db->query($query)->result();
 
         return $this->decorateIdeas($ideas);
