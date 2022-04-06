@@ -184,9 +184,6 @@ class Action extends CI_Controller{
     public function newidea(){
         session_start();
 
-//        var_dump($_FILES['file']['name'][1]);
-//        return;
-
         if(!isset($_SESSION['phpback_userid'])){
             header('Location: ' . base_url() . 'home');
             exit;
@@ -216,29 +213,31 @@ class Action extends CI_Controller{
             return;
         }
 
-        for($i=0; $i < count($_FILES['file']['name']); $i++) {
-            if ($_FILES['file']['size'][$i] > 2202009 or $_FILES['file']['size'][$i] == 0) {
-                $this->redirectpost(base_url() . "home/postidea/largefile", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
-                return;
-            }
-        }
-
-        for($i=0; $i < count($_FILES['file']['name']); $i++) {
-            if ($_FILES['file']['error'][$i] == 0) {
-                $getMime = explode('.', $_FILES['file']['name'][$i]);
-                $mime = strtolower(end($getMime));
-                $types = array('jpg', 'png', 'gif', 'bmp', 'jpeg');
-
-                if (!in_array($mime, $types)) {
-                    $this->redirectpost(base_url() . "home/postidea/errorfiletype", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
+        if(!empty($_FILES['file']['name'][0])){
+            for($i=0; $i < count($_FILES['file']['name']); $i++) {
+                if ($_FILES['file']['size'][$i] > 2202009 or $_FILES['file']['size'][$i] == 0) {
+                    $this->redirectpost(base_url() . "home/postidea/largefile", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
                     return;
                 }
+            }
 
-                $name = 'public/photo/' . md5(microtime() . rand(0, 9999)) . "." . $mime;
+            for($i=0; $i < count($_FILES['file']['name']); $i++) {
+                if ($_FILES['file']['error'][$i] == 0) {
+                    $getMime = explode('.', $_FILES['file']['name'][$i]);
+                    $mime = strtolower(end($getMime));
+                    $types = array('jpg', 'png', 'gif', 'bmp', 'jpeg');
 
-                $photo = $photo . $name . ";";
+                    if (!in_array($mime, $types)) {
+                        $this->redirectpost(base_url() . "home/postidea/errorfiletype", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
+                        return;
+                    }
 
-                copy($_FILES['file']['tmp_name'][$i], $name);
+                    $name = 'public/photo/' . md5(microtime() . rand(0, 9999)) . "." . $mime;
+
+                    $photo = $photo . $name . ";";
+
+                    copy($_FILES['file']['tmp_name'][$i], $name);
+                }
             }
         }
 
