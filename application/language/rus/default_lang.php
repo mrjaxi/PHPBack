@@ -82,5 +82,5 @@ $lang['error_title'] = 'Заголовок слишком короткий';
 $lang['error_category'] = 'Пожалуйста, выберите категорию';
 $lang['error_type'] = 'Пожалуйста, выберите тип';
 $lang['error_description'] = 'Описание слишком короткое';
-$lang['error_large_file'] = 'Слишком большой файл';
+$lang['error_large_file'] = 'Слишком большой размер файла';
 $lang['error_type_uploaded_file'] = 'Недопустимый тип файла';

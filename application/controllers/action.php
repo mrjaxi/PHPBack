@@ -217,12 +217,11 @@ class Action extends CI_Controller{
         }
 
         for($i=0; $i < count($_FILES['file']['name']); $i++) {
+            if ($_FILES['file']['size'][$i] > 2202009 or $_FILES['file']['size'][$i] == 0) {
+                $this->redirectpost(base_url() . "home/postidea/largefile", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
+                return;
+            }
             if ($_FILES['file']['error'][$i] == 0) {
-                if ($_FILES['file']['size'][$i] == 0) {
-                    $this->redirectpost(base_url() . "home/postidea/largefile", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
-                    return;
-                }
-
                 $getMime = explode('.', $_FILES['file']['name'][$i]);
                 $mime = strtolower(end($getMime));
                 $types = array('jpg', 'png', 'gif', 'bmp', 'jpeg');
