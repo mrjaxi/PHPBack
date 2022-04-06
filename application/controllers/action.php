@@ -221,6 +221,9 @@ class Action extends CI_Controller{
                 $this->redirectpost(base_url() . "home/postidea/largefile", array('title' => $title, 'desc' => $desc, 'catid' => $catid, 'typeid' => $typeid));
                 return;
             }
+        }
+
+        for($i=0; $i < count($_FILES['file']['name']); $i++) {
             if ($_FILES['file']['error'][$i] == 0) {
                 $getMime = explode('.', $_FILES['file']['name'][$i]);
                 $mime = strtolower(end($getMime));
