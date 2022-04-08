@@ -106,6 +106,7 @@ class Admin extends CI_Controller {
             if($this->input->post('status-planned', true)) $st[] = "planned";
             if($this->input->post('status-considered', true)) $st[] = "considered";
             if($this->input->post('status-declined', true)) $st[] = "declined";
+//            $st[] = "new";
 
             $cat = array();
             foreach ($data['categories'] as $t) {

@@ -32,7 +32,9 @@ $lang['label_sign_in'] = 'Войти';
 $lang['label_submit'] = 'Отправить';
 $lang['label_vote'] = 'Голосовать';
 $lang['label_unvote'] = 'Забрать голос';
-$lang['label_votes'] = 'Голос';
+$lang['label_votes'] = 'Голоса';
+$lang['label_status'] = 'Статус';
+$lang['label_title'] = 'Название';
 $lang['uploaded_files'] = 'Выбранные файлы';
 
 $lang['text_shared_this_idea'] = 'Поделился этой идеей';

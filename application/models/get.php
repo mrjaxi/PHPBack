@@ -89,7 +89,7 @@ class Get extends CI_Model
             $query .= ") ";
         }
         if (count($types)) {
-            if (count($categories)) $query .= "OR (";
+            if (count($categories)) $query .= "AND (";
             else $query .= "WHERE ( ";
             foreach ($types as $typeid) {
                 $sanitizedTypeId = (int) $typeid;
@@ -116,6 +116,7 @@ class Get extends CI_Model
         else $query .= "ASC";
 
         $query .= " LIMIT $from, $limit";
+//        var_dump($query);
         $ideas = $this->db->query($query)->result();
 
         return $this->decorateIdeas($ideas);
@@ -135,12 +136,13 @@ class Get extends CI_Model
         return true;
     }
 
-    public function getIdeasByCategory($category, $order, $type, $page){
+    public function getIdeasByCategory($category, $order="status", $type="desc", $page="1", $status=""){
         $page = (int) $page;
         $category = (int) $category;
         $max = $this->getSetting('max_results');
         $from = ($page - 1) * $max;
-        $query = "SELECT * FROM ideas WHERE categoryid='$category' AND status !='new' ORDER BY ";
+        $qstatus = !empty($status) ? "AND status = '$status'" : "";
+        $query = "SELECT * FROM ideas WHERE categoryid='$category' $qstatus AND status !='new' ORDER BY ";
         switch ($order) {
             case 'id':
                 $query .= "id ";
@@ -148,8 +150,11 @@ class Get extends CI_Model
             case 'title':
                 $query .= 'title ';
                 break;
+            case 'votes':
+                $query .= 'votes ';
+                break;
             default:
-                $query .= "votes ";
+                $query .= "status ";
                 break;
         }
         if($type == "desc") $query .= "DESC";
@@ -158,7 +163,7 @@ class Get extends CI_Model
         if($page != 0){
             $query .= " LIMIT $from, $max";
         }
-
+//        var_dump($query);
         $ideas = $this->db->query($query)->result();
 
         return $this->decorateIdeas($ideas);
@@ -501,15 +506,13 @@ class Get extends CI_Model
 
     private function decorateCategories(&$categories) {
         foreach ($categories as &$category) {
-            $category->url = base_url() . 'home/category/' . $category->id . '/';
-//            $category->url .= $this->display->getParsedString($category->name);
+            $category->url = base_url() . 'home/category/' . $category->id;
         }
     }
 
     private function decorateTypes(&$types) {
         foreach ($types as &$type) {
             $type->url = base_url() . 'home/type/' . $type->id . '/';
-//            $type->url .= $this->display->getParsedString($type->name);
         }
     }
 

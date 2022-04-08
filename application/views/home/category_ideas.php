@@ -11,10 +11,10 @@
     <table id="ideastable" class="table table-condensed">
         <thead>
         <tr>
-            <th><small><?php echo $lang['label_idea']; ?> <a id="order-by--idea" href="<?= $category->url .'/title/'; echo ($type == 'desc') ? 'asc' : 'desc';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
-            <th><small><?php echo $lang['label_votes']; ?> <a id="order-by--votes" href="<?= $category->url .'/votes/'; echo ($type == 'desc') ? 'asc' : 'desc';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
-            <th><small><?php echo $lang['label_comments']; ?></small></th>
-            <th><small><?php echo $lang['label_date']; ?> <a id="order-by--date" href="<?= $category->url .'/id/'; echo ($type == 'desc') ? 'asc' : 'desc';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
+            <th><small><?php echo $lang['label_votes']; ?> <a id="order-by--votes"href="<?= $category->url .'/votes/'; echo ($type == 'desc' && $order == 'votes') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'votes') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
+            <th><small><?php echo $lang['label_title']; ?> <a id="order-by--idea" href="<?= $category->url .'/title/'; echo ($type == 'desc' && $order == 'title') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'title') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
+            <th><small><?php echo $lang['label_date'];  ?> <a id="order-by--date" href="<?= $category->url .'/id/'; echo ($type == 'desc' && $order == 'id') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'id') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
+            <th><small><?php echo $lang['label_status'];?> <a id="order-by--date" href="<?= $category->url .'/status/'; echo ($type == 'desc' && $order == 'status') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'status') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
         </tr>
         </thead>
     </table>
@@ -103,15 +103,15 @@
         </div>
     <?php endforeach; ?>
     <ul class="pagination">
-        <li><a class="pagination--previous" href="<?php if($page > 1) echo $category->url . "/$order/$type/" . ($page-1); else echo '#'; ?>">&laquo;</a></li>
+        <li><a class="pagination--previous" href="<?php if($page > 1) echo $category->url . "/$order/$type/" . ($page-1) . "/$status"; else echo '#'; ?>">&laquo;</a></li>
         <?php for($i=1;$i<=$pages;$i++){ ?>
             <?php if($i == $page): ?>
                 <li class="active"><a class="pagination--current" href=""><?php echo $i;?></a></li>
             <?php else:?>
-                <li><a class="pagination--page" href='<?php echo $category->url . "/$order/$type/$i"; ?>'><?php echo $i;?></a></li>
+                <li><a class="pagination--page" href='<?php echo $category->url . "/$order/$type/$i/$status"; ?>'><?php echo $i;?></a></li>
             <?php endif;?>
 
         <?php } ?>
-        <li><a class="pagination--next" href="<?php  if($page < $pages) echo $category->url . "/$order/$type/" . ($page+1); else echo '#'; ?>">&raquo;</a></li>
+        <li><a class="pagination--next" href="<?php  if($page < $pages) echo $category->url . "/$order/$type/" . ($page+1) . "/$status"; else echo '#'; ?>">&raquo;</a></li>
     </ul>
 </div>
