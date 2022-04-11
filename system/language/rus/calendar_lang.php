@@ -33,18 +33,18 @@ $lang['cal_sep']		= "Сен";
 $lang['cal_oct']		= "Окт";
 $lang['cal_nov']		= "Ноя";
 $lang['cal_dec']		= "Дек";
-$lang['cal_january']    = "Январь";
-$lang['cal_february']   = "Февраль";
-$lang['cal_march']      = "Март";
-$lang['cal_april']      = "Апрель";
-$lang['cal_mayl']       = "Май";
-$lang['cal_june']       = "Июнь";
-$lang['cal_july']       = "Мюль";
-$lang['cal_august']     = "Август";
-$lang['cal_september']  = "Сентябрь";
-$lang['cal_october']    = "Октябрь";
-$lang['cal_november']   = "Ноябрь";
-$lang['cal_december']   = "Декабрь";
+$lang['cal_january']    = "Января";
+$lang['cal_february']   = "Февраля";
+$lang['cal_march']      = "Марта";
+$lang['cal_april']      = "Апреля";
+$lang['cal_mayl']       = "Мая";
+$lang['cal_june']       = "Июня";
+$lang['cal_july']       = "Июля";
+$lang['cal_august']     = "Августа";
+$lang['cal_september']  = "Сентября";
+$lang['cal_october']    = "Октября";
+$lang['cal_november']   = "Ноября";
+$lang['cal_december']   = "Декабря";
 
 
 

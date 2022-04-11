@@ -45,7 +45,7 @@ class Home extends CI_Controller {
 
     }
 
-    public function category($id, $order = "status", $type = "desc", $page = '1', $status="") {
+    public function category($id, $order = "id", $type = "desc", $page = '1', $status="") {
         if (!$this->get->categoryExists($id)){
             header('Location: ' . base_url() . 'home');
             return;
@@ -71,7 +71,7 @@ class Home extends CI_Controller {
         $this->load->view('_templates/footer', $data);
     }
 
-    public function type($id, $order = "status", $type = "desc", $page = '1', $status="") {
+    public function type($id, $order = "id", $type = "desc", $page = '1', $status="") {
         if (!$this->get->typeExists($id)){
             header('Location: ' . base_url() . 'home');
             return;

@@ -27,11 +27,14 @@ See LICENSE.TXT for details.  -->
 
     <script type="text/javascript">
         function showtable(tableid, tablelink){
-            document.getElementById('activitytable').style.display = 'none';
+            if(document.getElementById("table1"))
+                document.getElementById("table1").className = "";
+            if(document.getElementById('activitytable'))
+                document.getElementById('activitytable').style.display = 'none';
+
             document.getElementById('ideastable').style.display = 'none';
             document.getElementById('commentstable').style.display = 'none';
             document.getElementById(tableid).style.display = '';
-            document.getElementById("table1").className = "";
             document.getElementById("table2").className = "";
             document.getElementById("table3").className = "";
             document.getElementById(tablelink).className = "active";
@@ -43,6 +46,21 @@ See LICENSE.TXT for details.  -->
             document.getElementById("table4").className = "";
             document.getElementById("table5").className = "";
             document.getElementById(tablelink).className = "active";
+        }
+        function showstatus(status){
+            document.getElementById("idea_completed").className = "";
+            document.getElementById("idea_started").className = "";
+            document.getElementById("idea_planned").className = "";
+            document.getElementById("idea_considered").className = "";
+            document.getElementById("idea_declined").className = "";
+
+            if(status)
+                document.getElementById("idea_"+status).className = "active";
+            else
+                document.getElementById("idea_all").className = "active";
+        }
+        function redirect(url) {
+            window.location.href = url;
         }
         function popup_sure(text, url) {
             if (confirm(text) == true) {
@@ -62,7 +80,8 @@ See LICENSE.TXT for details.  -->
     </script>
 </head>
 <body>
-<?php function num_word($value, $words, $show = true)
+<?php
+function num_word($value, $words, $show = true)
 {
     $num = $value % 100;
     if ($num > 19) {
@@ -79,7 +98,40 @@ See LICENSE.TXT for details.  -->
     }
 
     return $out;
-}?>
+}
+function datetotext($date, $lang, $istime = false){
+    $pre = explode(" ", $date);
+    $datearr = explode('/', $pre[0]);
+    $day = $datearr[0];
+    $year = "20" . $datearr[2];
+
+    $month = getMonthText($datearr[1], $lang);
+
+    if($istime && !empty($pre[1])){
+        return "$day $month $year $pre[1]";
+    } else {
+        return "$day $month $year";
+    }
+}
+function getMonthText($month, $lang){
+    switch ($month){
+        case '01': $month = $lang['cal_january']; break;
+        case '02': $month = $lang['cal_february']; break;
+        case '03': $month = $lang['cal_march']; break;
+        case '04': $month = $lang['cal_april']; break;
+        case '05': $month = $lang['cal_mayl']; break;
+        case '06': $month = $lang['cal_june']; break;
+        case '07': $month = $lang['cal_july']; break;
+        case '08': $month = $lang['cal_august']; break;
+        case '09': $month = $lang['cal_september']; break;
+        case '10': $month = $lang['cal_october']; break;
+        case '11': $month = $lang['cal_november']; break;
+        case '12': $month = $lang['cal_december']; break;
+        default:   $month = $month; break;
+    }
+    return $month;
+}
+?>
 <div class="row header">
     <div class="pull-left header--title-container">
         <!--      <h4 id="header--title">--><?//= $title; ?><!--</h4>-->

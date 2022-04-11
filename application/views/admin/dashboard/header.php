@@ -111,7 +111,8 @@ See LICENSE.TXT for details.  -->
 
 </head>
 <body onload="<?php if(isset($toall) && $toall) echo "showtable('allideastable','table2');"; if(isset($idban)) echo "showtable2('bantable','table3');";?>">
-<?php function num_word($value, $words, $show = true)
+<?php
+function num_word($value, $words, $show = true)
 {
     $num = $value % 100;
     if ($num > 19) {
@@ -128,4 +129,37 @@ See LICENSE.TXT for details.  -->
     }
 
     return $out;
-}?>
+}
+function datetotext($date, $lang, $istime = false){
+    $pre = explode(" ", $date);
+    $datearr = explode('/', $pre[0]);
+    $day = $datearr[0];
+    $year = "20" . $datearr[2];
+
+    $month = getMonthText($datearr[1], $lang);
+
+    if($istime && !empty($pre[1])){
+        return "$day $month $year $pre[1]";
+    } else {
+        return "$day $month $year";
+    }
+}
+function getMonthText($month, $lang){
+    switch ($month){
+        case '01': $month = $lang['cal_january']; break;
+        case '02': $month = $lang['cal_february']; break;
+        case '03': $month = $lang['cal_march']; break;
+        case '04': $month = $lang['cal_april']; break;
+        case '05': $month = $lang['cal_mayl']; break;
+        case '06': $month = $lang['cal_june']; break;
+        case '07': $month = $lang['cal_july']; break;
+        case '08': $month = $lang['cal_august']; break;
+        case '09': $month = $lang['cal_september']; break;
+        case '10': $month = $lang['cal_october']; break;
+        case '11': $month = $lang['cal_november']; break;
+        case '12': $month = $lang['cal_december']; break;
+        default:   $month = $month; break;
+    }
+    return $month;
+}
+?>

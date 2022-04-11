@@ -136,7 +136,7 @@ class Get extends CI_Model
         return true;
     }
 
-    public function getIdeasByCategory($category, $order="status", $type="desc", $page="1", $status=""){
+    public function getIdeasByCategory($category, $order="id", $type="desc", $page="1", $status=""){
         $page = (int) $page;
         $category = (int) $category;
 
@@ -155,7 +155,7 @@ class Get extends CI_Model
                 $query .= 'votes ';
                 break;
             default:
-                $query .= "status ";
+                $query .= "FIELD(status, 'declined', 'completed', 'planned', 'considered', 'started') ";
                 break;
         }
         if($type == "desc") $query .= "DESC";
@@ -189,7 +189,7 @@ class Get extends CI_Model
                 $query .= 'votes ';
                 break;
             default:
-                $query .= "status ";
+                $query .= "FIELD(status, 'declined', 'completed', 'planned', 'considered', 'started') ";
                 break;
         }
         if($type == "desc") $query .= "DESC";

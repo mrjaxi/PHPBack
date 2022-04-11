@@ -86,3 +86,16 @@ $lang['error_type'] = 'Пожалуйста, выберите тип';
 $lang['error_description'] = 'Описание слишком короткое';
 $lang['error_large_file'] = 'Слишком большой размер файла';
 $lang['error_type_uploaded_file'] = 'Недопустимый тип файла';
+
+$lang['cal_january']    = "Января";
+$lang['cal_february']   = "Февраля";
+$lang['cal_march']      = "Марта";
+$lang['cal_april']      = "Апреля";
+$lang['cal_mayl']       = "Мая";
+$lang['cal_june']       = "Июня";
+$lang['cal_july']       = "Июля";
+$lang['cal_august']     = "Августа";
+$lang['cal_september']  = "Сентября";
+$lang['cal_october']    = "Октября";
+$lang['cal_november']   = "Ноября";
+$lang['cal_december']   = "Декабря";

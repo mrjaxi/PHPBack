@@ -8,13 +8,28 @@
         <h5 style="color:#2C3E50;"><?php echo $typetable->name; ?></h5>
         <span style="color:#34495E"><small><?php echo $typetable->description; ?></small></span>
     </div>
+
+    <ul class="nav nav-tabs">
+        <li id="idea_all"> <a href="<?php echo $typetable->url . "/$order/$type/$page/" ?>" >Все</a></li>
+
+        <li id="idea_completed"> <a href="<?php echo $typetable->url . "/$order/$type/$page/completed" ?>" > <?php echo $lang['idea_completed']; ?></a></li>
+        <li id="idea_started">   <a href="<?php echo $typetable->url . "/$order/$type/$page/started" ?>"   > <?php echo $lang['idea_started']; ?></a></li>
+        <li id="idea_planned">   <a href="<?php echo $typetable->url . "/$order/$type/$page/planned" ?>"   > <?php echo $lang['idea_planned']; ?></a></li>
+        <li id="idea_considered"><a href="<?php echo $typetable->url . "/$order/$type/$page/considered" ?>"> <?php echo $lang['idea_considered']; ?></a></li>
+        <li id="idea_declined">  <a href="<?php echo $typetable->url . "/$order/$type/$page/declined" ?>"  > <?php echo $lang['idea_declined']; ?></a></li>
+    </ul>
+
+    <?php echo "<script>showstatus('$status');</script>"; ?>
+
     <table id="ideastable" class="table table-condensed">
         <thead>
         <tr>
             <th><small><?php echo $lang['label_votes']; ?> <a id="order-by--votes"href="<?= $typetable->url .'/votes/'; echo ($type == 'desc' && $order == 'votes') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'votes') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
             <th><small><?php echo $lang['label_title']; ?> <a id="order-by--idea" href="<?= $typetable->url .'/title/'; echo ($type == 'desc' && $order == 'title') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'title') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
             <th><small><?php echo $lang['label_date'];  ?> <a id="order-by--date" href="<?= $typetable->url .'/id/'; echo ($type == 'desc' && $order == 'id') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'id') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
-            <th><small><?php echo $lang['label_status'];?> <a id="order-by--date" href="<?= $typetable->url .'/status/'; echo ($type == 'desc' && $order == 'status') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'status') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
+            <?php if(false): ?>
+                <th><small><?php echo $lang['label_status'];?> <a id="order-by--date" href="<?= $typetable->url .'/status/'; echo ($type == 'desc' && $order == 'status') ? 'asc/1/' : 'desc/1/'; echo !empty($status) ? "$status" : '';?>"><span class="glyphicon glyphicon-chevron-<?php echo ($type == 'desc' && $order == 'status') ? 'down' : 'up'; ?>" style="margin-left:4px"></span></a></small></th>
+            <?php endif;?>
         </tr>
         </thead>
     </table>
@@ -97,6 +112,7 @@
                 <div style="margin-top:-10px">
                     <ul class="nav-pills" style="list-style:none;margin-left:-40px">
                         <li><small class="result-idea--comments"><?php echo num_word($idea->comments, array('Комментарий', 'Комментария', 'Комментариев')); ?></small></li>
+                        <li><small class="result-idea--comments"><?php echo " | " . datetotext($idea->date, $lang, true); ?></small></li>
                     </ul><br><br>
                 </div>
             </div>

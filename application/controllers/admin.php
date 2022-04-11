@@ -19,12 +19,14 @@ class Admin extends CI_Controller {
         $this->load->helper('url');
         $this->load->model('get');
 
+        $this->lang->load('default', $this->get->getSetting('language'));
+
         $this->version = '1.3.1';
     }
 
     public function index($error = 'no'){
         session_start();
-        $data = array();
+        $data = $this->getDefaultData();
         if($error == "error"){
             $data['error'] = 'yes';
             $this->load->view('admin/header', $data);
@@ -48,9 +50,7 @@ class Admin extends CI_Controller {
 
     public function dashboard(){
         $this->start();
-        $data = array();
-        //$data['ideas'] = $this->get->get_new_ideas(10);
-        //$data['flags'] = $this->get->get_flags();
+        $data = $this->getDefaultData();
         $data['logs'] = $this->get->get_last_logs();
 
         $this->load->view('admin/dashboard/header');
@@ -59,7 +59,7 @@ class Admin extends CI_Controller {
 
     public function ideas(){
         $this->start();
-        $data = array();
+        $data = $this->getDefaultData();
         $data['newideas'] = $this->get->get_new_ideas(150);
         $data['newideas_num'] = $this->get->get_new_ideas_num();
         $data['flags'] = $this->get->get_flags();
@@ -144,7 +144,7 @@ class Admin extends CI_Controller {
     }
     public function users($idban=0){
         $this->start(2);
-        $data = array();
+        $data = $this->getDefaultData();
 
         $data['users'] = $this->get->get_users();
         $data['banned'] = $this->get->get_users('banned', 100);
@@ -156,7 +156,7 @@ class Admin extends CI_Controller {
 
     public function system(){
         $this->start(3);
-        $data = array();
+        $data = $this->getDefaultData();
         $data['settings'] = $this->get->get_all_settings();
         $data['adminusers'] = $this->get->get_admin_users();
         $data['categories'] = $this->get->getCategories();
@@ -186,6 +186,15 @@ class Admin extends CI_Controller {
             header('Location: ' . base_url() . 'admin/');
             exit;
         }
+    }
+
+    private function getDefaultData() {
+        return array(
+            'title' => $this->get->getSetting('title'),
+            'categories' => $this->get->getCategories(),
+            'types' => $this->get->getTypes(),
+            'lang' => $this->lang->language,
+        );
     }
 
     private function redirectIfNotAlphaNumeric($textList) {

@@ -42,7 +42,7 @@
                 <?php foreach ($logs as $log): ?>
                     <tr>
                         <td><?php echo $log->content; ?></td>
-                        <td><?php echo $log->date; ?></td>
+                        <td><?php echo datetotext($log->date, $lang, true); ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

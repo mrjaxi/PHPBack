@@ -86,7 +86,7 @@
                                 <?php echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов')); ?>
                             </td>
                             <td>
-                                <?php echo $idea->date; ?>
+                                <?php echo datetotext($idea->date, $lang, true); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -227,7 +227,7 @@
                                         <?php echo num_word($idea->votes, array('Голос', 'Голоса', 'Голосов')); ?>
                                     </td>
                                     <td>
-                                        <?php echo $idea->date; ?>
+                                        <?php echo datetotext($idea->date, $lang, true); ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
