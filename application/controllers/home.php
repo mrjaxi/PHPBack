@@ -71,22 +71,25 @@ class Home extends CI_Controller {
         $this->load->view('_templates/footer', $data);
     }
 
-    public function type($id, $name = "", $order = "votes", $type = "desc", $page = '1') {
+    public function type($id, $order = "status", $type = "desc", $page = '1', $status="") {
         if (!$this->get->typeExists($id)){
             header('Location: ' . base_url() . 'home');
             return;
         }
 
         $data = $this->getDefaultData();
-        $data['ideas'] = $this->get->getIdeasByType($id, $order, $type, $page);
+        $data['order'] = $order;
+        $data['type'] = $type;
+        $data['page'] = (int) $page;
+        $data['status'] = $status;
+
+        $data['ideas'] = $this->get->getIdeasByType($id, $order, $type, $page, $status);
         $data['typetable'] = $data['types'][$id];
+
         $total = $this->get->getQuantityOfApprovedIdeasByType($id);
         $data['max_results'] = (int) $this->get->getSetting('max_results');
-        $data['page'] = (int) $page;
         $data['pages'] = (int) ($total / $data['max_results']);
         if(($total % $data['max_results']) > 0) $data['pages']++;
-        $data['type'] = $type;
-        $data['order'] = $order;
 
         $this->load->view('_templates/header', $data);
         $this->load->view('home/type_ideas', $data);
