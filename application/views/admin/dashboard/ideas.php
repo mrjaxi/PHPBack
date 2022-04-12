@@ -166,7 +166,7 @@
                                         </select>
                                     </td>
                                     <td style="padding-left:10px;">
-                                        <label class="checkbox"t>
+                                        <label class="checkbox">
                                             <input type="checkbox" <?php if($form['isdesc']) echo 'checked=""';?> name="isdesc" data-toggle="checkbox">
                                             Упорядочение по убыванию
                                         </label>

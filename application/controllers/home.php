@@ -109,6 +109,85 @@ class Home extends CI_Controller {
         $this->load->view('_templates/footer', $data);
     }
 
+    public function ideas($categoryid, $order = "date", $type = "desc", $page = '1'){
+//        return var_dump($_GET);
+        $data = $this->getDefaultData();
+        $data['categoryid'] = $categoryid;
+        $data['order'] = $order;
+        $data['type'] = $type;
+        $data['page'] = (int) $page;
+
+        $limit = $this->get->getSetting('max_results');
+        $from = ($page - 1) * $limit;
+
+        if(empty($_GET)){
+            var_dump("БАЗА ЗАПРОС");
+            $data['form'] = array(
+                "status-completed" => 1,
+                "status-started" => 1,
+                "status-planned" => 1,
+                "status-considered" => 1,
+                "status-declined" => 1,
+            );
+
+            $cat = array($categoryid);
+
+            $types = array();
+            foreach ($data['types'] as $t) {
+                $types[] = $t->id;
+                $s = "type-".$t->id;
+                $data['form'][$s] = 1;
+            }
+            $data['typesdata'] = $types;
+
+            $status = array("completed", "started", "planned", "considered", "declined");
+            $data['status'] = $status;
+            $data['toall'] = 0;
+        } else{
+            var_dump("GET ЗАПРОС");
+//            return var_dump($_GET);
+            $typesGET = $_GET['filter']['types'];
+            $statusGET = $_GET['filter']['status'];
+            $data['form'] = array(
+                "status-completed" => in_array('completed', $statusGET) ? 1 : 0,
+                "status-started" => in_array('started', $statusGET) ? 1 : 0,
+                "status-planned" => in_array('planned', $statusGET) ? 1 : 0,
+                "status-considered" => in_array('considered', $statusGET) ? 1 : 0,
+                "status-declined" => in_array('declined', $statusGET) ? 1 : 0,
+            );
+            $status = array();
+            if(in_array('completed', $statusGET)) $status[] = "completed";
+            if(in_array('started', $statusGET)) $status[] = "started";
+            if(in_array('planned', $statusGET)) $status[] = "planned";
+            if(in_array('considered', $statusGET)) $status[] = "considered";
+            if(in_array('declined', $statusGET)) $status[] = "declined";
+            $data['status'] = $status;
+
+            $cat = array($categoryid);
+
+            $types = array();
+            foreach ($data['types'] as $t) {
+                $s = "type-".$t->id;
+                if(in_array($t->id, $typesGET)){
+                    $types[] = $t->id;
+                    $data['form'][$s] = 1;
+                }
+                else{
+                    $data['form'][$s] = 0;
+                }
+            }
+            $data['typesdata'] = $types;
+            $data['toall'] = 1;
+        }
+
+        $data['ideas'] = $this->get->getIdeas($order, $type, $from, $limit, $status, $cat, $types);
+//var_dump($data['ideas']);
+        $this->load->view('_templates/header', $data);
+        $this->load->view('home/all_ideas', $data);
+        $this->load->view('_templates/menu', $data);
+        $this->load->view('_templates/footer', $data);
+    }
+
     public function idea($id) {
         $idea = $this->get->getIdea($id);
 
