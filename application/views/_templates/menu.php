@@ -31,14 +31,5 @@
             </ul>
             <br>
         </div>
-        <div id="types">
-            <h6><?php echo "Типы"//$lang['label_categories']; ?></h6>
-            <ul class="nav nav-pills nav-stacked">
-                <?php foreach($types as $type) { ?>
-                    <li <?php if(!$type->ideas) echo 'class="disabled"';?>><a <?php if($type->ideas) echo "href=$type->url";?>><?php echo $type->name; ?><span class="badge"><?php echo $type->ideas; ?></span></a></li>
-                <?php } ?>
-            </ul>
-            <br>
-        </div>
     </div>
 </div>

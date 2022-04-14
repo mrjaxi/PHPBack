@@ -26,6 +26,13 @@ See LICENSE.TXT for details.  -->
     <link href="<?php echo base_url(); ?>public/css/all.css" rel="stylesheet">
 
     <script type="text/javascript">
+        var Search = {
+            order: '',
+            type: '',
+            page: '',
+            types: Array(),
+            status: Array()
+        }
         function showtable(tableid, tablelink){
             if(document.getElementById("table1"))
                 document.getElementById("table1").className = "";
@@ -58,6 +65,66 @@ See LICENSE.TXT for details.  -->
                 document.getElementById("idea_"+status).className = "active";
             else
                 document.getElementById("idea_all").className = "active";
+        }
+        function saveFormSearch(order='date', type='desc', page='1', types=[], status=[]) {
+            Search['order'] = order;
+            Search['type'] = type;
+            Search['page'] = page;
+            Search['types'] = types;
+            Search['status'] = status;
+            console.log("order:"+ Search['order'] + "\ntype:" + Search['type'] + "\npage:" + Search['page'] + "\ntypes:" + JSON.stringify(Search['types']) + "\nstatus:" + JSON.stringify(Search['status']))
+        }
+        function editSearchParam(param, value) {
+            switch(param){
+                case 'order':
+                case 'type':
+                case 'page':
+                    Search[param] = value;
+                    break;
+            }
+            console.log("order:"+ Search['order'] + "\ntype:" + Search['type'] + "\npage:" + Search['page'] + "\ntypes:" + JSON.stringify(Search['types']) + "\nstatus:" + JSON.stringify(Search['status']))
+        }
+        function editSearchArr(param, id, checked, value) {
+            // alert(id)
+            // id = Number(id)
+            switch(param) {
+                case 'types':
+                    if (checked == false) {
+                        delete Search['types'][Search['types'].indexOf(value)]
+                        console.log(JSON.stringify(Search['types']))
+                    } else {
+                        Search['types'].push(value)
+                    }
+                    break;
+                case 'status':
+                    if (checked == false) {
+                        delete Search['status'][Search['status'].indexOf(value)]
+                        console.log(JSON.stringify(Search['status']))
+                    } else {
+                        Search['status'].push(value)
+                    }
+                    break;
+            }
+            console.log("types:" + JSON.stringify(Search['types']) + "\nstatus:" + JSON.stringify(Search['status']))
+            // console.log(Object.values(Search['types']))
+        }
+        function objectifyForm(formArray) {
+            var returnArray = {};
+            for (var i = 0; i < formArray.length; i++){
+                returnArray[formArray[i]['name']] = formArray[i]['value'];
+            }
+            return returnArray;
+        }
+        function buildGetSearch(order, type, page) {
+            const params = new URLSearchParams({
+                'order': order==null ? Search['order'] : order,
+                'type':  type==null ? Search['type'] : type,
+                'page':  page==null ? Search['page'] : page,
+                'types': JSON.stringify(Object.values(Search['types'])),
+                'status': JSON.stringify(Object.values(Search['status']))
+            })
+            const str = params.toString();
+            return str;
         }
         function redirect(url) {
             window.location.href = url;

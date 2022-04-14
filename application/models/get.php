@@ -109,14 +109,14 @@ class Get extends CI_Model
             $query = substr($query, 0, -3);
             $query .= ") ";
         }
-        $orderby = $this->db->escape($orderby);
+//        $orderby = $this->db->escape($orderby);
         $query .= "ORDER BY $orderby ";
 
         if ($isdesc) $query .= "DESC";
         else $query .= "ASC";
 
         $query .= " LIMIT $from, $limit";
-        var_dump($query);
+//        var_dump($query);
         $ideas = $this->db->query($query)->result();
 
         return $this->decorateIdeas($ideas);
@@ -513,7 +513,7 @@ class Get extends CI_Model
 
     private function decorateCategories(&$categories) {
         foreach ($categories as &$category) {
-            $category->url = base_url() . 'home/category/' . $category->id;
+            $category->url = base_url() . 'home/ideas/' . $category->id;
         }
     }
 

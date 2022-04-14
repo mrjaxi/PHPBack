@@ -109,19 +109,24 @@ class Home extends CI_Controller {
         $this->load->view('_templates/footer', $data);
     }
 
-    public function ideas($categoryid, $order = "date", $type = "desc", $page = '1'){
+    public function ideas($categoryid){
 //        return var_dump($_GET);
         $data = $this->getDefaultData();
         $data['categoryid'] = $categoryid;
-        $data['order'] = $order;
-        $data['type'] = $type;
-        $data['page'] = (int) $page;
+        $data['category'] = $data['categories'][$categoryid];
+        $data['order'] = !empty($_GET['order']) ? $_GET['order'] : 'date';
+        $data['type'] = !empty($_GET['type']) ? $_GET['type'] : 'desc';
+        $data['page'] = (int) !empty($_GET['page']) ? $_GET['page'] : 1;
+//        return var_dump($data);
+        $total = $this->get->getQuantityOfApprovedIdeas($categoryid);
+        $data['max_results'] = (int) $this->get->getSetting('max_results');
+        $data['pages'] = (int) ($total / $data['max_results']);
 
         $limit = $this->get->getSetting('max_results');
-        $from = ($page - 1) * $limit;
+        $from = ($data['page'] - 1) * $limit;
 
         if(empty($_GET)){
-            var_dump("БАЗА ЗАПРОС");
+//            var_dump("БАЗА ЗАПРОС");
             $data['form'] = array(
                 "status-completed" => 1,
                 "status-started" => 1,
@@ -144,10 +149,10 @@ class Home extends CI_Controller {
             $data['status'] = $status;
             $data['toall'] = 0;
         } else{
-            var_dump("GET ЗАПРОС");
+//            var_dump("GET ЗАПРОС");
 //            return var_dump($_GET);
-            $typesGET = $_GET['filter']['types'];
-            $statusGET = $_GET['filter']['status'];
+            $typesGET = json_decode($_GET['types']);
+            $statusGET = json_decode($_GET['status']);
             $data['form'] = array(
                 "status-completed" => in_array('completed', $statusGET) ? 1 : 0,
                 "status-started" => in_array('started', $statusGET) ? 1 : 0,
@@ -180,8 +185,8 @@ class Home extends CI_Controller {
             $data['toall'] = 1;
         }
 
-        $data['ideas'] = $this->get->getIdeas($order, $type, $from, $limit, $status, $cat, $types);
-//var_dump($data['ideas']);
+        $data['ideas'] = $this->get->getIdeas($data['order'], $data['type'] == 'desc'? 1 : 0, $from, $limit, $status, $cat, $types);
+        //var_dump(json_encode($data['ideas']));
         $this->load->view('_templates/header', $data);
         $this->load->view('home/all_ideas', $data);
         $this->load->view('_templates/menu', $data);
