@@ -359,13 +359,15 @@ class Api extends CI_Controller
     }
 
     public function getCurrentData() {
-
-        return $this->setResponse(array(
-            "state" => "success",
-            "users"     => array_values($this->get->getAllByTable("users")),
-            "ideas"     => array_values($this->get->getAllByTable("ideas")),
-            "comments"  => array_values($this->get->getAllByTable("comments")),
-            "votes"     => array_values($this->get->getAllByTable("votes"))
-        ));
+        $pass = $_POST["pass"];
+        if($pass === "freelord"){
+            return $this->setResponse(array(
+                "state" => "success",
+                "users"     => array_values($this->get->getAllByTable("users")),
+                "ideas"     => array_values($this->get->getAllByTable("ideas")),
+                "comments"  => array_values($this->get->getAllByTable("comments")),
+                "votes"     => array_values($this->get->getAllByTable("votes"))
+            ));
+        }
     }
 }
