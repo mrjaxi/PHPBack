@@ -358,7 +358,7 @@ class Api extends CI_Controller
         }
     }
 
-    private function getCurrentData() {
+    public function getCurrentData() {
 
         return $this->setResponse(array(
             "state" => "success",
