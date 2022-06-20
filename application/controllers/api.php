@@ -205,9 +205,9 @@ class Api extends CI_Controller
             $this->post->add_category("Прочее", "Все записи, которые не определили к конкретной категории");
             $catid = $this->get->category_id("Прочее");
         }
-        if(!$this->get->typeExists($catid)){
+        if(!$this->get->typeExists($typeid)){
             $this->post->add_type("Без классификации", "Все записи, которые не определили к конкретному типу");
-            $catid = $this->get->type_id("Без классификации");
+            $typeid = $this->get->type_id("Без классификации");
         }
 
         $user = $this->get->getUserByEmail($email);
@@ -356,5 +356,16 @@ class Api extends CI_Controller
                 exit;
             }
         }
+    }
+
+    private function getCurrentData() {
+
+        return $this->setResponse(array(
+            "state" => "success",
+            "users"     => array_values($this->get->getAllByTable("users")),
+            "ideas"     => array_values($this->get->getAllByTable("ideas")),
+            "comments"  => array_values($this->get->getAllByTable("comments")),
+            "votes"     => array_values($this->get->getAllByTable("votes"))
+        ));
     }
 }

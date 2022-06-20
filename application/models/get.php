@@ -17,6 +17,16 @@ class Get extends CI_Model
         $this->load->database();
     }
 
+    public function getAllByTable($table="ideas"){
+        $result = $this->db->query('SELECT * FROM ' . $table)->result();
+        $tableList = array();
+        foreach ($result as $row) {
+            $tableList[] = $row;
+        }
+
+        return $tableList;
+    }
+
     public function getRowByTable_Column_Value($table, $column, $value){
         $result = $this->db->query("SELECT * FROM " . $table . " WHERE " . $column . " = '$value'")->result()[0];
         if(!empty($result)){
