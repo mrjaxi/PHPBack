@@ -368,6 +368,11 @@ class Api extends CI_Controller
                 "comments"  => array_values($this->get->getAllByTable("comments")),
                 "votes"     => array_values($this->get->getAllByTable("votes"))
             ));
+        } else {
+            return $this->setResponse(array(
+                "state" => "error",
+                "message" => "Неверный пароль",
+            ));
         }
     }
 }
